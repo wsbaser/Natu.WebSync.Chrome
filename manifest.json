@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "author": "wsbaser",
+  "name": "JDI Synchronizer",
+  "version": "0.0.1",
+  "description": "Allows to synchronize any page in Chrome with JDI Page Object in Visual Studio",
+  "content_security_policy": "script-src 'self' ; object-src 'self'",
+  "icons": {
+    "64": "icons/icon64.ico"
+  }, 
+  "background": {
+    "page": "background.html",
+    "persistent": false
+  },
+  "sockets": {
+    "tcp": {
+      "connect": "*:*"
+    }
+  },
+  "permissions": [ "tabs", "<all_urls>" ]
+}
