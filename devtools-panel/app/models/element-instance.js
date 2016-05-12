@@ -4,9 +4,8 @@ import { belongsTo } from 'ember-data/relationships';
 
 export default Model.extend({
   type: attr('string'),
-  rootScss: attr('string'),
   name: attr('string'),
+  rootScss: attr('string'),
   page: belongsTo('page'),
-  typeFullName: attr('string'),
-  params: attr()
+  component: belongsTo('component')
 });
