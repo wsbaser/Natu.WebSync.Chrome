@@ -1,6 +1,21 @@
-<div class="navigation-wrap">
-	{{outlet "navigation"}}
+<div class="navigation-wrap clearfix">
+	<div id="servicesNavigation" class="navigation-item pull-left">
+		{{outlet "current-service"}}
+		{{#bs-dropdown tagName="span"}}
+			{{#bs-dropdown-toggle class="btn btn-xs btn-danger"}}<span class="caret"></span>{{/bs-dropdown-toggle}}
+	        {{#bs-dropdown-menu}}
+			  	{{#each model as |service|}}
+	    			<li>{{#link-to "service" service}}{{service.id}}{{/link-to}}</li>
+	  			{{/each}}
+	        {{/bs-dropdown-menu}}
+		{{/bs-dropdown}}
+	</div>
+	<div class="vertical-divider pull-left">|</div>
+	<div id="pageNavigation" class="navigation-item pull-left">
+		{{outlet "current-page"}}
+		{{outlet "pages-list"}}
+	</div>
 </div>
-<div class="body-wrap">
-	{{outlet "body"}}
+<div class="content-wrap">
+	{{outlet "content"}}
 </div>

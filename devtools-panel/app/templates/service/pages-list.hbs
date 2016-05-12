@@ -1,0 +1,8 @@
+{{#bs-dropdown tagName="span"}}
+	{{#bs-dropdown-toggle class="btn btn-xs btn-danger"}}<span class="caret"></span>{{/bs-dropdown-toggle}}
+    {{#bs-dropdown-menu}}
+	  	{{#each pages as |page|}}
+			<li>{{#link-to "service.page" page}}{{page.id}}{{/link-to}}</li>
+			{{/each}}
+    {{/bs-dropdown-menu}}
+{{/bs-dropdown}}
