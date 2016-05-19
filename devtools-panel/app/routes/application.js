@@ -1,7 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+	vsclient: Ember.inject.service('vsclient'),
 	beforeModel(){
+		debugger;
+		var vsclient = this.get('vsclient');
+		vsclient.connect();
+
 		// . Push TEST data into the store
 		this.store.pushPayload({
 			services: [{id:'AirbnbService'}]
