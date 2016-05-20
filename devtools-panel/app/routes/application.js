@@ -3,7 +3,6 @@ import Ember from 'ember';
 export default Ember.Route.extend({
 	vsclient: Ember.inject.service('vsclient'),
 	beforeModel(){
-		debugger;
 		var vsclient = this.get('vsclient');
 		vsclient.connect();
 
