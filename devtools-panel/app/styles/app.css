@@ -15,7 +15,7 @@
 #target{
 	padding: 10px;
 	list-style-type: none;
-	background: #eee;
+	background: #E0EAEA;
 	margin-top: 10px; 
 }
 
@@ -29,4 +29,12 @@
 	width: 50px;
 	text-align: right;
 	padding-right: 5px;
+}
+
+#target .validator{
+	background: #F7907C;
+}
+
+#target .validator.exist{
+	background: #CAF77C;
 }

@@ -16,6 +16,7 @@ export default Ember.Controller.extend({
 	actions:{
 		onSourceSelectorChanged: function(selector) {
 			var vsclient = this.get('vsclient');
+			console.log('KeyUp')
 			vsclient.convertSelector(selector);
 		}
 	}
