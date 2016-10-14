@@ -6,7 +6,7 @@ const path = require('path');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let CopyWebpackPlugin = require('copy-webpack-plugin');
 
-let EXTENSION_ID = NODE_ENV=='development' ? 'jcafkaiepnfcdahhgndhjohjdbadigoj':'cifbpdjhjkopeekabdgfjgmcbcgloioi';
+let EXTENSION_ID = NODE_ENV=='development' ? 'jcafkaiepnfcdahhgndhjohjdbadigoj':'aohpgnblncapofbobbilnlfliihianac';
 
 
 module.exports = {
@@ -83,6 +83,7 @@ module.exports = {
 };
 
 if (NODE_ENV == 'production') {
+  console.log("- Production build!")
   module.exports.plugins.push(
       new webpack.optimize.UglifyJsPlugin({
         compress: {

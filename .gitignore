@@ -1,5 +1,8 @@
 public/assets
 
+# Archives
+*.zip
+
 # Logs
 logs
 *.log
