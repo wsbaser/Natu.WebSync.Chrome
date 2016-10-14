@@ -1,6 +1,17 @@
 <div id="selectorsConverter">
 	{{input id="source" type="text" placeholder="Type selector here..." value=souceSelector key-up="onSourceSelectorChanged"}}
-	<div id="target">
-		{{targetSelector}}
-	</div>
+	<ul id="target">
+		<li>
+			<label>Scss: </label>
+			{{targetScss}}
+		</li>
+		<li>
+			<label>Css: </label>
+			{{targetCss}}
+		</li>
+		<li>
+			<label>XPath: </label>
+			{{targetXPath}}
+		</li>
+	</ul>
 </div>
