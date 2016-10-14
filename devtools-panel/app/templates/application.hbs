@@ -1,5 +1,7 @@
-<div class="navigation-wrap clearfix">
-	<div id="servicesNavigation" class="navigation-item pull-left">
+{{outlet}}
+
+{{!-- <div class="navigation-wrap clearfix">
+ 	<div id="servicesNavigation" class="navigation-item pull-left">
 		{{outlet "current-service"}}
 		{{#bs-dropdown tagName="span"}}
 			{{#bs-dropdown-toggle class="btn btn-xs btn-danger"}}<span class="caret"></span>{{/bs-dropdown-toggle}}
@@ -9,13 +11,13 @@
 	  			{{/each}}
 	        {{/bs-dropdown-menu}}
 		{{/bs-dropdown}}
-	</div>
-	<div class="vertical-divider pull-left">|</div>
+	</div>	
+ 	<div class="vertical-divider pull-left">|</div>
 	<div id="pageNavigation" class="navigation-item pull-left">
 		{{outlet "current-page"}}
 		{{outlet "pages-list"}}
 	</div>
-</div>
-<div class="content-wrap">
+</div> --}}
+{{!-- <div class="content-wrap">
 	{{outlet "content"}}
-</div>
+</div> --}}

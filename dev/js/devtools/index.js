@@ -41,4 +41,4 @@
 // });
 
 
-chrome.devtools.panels.create('SynchronizeIt', 'icons/icon64.png', 'assets/devtools-panel/index.html');
+chrome.devtools.panels.create('WebSync', 'icons/icon64.png', 'devtools-panel.html');

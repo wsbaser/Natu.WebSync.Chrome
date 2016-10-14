@@ -1,22 +1,24 @@
 import Ember from 'ember';
+import ENV from 'devtools-panel/config/environment';
 
 let SIMessageTypes = {
 	SessionWebData: "SessionWebData",
-	SessionWebRequest: "SessionWebRequest"
+	SessionWebRequest: "SessionWebRequest",
+	ConvertSelector: "ConvertSelector",
+	ConvertedSelector: "ConvertedSelector"
 };
 
-let SYNCHRONIZEIT_WS_URL = 'ws://localhost:18488/synchronize';
-
-export default Ember.Service.extend({
+var service = Ember.Service.extend({
 	store: Ember.inject.service(),
 	connect(){
-		let webSocket = new WebSocket(SYNCHRONIZEIT_WS_URL);
+		console.log("Trying to connect to WebSync on url: "+ENV.APP.WEBSYNC_WS_URL);
+		let webSocket = new WebSocket(ENV.APP.WEBSYNC_WS_URL);
 		webSocket.onopen = this.onopen.bind(this);
 		webSocket.onmessage = this.onmessage.bind(this);
 		this.set('webSocket', webSocket);
 	},
 	onopen(){
-		console.log('Socket is opened!');
+		console.log('Connection to '+ENV.APP.WEBSYNC_WS_URL+' established succesfully!');
 		this.sendSessionWebRequest();
 	},
 	onmessage(event){
@@ -24,9 +26,15 @@ export default Ember.Service.extend({
 		var message = this.parseMessage(event.data);
 		if(message.Type===SIMessageTypes.SessionWebData){
 			this.updateStore(message.Data);
-		}else{
+		}else if(message.Type === SIMessageTypes.ConvertedSelector){
+			this.trigger(SIMessageTypes.ConvertedSelector, message.Data);
+		}
+		else{
 			console.error('Received message with invalid message type:',message);
 		}
+	},
+	convertSelector(selector){
+		this.send(this.createMessage(SIMessageTypes.ConvertSelector,selector));
 	},
 	sendSessionWebRequest(){
 		this.send(this.createMessage(SIMessageTypes.SessionWebRequest));
@@ -41,12 +49,21 @@ export default Ember.Service.extend({
 		return JSON.parse(data);
 	},
 	createMessage(type, data){
+		if(data){
+			if(typeof data!=="string"){
+				data = JSON.stringify(data);
+			}
+		}
 		return {
 			Type: type,
-			Data: data?JSON.stringify(data):''
+			Data: data
 		};
 	},
 	updateStore(data){
 		this.get('store').pushPayload(data);
 	}
 });
+
+service.reopen(Ember.Evented);
+
+export default service;

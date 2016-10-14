@@ -6,8 +6,7 @@ const path = require('path');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let CopyWebpackPlugin = require('copy-webpack-plugin');
 
-let EXTENSION_ID = NODE_ENV=='development' ? 'ppgnibapoaghkefnghplaanppljbhboo':'cifbpdjhjkopeekabdgfjgmcbcgloioi';
-//let EXTENSION_ID = 'ppgnibapoaghkefnghplaanppljbhboo';
+let EXTENSION_ID = NODE_ENV=='development' ? 'jcafkaiepnfcdahhgndhjohjdbadigoj':'cifbpdjhjkopeekabdgfjgmcbcgloioi';
 
 
 module.exports = {
@@ -45,7 +44,6 @@ module.exports = {
     }),
     new ExtractTextPlugin('[name].css'),
     new CopyWebpackPlugin([
-        { from: '../devtools-panel/dist/index.html', to: 'devtools-panel/index.html' },
         { from: '../devtools-panel/dist/assets/devtools-panel.js', to:'devtools-panel/index.js' },
         { from: '../devtools-panel/dist/assets/devtools-panel.css', to:'devtools-panel/index.css' },
         { from: '../devtools-panel/dist/assets/vendor.js', to:'devtools-panel/vendor.js' },

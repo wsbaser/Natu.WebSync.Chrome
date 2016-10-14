@@ -5,17 +5,21 @@ module.exports = function(environment) {
     modulePrefix: 'devtools-panel',
     environment: environment,
     baseURL: '/',
-    locationType: 'auto',
+    locationType: 'none',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
+      },
+      EXTEND_PROTOTYPES: {
+        Date: false
       }
     },
 
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+      WEBSYNC_WS_URL: 'ws://localhost:18488/websync'
     }
   };
 
@@ -40,6 +44,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+
 
   }
 
