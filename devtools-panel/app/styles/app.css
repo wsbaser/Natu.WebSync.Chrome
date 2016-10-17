@@ -38,3 +38,7 @@
 #target .validator.exist{
 	background: #CAF77C;
 }
+
+#target .validator.exist.several{
+	background: #EFF74A;	
+}

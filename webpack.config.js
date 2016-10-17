@@ -13,7 +13,7 @@ module.exports = {
   context: path.resolve(__dirname, "./dev"),
   entry: {
     background: "./js/background",
-    devtools: "./js/devtools"
+    devtools: "./js/devtools",
   },
 
   output: {
@@ -23,7 +23,7 @@ module.exports = {
     library: "[name]"
   },
 
-  watch: false,
+  watch: false, //NODE_ENV == 'development',
 
   watchOptions: {
     aggregateTimeout: 100
@@ -44,10 +44,12 @@ module.exports = {
     }),
     new ExtractTextPlugin('[name].css'),
     new CopyWebpackPlugin([
-        { from: '../devtools-panel/dist/assets/devtools-panel.js', to:'devtools-panel/index.js' },
-        { from: '../devtools-panel/dist/assets/devtools-panel.css', to:'devtools-panel/index.css' },
-        { from: '../devtools-panel/dist/assets/vendor.js', to:'devtools-panel/vendor.js' },
-        { from: '../devtools-panel/dist/assets/vendor.css', to:'devtools-panel/vendor.css' },
+        { from: 'js/content/index.js', to:'content.js' },
+        { from: '../devtools-panel/dist/index.html', to:'../devtools-panel.html' },
+        { from: '../devtools-panel/dist/assets/devtools-panel.js', to:'devtools-panel.js' },
+        { from: '../devtools-panel/dist/assets/devtools-panel.css', to:'devtools-panel.css' },
+        { from: '../devtools-panel/dist/assets/vendor.js', to:'vendor.js' },
+        { from: '../devtools-panel/dist/assets/vendor.css', to:'vendor.css' },
     ],{
       copyUnmodified:true
     })
