@@ -12,6 +12,12 @@
     "page": "background.html",
     "persistent": false
   },
+  "content_scripts": [{
+    "all_frames": false,
+    "js": ["assets/content.js"],
+    "matches": [ "<all_urls>" ],
+    "run_at": "document_end"
+  }],
   "devtools_page": "./devtools.html",
   "permissions": [ "tabs", "<all_urls>" ]
 }

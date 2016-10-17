@@ -31,14 +31,16 @@
 	padding-right: 5px;
 }
 
-#target .validator{
+#target .validator .part{
 	background: #F7907C;
+	margin-left: -4px;
+	cursor: pointer;
 }
 
-#target .validator.exist{
+#target .validator .part.exist{
 	background: #CAF77C;
 }
 
-#target .validator.exist.several{
+#target .validator .part.exist.several{
 	background: #EFF74A;	
 }

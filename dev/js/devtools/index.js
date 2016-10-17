@@ -40,21 +40,21 @@
 // 	}
 // });
 
-// DevTools page -- devtools.js
-// Create a connection to the background page
-var backgroundPageConnection = chrome.runtime.connect({
-    name: "devtools-page"
-});
+// // DevTools page -- devtools.js
+// // Create a connection to the background page
+// var backgroundPageConnection = chrome.runtime.connect({
+//     name: "devtools-page"
+// });
 
-backgroundPageConnection.onMessage.addListener(function (message) {
-    // Handle responses from the background page, if any
-});
+// backgroundPageConnection.onMessage.addListener(function (message) {
+//     // Handle responses from the background page, if any
+// });
 
-console.log("Post message to background.")
+// console.log("Post message to background.")
 
-backgroundPageConnection.postMessage({
-    tabId: chrome.devtools.inspectedWindow.tabId,
-    scriptToInject: "assets/content.js"
-});
+// backgroundPageConnection.postMessage({
+//     tabId: chrome.devtools.inspectedWindow.tabId,
+//     scriptToInject: "assets/content.js"
+// });
 
 chrome.devtools.panels.create('WebSync', 'icons/icon64.png', 'devtools-panel.html');
