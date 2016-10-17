@@ -4,7 +4,7 @@ window.evaluateXpath = function find(xpath) {
     if(!xpath){
     	return [];
     }
-	return evaluteSelectorInAllIframes(xpath, function(selector, rootElement){
+	return evaluteSelectorInAllIframes(xpath, function(rootElement, selector){
 	    var result = [];
 	    var nodes = document.evaluate(selector, rootElement, null, XPathResult.ANY_TYPE, null);
 	    var currentNode = nodes.iterateNext();
