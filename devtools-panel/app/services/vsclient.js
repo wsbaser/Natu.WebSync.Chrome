@@ -10,15 +10,21 @@ let SIMessageTypes = {
 
 var service = Ember.Service.extend({
 	store: Ember.inject.service(),
+	isConnected: false,
 	connect(){
 		console.log("Trying to connect to WebSync on url: "+ENV.APP.WEBSYNC_WS_URL);
 		let webSocket = new WebSocket(ENV.APP.WEBSYNC_WS_URL);
 		webSocket.onopen = this.onopen.bind(this);
 		webSocket.onmessage = this.onmessage.bind(this);
+		webSocket.onclose = this.onclose.bind(this);
 		this.set('webSocket', webSocket);
+	},
+	onclose(){
+		this.set('isConnected', true);
 	},
 	onopen(){
 		console.log('Connection to '+ENV.APP.WEBSYNC_WS_URL+' established succesfully!');
+		this.set('isConnected', true);
 		this.sendSessionWebRequest();
 	},
 	onmessage(event){

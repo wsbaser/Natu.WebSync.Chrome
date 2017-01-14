@@ -44,3 +44,31 @@
 #target .validator .part.exist.several{
 	background: #EFF74A;	
 }
+
+.status{
+	margin:5px;
+}
+
+.status:before {
+	display: inline-block;
+	content: "";
+	width: 10px;
+	height: 10px;
+	margin-right: 5px;
+	background-color: red;
+	border-radius: 50%;
+}
+
+.status:after {
+	display: inline-block;
+	line-height: 10px;
+	content: "Disconnected";
+}
+
+.status.connected:before{
+	background-color: green;
+}
+
+.status.connected:after{
+	content: "Connected";
+}
