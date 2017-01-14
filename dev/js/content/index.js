@@ -33,3 +33,13 @@ window.evaluateCss = function find(css) {
 		return Array.from(rootElement.querySelectorAll(selector));
 	});
 };
+
+window.inspectSelector = function(css){
+	if(!css){
+		return;
+	}
+	console.log("Inspect css: "+css);
+	let elements = Array.from(document.querySelectorAll(css));
+	console.log(elements); 
+	inspect(elements[0]);
+};

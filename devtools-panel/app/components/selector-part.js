@@ -12,6 +12,12 @@ export default Ember.Component.extend({
 		return this.get('part.count')>0;
 	}),
 	click(){
-		console.log('Click on selector-tag');
+		this.inspectSelector();
+	},
+	inspectSelector(){
+		let scriptToInspectSelector = 'inspectSelector("' + this.get('part.fullSelector') + '")';
+	   	chrome.devtools.inspectedWindow.eval(
+	      scriptToInspectSelector,
+	      { useContentScriptContext: true });
 	}
 });
