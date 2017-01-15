@@ -31,18 +31,27 @@
 	padding-right: 5px;
 }
 
-#target .validator .part{
+#target .validator .part>.value{
 	background: #F7907C;
-	margin-left: -2px;
 	cursor: pointer;
+	padding: 2px 4px;
+	border-radius: 5px;
 }
 
-#target .validator .part.exist{
+#target .validator .part.exist>.value{
 	background: #CAF77C;
 }
 
-#target .validator .part.exist.several{
+#target .validator .part.exist.several>.value{
 	background: #EFF74A;	
+}
+
+#target .validator .part>.count{
+    font-size: 9px;
+    vertical-align: top;
+    display: inline-block;
+    padding-top: 5px;
+    cursor: pointer;
 }
 
 .status{

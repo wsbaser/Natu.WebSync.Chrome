@@ -15,12 +15,14 @@ export default Ember.Component.extend({
 		this.inspectSelector();
 	},
 	inspectSelector(){
-		let scriptToInspectSelector = 
-			this.get('isXPath')?
-			'inspectXpathSelector("' + this.get('part.fullSelector') + '")':
-			'inspectCssSelector("' + this.get('part.fullSelector') + '")';
-	   	chrome.devtools.inspectedWindow.eval(
-	      scriptToInspectSelector,
-	      { useContentScriptContext: true });
+		if(this.get('part.count')){
+			let scriptToInspectSelector = 
+				this.get('isXPath')?
+				'inspectXpathSelector("' + this.get('part.fullSelector') + '")':
+				'inspectCssSelector("' + this.get('part.fullSelector') + '")';
+		   	chrome.devtools.inspectedWindow.eval(
+		      scriptToInspectSelector,
+		      { useContentScriptContext: true });
+		}
 	}
 });
