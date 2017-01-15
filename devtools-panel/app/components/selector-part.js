@@ -15,7 +15,10 @@ export default Ember.Component.extend({
 		this.inspectSelector();
 	},
 	inspectSelector(){
-		let scriptToInspectSelector = 'inspectSelector("' + this.get('part.fullSelector') + '")';
+		let scriptToInspectSelector = 
+			this.get('isXPath')?
+			'inspectXpathSelector("' + this.get('part.fullSelector') + '")':
+			'inspectCssSelector("' + this.get('part.fullSelector') + '")';
 	   	chrome.devtools.inspectedWindow.eval(
 	      scriptToInspectSelector,
 	      { useContentScriptContext: true });

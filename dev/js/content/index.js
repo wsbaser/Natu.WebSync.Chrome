@@ -1,5 +1,14 @@
 console.log('WebSync content script injected');
 
+function evaluteSelectorInAllIframes(selector, evaluateFunc){
+	var result = {};
+	result[""] = evaluateFunc(document, selector);
+	document.querySelectorAll('iframe').forEach(function(iframeNode){
+		result[iframeNode.src] = evaluateFunc(iframeNode.contentDocument, selector);
+	});
+	return result;
+}
+
 window.evaluateXpath = function find(xpath) {
     if(!xpath){
     	return [];
@@ -16,15 +25,6 @@ window.evaluateXpath = function find(xpath) {
 	});
 };
 
-function evaluteSelectorInAllIframes(selector, evaluateFunc){
-	var result = {};
-	result[""] = evaluateFunc(document, selector);
-	document.querySelectorAll('iframe').forEach(function(iframeNode){
-		result[iframeNode.src] = evaluateFunc(iframeNode.contentDocument, selector);
-	});
-	return result;
-}
-
 window.evaluateCss = function find(css) {
 	if(!css){
 		return {};
@@ -34,12 +34,16 @@ window.evaluateCss = function find(css) {
 	});
 };
 
-window.inspectSelector = function(css){
-	if(!css){
-		return;
-	}
-	console.log("Inspect css: "+css);
-	let elements = Array.from(document.querySelectorAll(css));
-	console.log(elements); 
-	inspect(elements[0]);
+function inspectElement(elements, index){
+	index = index||0;
+	var arr = [].concat.apply([], Object.values(elements));
+	inspect(arr[index]);
+};
+
+window.inspectXpathSelector = function(xpath,index){
+	inspectElement(evaluateXpath(xpath),index);
+};
+
+window.inspectCssSelector = function(css,index){
+	inspectElement(evaluateCss(css),index);
 };
