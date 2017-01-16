@@ -1,10 +1,20 @@
 console.log('WebSync content script injected');
 
+window.getIframes = function(){
+	return document.querySelectorAll('iframe');
+}
+
 function evaluteSelectorInAllIframes(selector, evaluateFunc){
-	var result = {};
-	result[""] = evaluateFunc(document, selector);
-	document.querySelectorAll('iframe').forEach(function(iframeNode){
-		result[iframeNode.src] = evaluateFunc(iframeNode.contentDocument, selector);
+	var result = [];
+	result.push({
+		documentNode:document,
+		elements:evaluateFunc(document, selector)
+	});
+	getIframes().forEach(function(iframeNode){
+		result.push({
+			documentNode: iframeNode.contentDocument,
+			elements: evaluateFunc(iframeNode.contentDocument, selector)
+		});
 	});
 	return result;
 }
@@ -34,9 +44,13 @@ window.evaluateCss = function find(css) {
 	});
 };
 
-function inspectElement(elements, index){
+window.evaluateSelector = function(selector, isXpath){
+	return isXpath?evaluateXpath(selector):evaluateCss(selector);
+};
+
+function inspectElement(iframeDataList, index){
 	index = index||0;
-	var arr = [].concat.apply([], Object.values(elements));
+	var arr = [].concat.apply([], iframeDataList.map(function(iframeData){return iframeData.elements;}));
 	inspect(arr[index]);
 };
 
@@ -46,4 +60,48 @@ window.inspectXpathSelector = function(xpath,index){
 
 window.inspectCssSelector = function(css,index){
 	inspectElement(evaluateCss(css),index);
+};
+
+window.createHighlighterElement = function(documentNode,clientRect){
+	var highlighterElement = documentNode.createElement('div');
+	highlighterElement.classList.add('websync-highlighter');
+	highlighterElement.style.left = clientRect.left+'px';
+	highlighterElement.style.top = clientRect.top+'px';
+	highlighterElement.style.width = clientRect.width+'px';
+	highlighterElement.style.height = clientRect.height+'px';
+	highlighterElement.style.position = 'absolute';
+	highlighterElement.style.backgroundColor = 'yellow';
+	highlighterElement.style.opacity = 0.5;
+	let bodyElement = documentNode.documentElement.querySelector('body');
+	bodyElement.appendChild(highlighterElement);
+};
+
+window.hightlightElementsInIframe = function(iframeNode, iframeElements){
+	iframeElements.forEach((iframeElement)=>{
+		let clientRects = Array.from(iframeElement.getClientRects());
+		clientRects.forEach((clientRect)=>{
+			createHighlighterElement(iframeNode, clientRect);
+		});
+	});
+};
+
+window.highlightSelector = function(selector,isXpath){
+	var iframeDataList = evaluateSelector(selector, isXpath);
+	iframeDataList.forEach((iframeData)=>{
+		hightlightElementsInIframe(iframeData.documentNode, iframeData.elements);
+	});
+};
+
+window.removeHighlightingInIframe = function(iframeNode){
+	let highlighterElements = Array.from(iframeNode.querySelectorAll('.websync-highlighter'));
+	highlighterElements.forEach(function(highlighterElement){
+		highlighterElement.remove();
+	});
+};
+
+window.removeHighlighting = function(){
+	removeHighlightingInIframe(document);
+	getIframes().forEach(function(iframeNode){
+		removeHighlightingInIframe(iframeNode.contentDocument);
+	});
 };

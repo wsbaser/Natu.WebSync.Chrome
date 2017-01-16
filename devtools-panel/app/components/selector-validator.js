@@ -19,11 +19,11 @@ export default Ember.Component.extend({
 			}
 	      }.bind(this));
 	},
-	getNodesCount(iframe2Nodes){
+	getNodesCount(iframesDataList){
 		var count=0;
-		for (var iframe in iframe2Nodes) {
-			count+=iframe2Nodes[iframe].length;
-		}
+		iframesDataList.forEach(function(iframeData){
+			count+=iframeData.elements.length;
+		});
 		return count;
 	},
 	splitToParts(selectorString, delimiters){
