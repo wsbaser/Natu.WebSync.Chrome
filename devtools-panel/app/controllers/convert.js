@@ -17,7 +17,14 @@ export default Ember.Controller.extend({
 		onSourceSelectorChanged: function(selector) {
 			var vsclient = this.get('vsclient');
 			console.log('KeyUp');
-			vsclient.convertSelector(selector);
+			if(vsclient.get("isConnected")){
+				vsclient.convertSelector(selector);
+			}
+			else{
+				console.log('Convertion service not available. Using selector without conversion.');
+				this.set('targetCss', selector);
+				this.set('targetXPath', selector);
+			}
 		}
 	}
 });

@@ -20,7 +20,7 @@ var service = Ember.Service.extend({
 		this.set('webSocket', webSocket);
 	},
 	onclose(){
-		this.set('isConnected', true);
+		this.set('isConnected', false);
 	},
 	onopen(){
 		console.log('Connection to '+ENV.APP.WEBSYNC_WS_URL+' established succesfully!');
