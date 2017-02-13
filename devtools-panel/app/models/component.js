@@ -1,7 +1,12 @@
 import Model from 'ember-data/model';
-import { hasMany } from 'ember-data/relationships';
+import attr from 'ember-data/attr';
+import { belongsTo } from 'ember-data/relationships';
 
 export default Model.extend({
-  elements: hasMany('elementInstance'),
-  components: hasMany('componentInstance')
+  type: belongsTo('componentType'),
+  parent: belongsTo('component'),
+  page: belongsTo('page'),
+  name: attr('string'),
+  rootScss: attr('string')
+  constructorParams: attr()
 });

@@ -4,7 +4,6 @@ import { belongsTo, hasMany } from 'ember-data/relationships';
 
 export default Model.extend({
   absolutePath: attr('string'),
-  elements: hasMany('elementInstance'),
-  components: hasMany('componentInstance'),
+  components: hasMany('component'),
   service: belongsTo('service')
 });
