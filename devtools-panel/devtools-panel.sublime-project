@@ -6,6 +6,9 @@
 		},
 		{
 			"path": "/C/dev/Natu.WebSync.Chrome/dev"
+		},
+		{
+			"path": "/C/dev/Natu.WebSync.Chrome/public"
 		}
 	]
 }

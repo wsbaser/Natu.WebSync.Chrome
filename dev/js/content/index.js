@@ -11,10 +11,16 @@ function evaluteSelectorInAllIframes(selector, evaluateFunc){
 		elements:evaluateFunc(document, selector)
 	});
 	getIframes().forEach(function(iframeNode){
-		result.push({
-			documentNode: iframeNode.contentDocument,
-			elements: evaluateFunc(iframeNode.contentDocument, selector)
-		});
+		try{
+			result.push({
+				documentNode: iframeNode.contentDocument,
+				elements: evaluateFunc(iframeNode.contentDocument, selector)
+			});
+		}
+		catch(err){
+			// We can't access contendDocument from iFrame with different origin,
+			// and it is OK.
+		}
 	});
 	return result;
 }

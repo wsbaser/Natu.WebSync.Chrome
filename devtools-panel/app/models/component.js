@@ -7,6 +7,6 @@ export default Model.extend({
   parent: belongsTo('component'),
   page: belongsTo('page'),
   name: attr('string'),
-  rootScss: attr('string')
+  rootScss: attr('string'),
   constructorParams: attr()
 });

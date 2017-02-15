@@ -4,6 +4,54 @@
 		"selected_items":
 		[
 			[
+				"Apa",
+				"ApartmentPage"
+			],
+			[
+				"Filter",
+				"FiltersWidget"
+			],
+			[
+				"Sear",
+				"SearchForm"
+			],
+			[
+				"ifr",
+				"iframeData"
+			],
+			[
+				"remove",
+				"removeHighlightingInIframe"
+			],
+			[
+				"hit",
+				"highlighterElement"
+			],
+			[
+				"hi",
+				"highlighterElement"
+			],
+			[
+				"iframe",
+				"iframeElements"
+			],
+			[
+				"ir",
+				"iframeSrc"
+			],
+			[
+				"ev",
+				"evaluateCss"
+			],
+			[
+				"evalu",
+				"evaluateCss"
+			],
+			[
+				"ins",
+				"inspectPartSelector"
+			],
+			[
 				"spe",
 				"speachPart"
 			],
@@ -466,59 +514,51 @@
 			[
 				"TR",
 				"TranslationDialog"
-			],
-			[
-				"src",
-				"srclangs"
-			],
-			[
-				"index",
-				"indexOf"
-			],
-			[
-				"def",
-				"deferred"
-			],
-			[
-				"reje",
-				"rejectWithStatusCode"
-			],
-			[
-				"j",
-				"jqXHR"
-			],
-			[
-				"call",
-				"callback"
-			],
-			[
-				"load",
-				"loadAll"
-			],
-			[
-				"mon",
-				"month"
-			],
-			[
-				"mont",
-				"monthStatistic"
-			],
-			[
-				"wron",
-				"wrongWords"
-			],
-			[
-				"transla",
-				"translationIds"
-			],
-			[
-				"notCom",
-				"notCompletedFilter"
 			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "app/services/vsclient.js",
+			"settings":
+			{
+				"buffer_size": 2028,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/models/component-type.js",
+			"settings":
+			{
+				"buffer_size": 159,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/models/page.js",
+			"settings":
+			{
+				"buffer_size": 271,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/models/component.js",
+			"settings":
+			{
+				"buffer_size": 339,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/routes/application.js",
+			"settings":
+			{
+				"buffer_size": 101148,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -552,6 +592,19 @@
 	},
 	"file_history":
 	[
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/models/element-instance.js",
+		"/C/dev/Natu.WebSync.VS/RoslynSpike/packages.config",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/components/selector-part.hbs",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/components/xpath-validator.hbs",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/components/selector-part.js",
+		"/C/dev/Natu.WebSync.Chrome/dev/js/content/index.js",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/styles/app.css",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/components/xpath-validator.js",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/components/selector-validator.js",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/services/vsclient.js",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/convert.hbs",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/components/css-validator.hbs",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/config/environment.js",
 		"/C/Users/wsbaser/AppData/Roaming/Skype/My Skype Received Files/KmHelpServiceFactory.cs",
 		"/C/Users/wsbaser/AppData/Roaming/Skype/My Skype Received Files/KmHelpService.cs",
 		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/public/manifest.json",
@@ -666,20 +719,7 @@
 		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/controls/notification-popup.js",
 		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/services/abby/abby_handlers.js",
 		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/popup/de/de-popup.js",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/content/controls/add-translation.js",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/content/source.js",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/content/source-tab.js",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/services/dictionary-service-proxy.js",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/content/translation-dialog.js",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/content/controls/login-form.js",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/content/controls/language-selector.js",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/content/controls/select-book.js",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/css/dialog.styl",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/css/select-book.styl",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/css/add-translation.styl",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/css/lang-selector.styl",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/css/common.styl",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/css/login_form.styl"
+		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/content/controls/add-translation.js"
 	],
 	"find":
 	{
@@ -702,6 +742,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"updateStore",
+			";\n",
+			"hightlightIfameElements",
+			"evaluateXpath",
+			"convertSelector",
 			"abby",
 			"_createAbbySource",
 			"getUILanguage",
@@ -824,12 +869,7 @@
 			"scroll",
 			"allTranslationsSet",
 			"allTranslationsArr",
-			"var",
-			"ContentTypes",
-			"import ContentTypes from '../common/content-types';",
-			"SpeachParts",
-			"Dialaog",
-			"Dilaog"
+			"var"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -847,8 +887,140 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "app/services/vsclient.js",
+					"settings":
+					{
+						"buffer_size": 2028,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								996,
+								996
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 84.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/models/component-type.js",
+					"settings":
+					{
+						"buffer_size": 159,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								159,
+								159
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/models/page.js",
+					"settings":
+					{
+						"buffer_size": 271,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								232,
+								232
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/models/component.js",
+					"settings":
+					{
+						"buffer_size": 339,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								339,
+								339
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/routes/application.js",
+					"settings":
+					{
+						"buffer_size": 101148,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								110,
+								121
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
