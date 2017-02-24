@@ -21,36 +21,35 @@ export default Ember.Route.extend({
 		// 			components:['MainPage.SearchForm']
 		// 		}
 		// 	]});
-		debugger;
 
-		this.store.pushPayload({
-			components:[
-				{
-					id: 'MainPage.SearchForm',
-					componentType: 'mynamespace.SearchForm',
-					name: 'Search Form',
-					rootScss: '.SearchForm'
-				},
-				{
-					id: 'SearchForm.SearchLocation',
-					componentType: 'natunamespace.WebInput',
-					name: 'Search Location',
-					rootScss: '#search-location'
-				}
-			]});
+		// this.store.pushPayload({
+		// 	components:[
+		// 		{
+		// 			id: 'MainPage.SearchForm',
+		// 			componentType: 'mynamespace.SearchForm',
+		// 			name: 'Search Form',
+		// 			rootScss: '.SearchForm'
+		// 		},
+		// 		{
+		// 			id: 'SearchForm.SearchLocation',
+		// 			componentType: 'natunamespace.WebInput',
+		// 			name: 'Search Location',
+		// 			rootScss: '#search-location'
+		// 		}
+		// 	]});
 
-		this.store.pushPayload({
-			componentTypes:[{
-				id:'mynamespace.SearchForm',
-				abc:[
-					'SearchForm.SearchLocation'
-				]
-			},
-			{
-				id: 'natunamespace.WebInput',
-				abc:[]
-			}]
-		});
+		// this.store.pushPayload({
+		// 	componentTypes:[{
+		// 		id:'mynamespace.SearchForm',
+		// 		abc:[
+		// 			'SearchForm.SearchLocation'
+		// 		]
+		// 	},
+		// 	{
+		// 		id: 'natunamespace.WebInput',
+		// 		abc:[]
+		// 	}]
+		// });
 
 		// this.store.push({
 	 //      data: [{
@@ -76,111 +75,98 @@ export default Ember.Route.extend({
 	 //      }]
 	 //    });
 
-		// this.store.pushPayload({
-		// 	services: [{id:'AirbnbService'}]
-		// });
-		// this.store.pushPayload({
-		// 	pages: [
-		// 		{
-		// 			id:'MainPage',
-		// 			absolutePath: '',
-		// 			service: 'AirbnbService',
-		// 			components:['MainPage.SearchForm']
-		// 		},
-		// 		{
-		// 			id:'SearchApartmentPage',
-		// 			absolutePath: 's/{place}',
-		// 			service: 'AirbnbService',
-		// 			components: ['SearchApartmentPage.FiltersWidget']
-		// 		},
-		// 		{
-		// 			id:'ApartmentPage',
-		// 			absolutePath: '/rooms/{roomId}',
-		// 			service: 'AirbnbService',
-		// 			components: ['ApartmentPage.ApartmentSummary']
-		// 		},
+		this.store.pushPayload({
+			services: [{id:'AirbnbService'}]
+		});
+		this.store.pushPayload({
+			pages: [
+				{
+					id:'MainPage',
+					absolutePath: '',
+					service: 'AirbnbService',
+					components:['MainPage.SearchForm']
+				},
+				{
+					id:'SearchApartmentPage',
+					absolutePath: 's/{place}',
+					service: 'AirbnbService',
+					components: ['SearchApartmentPage.FiltersWidget']
+				},
+				{
+					id:'ApartmentPage',
+					absolutePath: '/rooms/{roomId}',
+					service: 'AirbnbService',
+					components: ['ApartmentPage.ApartmentSummary']
+				}
+			]
+		});
 
-		// 	]
-		// });
+		this.store.pushPayload({
+			componentTypes:[{
+				id:'mynamespace.SearchForm',
+				components:[
+					'SearchForm.SearchLocation'
+				]
+			},
+			{
+				id:'mynamespace.FiltersWidget',
+				components:[
+					'FiltersWidget.CheckinDate'
+				]
+			},
+			{
+				id:'mynamespace.ApartmentSummary',
+				components:[
+					'ApartmentSummary.HostProfileImage',
+				]				
+			},
+			{
+				id: 'natunamespace.WebInput'
+			},
+			{
+				id: 'natunamespace.WebIcon'
+			}]
+		});
 
-		// this.store.pushPayload({
-		// 	componentTypes:[{
-		// 		id:'mynamespace.SearchForm',
-		// 		components:[
-		// 			'SearchForm.SearchLocation'
-		// 		]
-		// 	},
-		// 	{
-		// 		id:'mynamespace.FiltersWidget',
-		// 		components:[
-		// 			'FiltersWidget.CheckinDate'
-		// 		]
-		// 	},
-		// 	{
-		// 		id:'mynamespace.ApartmentSummary',
-		// 		components:[
-		// 			'ApartmentSummary.HostProfileImage',
-		// 		]				
-		// 	},
-		// 	{
-		// 		id: 'natunamespace.WebInput'
-		// 	},
-		// 	{
-		// 		id: 'natunamespace.WebIcon'
-		// 	}]
-		// });
-
-		// this.store.pushPayload({
-		// 	components:[
-		// 		{
-		// 			id: 'MainPage.SearchForm',
-		// 			type:'mynamespace.SearchForm',
-		// 			parent:'',
-		// 			page: 'MainPage',
-		// 			name: 'Search Form',
-		// 			rootScss: '.SearchForm'
-		// 		},
-		// 		{
-		// 			id: 'SearchApartmentPage.FiltersWidget',
-		// 			type:'mynamespace.FiltersWidget',
-		// 			parent:'',
-		// 			page: 'SearchApartmentPage',
-		// 			name: 'Filters',
-		// 			rootScss: '.filters'
-		// 		},
-		// 		{
-		// 			id: 'ApartmentPage.ApartmentSummary',
-		// 			type:'mynamespace.ApartmentSummary',
-		// 			parent:'',
-		// 			page: 'ApartmentPage',
-		// 			name: 'Apartment Summary',
-		// 			rootScss: '#summary'
-		// 		},
-		// 		{
-		// 			id: 'SearchForm.SearchLocation',
-		// 			type: 'natunamespace.WebInput',
-		// 			parent: 'MainPage.SearchForm',
-		// 			page: 'MainPage',
-		// 			name: 'Search Location',
-		// 			rootScss: '#search-location'
-		// 		},
-		// 		{
-		// 			id: 'FiltersWidget.CheckinDate',
-		// 			type: 'natunamespace.WebInput',
-		// 			parent: 'SearchApartmentPage.Filters',
-		// 			page: 'SearchApartmentPage',
-		// 			name: 'Checkin Date',
-		// 			rootScss: '#datespan-checkin'
-		// 		},
-		// 		{
-		// 			id: 'ApartmentSummary.HostProfileImage',
-		// 			type: 'natunamespace.WebIcon',
-		// 			parent: 'ApartmentPage.ApartmentSummary',
-		// 			page: 'ApartmentPage',
-		// 			name: 'Host Profile Image',
-		// 			rootScss: '.host-profile-image'
-		// 		}
-		// 	]});
+		this.store.pushPayload({
+			components:[
+				{
+					id: 'MainPage.SearchForm',
+					componentType:'mynamespace.SearchForm',
+					name: 'Search Form',
+					rootScss: '.SearchForm'
+				},
+				{
+					id: 'SearchApartmentPage.FiltersWidget',
+					componentType:'mynamespace.FiltersWidget',
+					name: 'Filters',
+					rootScss: '.filters'
+				},
+				{
+					id: 'ApartmentPage.ApartmentSummary',
+					componentType:'mynamespace.ApartmentSummary',
+					name: 'Apartment Summary',
+					rootScss: '#summary'
+				},
+				{
+					id: 'SearchForm.SearchLocation',
+					componentType: 'natunamespace.WebInput',
+					name: 'Search Location',
+					rootScss: '#search-location'
+				},
+				{
+					id: 'FiltersWidget.CheckinDate',
+					componentType: 'natunamespace.WebInput',
+					name: 'Checkin Date',
+					rootScss: '#datespan-checkin'
+				},
+				{
+					id: 'ApartmentSummary.HostProfileImage',
+					componentType: 'natunamespace.WebIcon',
+					name: 'Host Profile Image',
+					rootScss: '.host-profile-image'
+				}
+			]});
 	},
 	model(){
 		return this.store.peekAll('service');

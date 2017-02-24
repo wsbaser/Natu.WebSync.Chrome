@@ -50,6 +50,7 @@ module.exports = {
         { from: '../devtools-panel/dist/assets/devtools-panel.css', to:'devtools-panel.css' },
         { from: '../devtools-panel/dist/assets/vendor.js', to:'vendor.js' },
         { from: '../devtools-panel/dist/assets/vendor.css', to:'vendor.css' },
+        { from: '../devtools-panel/dist/assets/32px.png', to:'32px.png' }
     ],{
       copyUnmodified:true
     })

@@ -18,6 +18,9 @@
     "matches": [ "<all_urls>" ],
     "run_at": "document_end"
   }],
+  "web_accessible_resources": [
+    "assets/32px.png"
+  ],
   "devtools_page": "./devtools.html",
   "permissions": [ "tabs", "<all_urls>" ]
 }

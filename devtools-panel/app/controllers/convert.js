@@ -13,17 +13,19 @@ export default Ember.Controller.extend({
 		var firstService = this.get('services').toArray()[0];
 		var firstPage = firstService.get('pages').toArray()[0];
 		var components = firstPage.get('components').toArray();
-		return this.iterateComponents(components);
+		return this.iterateComponents(null, components);
 	}),
-	iterateComponents(components){
+	iterateComponents(parentId, components){
 		var nodes=[];
 		if(components){
 			for (var i = components.length - 1; i >= 0; i--) {
+				var componentId = components[i].id;
 				nodes.push({
-					id: components[i].get('id'),
-					parent: components[i].get('parent.id')
+					id: componentId,
+					parent: parentId||'#',
+					text: components[i].get('name')
 				});
-				var childNodes = this.iterateComponents(components[i].get('type.components').toArray());
+				var childNodes = this.iterateComponents(componentId, components[i].get('componentType.components').toArray());
 				nodes = nodes.concat(childNodes);
 			}
 		}
@@ -31,8 +33,10 @@ export default Ember.Controller.extend({
 	},
 	plugins: "wholerow, types",
     themes: {
-        'name': 'default',
-        'responsive': true
+        name: 'default',
+        responsive: true,
+        dots: true,
+        icons: true
     },
     typesOptions: {
         'single-child': {
