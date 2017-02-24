@@ -9,6 +9,12 @@
 		},
 		{
 			"path": "/C/dev/Natu.WebSync.Chrome/public"
+		},
+		{
+			"path": "/C/dev/ember-cli-jstree"
+		},
+		{
+			"path": "/C/dev/CoolVocabulary/CoolVocabulary/Scripts/app-vocabulary"
 		}
 	]
 }
