@@ -11,18 +11,21 @@ export default Ember.Controller.extend({
 		var vsclient = this.get('vsclient');
 		vsclient.on("ConvertedSelector", this.onTargetSelectorReceived.bind(this));
 	},
+	data: null,
 	currentPage: Ember.computed('pages.[]', function(){
 		var pages = this.get('pages').toArray();
-		return pages.length? pages[0]: null;
+		var currentPage = pages.length? pages[0]: null;
+		this.recalculateTreeData(currentPage);
+		return currentPage;
 	}),
-	data: Ember.computed('currentPage', function(){
-		var currentPage = this.get('currentPage');
-		if(!currentPage){
-			return [];
+	recalculateTreeData(page){
+		var data = [];
+		if(page){
+			var components = page.get('components').toArray();
+			data = this.iterateComponents(null, components);
 		}
-		var components = currentPage.get('components').toArray();
-		return this.iterateComponents(null, components);
-	}),
+		this.set('data', data);
+	},
 	iterateComponents(parentId, components){
 		var nodes=[];
 		if(components){
@@ -62,6 +65,9 @@ export default Ember.Controller.extend({
 		this.set('targetXPath', data.XPath);
 	},
 	actions:{
+		selectPage(page){
+			this.recalculateTreeData(page);
+		},
 		onSourceSelectorChanged: function(selector) {
 			var vsclient = this.get('vsclient');
 			console.log('KeyUp');
