@@ -1,5 +1,6 @@
 import DS from 'ember-data';
-import { hasMany } from 'ember-data/relationships';
+import { belongsTo, hasMany } from 'ember-data/relationships';
+import Ember from 'ember';
 
 export default DS.Model.extend({
 	baseComponentType: belongsTo('component-type', { inverse: null }),
