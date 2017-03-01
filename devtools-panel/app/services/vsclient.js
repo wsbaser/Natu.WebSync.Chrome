@@ -65,7 +65,9 @@ var service = Ember.Service.extend({
 			Data: data
 		};
 	},
-	updateStore(data){
+	updateStore(jsonData){
+		var data = JSON.parse(jsonData);
+		this.get('store').unloadAll();
 		this.get('store').pushPayload(data);
 	}
 });

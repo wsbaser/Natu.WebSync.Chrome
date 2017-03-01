@@ -3,16 +3,23 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
 	applicationCtrl: Ember.inject.controller('application'),
 	services: Ember.computed.alias('applicationCtrl.model'),
+	pages: Ember.computed.alias('model'),
 	vsclient: Ember.inject.service('vsclient'),
 	init(){
 		console.log("Init ConvertController...");
 		var vsclient = this.get('vsclient');
 		vsclient.on("ConvertedSelector", this.onTargetSelectorReceived.bind(this));
 	},
-	data: Ember.computed('services', function(){
-		var firstService = this.get('services').toArray()[0];
-		var firstPage = firstService.get('pages').toArray()[0];
-		var components = firstPage.get('components').toArray();
+	currentPage: Ember.computed('pages.[]', function(){
+		var pages = this.get('pages').toArray();
+		return pages.length? pages[0]: null;
+	}),
+	data: Ember.computed('currentPage', function(){
+		var currentPage = this.get('currentPage');
+		if(!currentPage){
+			return [];
+		}
+		var components = currentPage.get('components').toArray();
 		return this.iterateComponents(null, components);
 	}),
 	iterateComponents(parentId, components){
@@ -20,10 +27,12 @@ export default Ember.Controller.extend({
 		if(components){
 			for (var i = components.length - 1; i >= 0; i--) {
 				var componentId = components[i].id;
+				var componentName = components[i].get('name');
+				var rootScss = components[i].get('rootScss');
 				nodes.push({
 					id: componentId,
 					parent: parentId||'#',
-					text: components[i].get('name')
+					text:  componentName + ' (' + rootScss + ')'
 				});
 				var childNodes = this.iterateComponents(componentId, components[i].get('componentType.components').toArray());
 				nodes = nodes.concat(childNodes);

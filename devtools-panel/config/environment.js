@@ -19,7 +19,7 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      WEBSYNC_WS_URL: 'ws://localhost:18488/websync'
+      WEBSYNC_WS_URL: 'ws://localhost:18000/websync'
     }
   };
 
