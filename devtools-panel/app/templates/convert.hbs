@@ -1,6 +1,6 @@
 <div id="selectorsConverter">
 	<div class="status {{if vsclient.isConnected 'connected'}}"></div>
-	{{input id="source" type="text" placeholder="Type selector here..." key-up="onSourceSelectorChanged"}}
+	{{input id="source" value=inputValue type="text" placeholder="Type selector here..." key-up="onSourceSelectorChanged"}}
 	<ul id="target">
 		<li>
 			<label>Scss: </label>
@@ -22,7 +22,7 @@
         data=data
         plugins=plugins
         themes=themes
-
+		eventDidSelectNode="onComponentNodeSelected"
         typesOptions=typesOptions
     }}
 </div>

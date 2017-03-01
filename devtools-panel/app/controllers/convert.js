@@ -5,6 +5,7 @@ export default Ember.Controller.extend({
 	services: Ember.computed.alias('applicationCtrl.model'),
 	pages: Ember.computed.alias('model'),
 	vsclient: Ember.inject.service('vsclient'),
+	inputValue:'',
 	init(){
 		console.log("Init ConvertController...");
 		var vsclient = this.get('vsclient');
@@ -32,7 +33,8 @@ export default Ember.Controller.extend({
 				nodes.push({
 					id: componentId,
 					parent: parentId||'#',
-					text:  componentName + ' (' + rootScss + ')'
+					text:  componentName + ' (' + rootScss + ')',
+					rootScss: rootScss
 				});
 				var childNodes = this.iterateComponents(componentId, components[i].get('componentType.components').toArray());
 				nodes = nodes.concat(childNodes);
@@ -71,6 +73,12 @@ export default Ember.Controller.extend({
 				this.set('targetCss', selector);
 				this.set('targetXPath', selector);
 			}
+		},
+		onComponentNodeSelected(node){
+			var component = this.get('store').peekRecord('component', node.id);
+			var rootScss = component.get('rootScss');
+			this.set('inputValue', rootScss);
+			this.actions.onSourceSelectorChanged.call(this, rootScss);
 		}
 	}
 });
