@@ -1,23 +1,44 @@
-{{outlet}}
-
-{{!-- <div class="navigation-wrap clearfix">
- 	<div id="servicesNavigation" class="navigation-item pull-left">
-		{{outlet "current-service"}}
-		{{#bs-dropdown tagName="span"}}
-			{{#bs-dropdown-toggle class="btn btn-xs btn-danger"}}<span class="caret"></span>{{/bs-dropdown-toggle}}
-	        {{#bs-dropdown-menu}}
-			  	{{#each model as |service|}}
-	    			<li>{{#link-to "service" service}}{{service.id}}{{/link-to}}</li>
-	  			{{/each}}
-	        {{/bs-dropdown-menu}}
-		{{/bs-dropdown}}
-	</div>	
- 	<div class="vertical-divider pull-left">|</div>
-	<div id="pageNavigation" class="navigation-item pull-left">
-		{{outlet "current-page"}}
-		{{outlet "pages-list"}}
+<div class="container-fluid">
+	{{!-- CONVERTER --}}
+	<div id="selectorsConverter">
+		<div class="status {{if vsclient.isConnected 'connected'}}"></div>
+		{{input id="source" value=inputValue type="text" placeholder="Type selector here..." key-up="onSourceSelectorChanged"}}
+		<ul id="target">
+			<li>
+				<label>Scss: </label>
+				{{targetScss}}
+			</li>
+			<li>
+				<label>Css: </label>
+				{{css-validator value=targetCss}}
+			</li>
+			<li>
+				<label>XPath: </label>
+				{{xpath-validator value=targetXPath}}
+			</li>
+		</ul>
 	</div>
-</div> --}}
-{{!-- <div class="content-wrap">
-	{{outlet "content"}}
-</div> --}}
+	{{!-- NAVIGATION --}}
+	<div class="navigation-wrap clearfix">
+	 	<div id="servicesNavigation" class="navigation-item pull-left">
+			{{outlet "current-service"}}
+			{{#bs-dropdown tagName="span"}}
+				{{#bs-dropdown-toggle class="btn btn-xs btn-danger"}}<span class="caret"></span>{{/bs-dropdown-toggle}}
+		        {{#bs-dropdown-menu}}
+				  	{{#each services as |service|}}
+		    			<li>{{#link-to "service" service}}{{service.id}}{{/link-to}}</li>
+		  			{{/each}}
+		        {{/bs-dropdown-menu}}
+			{{/bs-dropdown}}
+		</div>	
+	 	<div class="vertical-divider pull-left">|</div>
+		<div id="pageNavigation" class="navigation-item pull-left">
+			{{outlet "current-page"}}
+			{{outlet "pages-list"}}
+		</div>
+	</div>
+	{{!-- CONTENT --}}
+	<div class="content-wrap">
+		{{outlet "content"}}
+	</div>
+</div>

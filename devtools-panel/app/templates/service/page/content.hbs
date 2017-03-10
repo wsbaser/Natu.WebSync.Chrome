@@ -1,0 +1,21 @@
+<div class="row">
+{{!--   <div class="col-md-4">
+  	<div class="list-group">
+		{{#each pages as |page|}}
+			<a href="#" {{action "selectPage" page}} class="list-group-item">{{page.id}}</a>
+    	{{/each}}
+	</div>
+  </div>
+  <div class="col-md-8">
+ --}}
+   	<div id="pageTree">
+	    {{ember-jstree
+	        data=data
+	        plugins=plugins
+	        themes=themes
+			eventDidSelectNode="onComponentNodeSelected"
+	        typesOptions=typesOptions
+	    }}
+	</div>
+  {{!-- </div> --}}
+</div>
