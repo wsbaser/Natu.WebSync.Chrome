@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-	vsclient: Ember.inject.service('vsclient'),
+	vsclient: Ember.inject.service(),
 	beforeModel(){
 		var vsclient = this.get('vsclient');
 		vsclient.connect();
@@ -9,18 +9,29 @@ export default Ember.Route.extend({
 		this.pushTestPayload();
 	},
 	model(){
-		return this.store.peekAll('service');
+		var services = this.store.peekAll('service');
+		if(services.get('length')==0){
+			var pageIds = this.store.peekAll('page-type').toArray().map(p=>p.id);
+			this.store.pushPayload({
+				services: [{
+					id: 'SpikeService',
+					pages: pageIds
+				}]
+			});
+			services = this.store.peekAll('service');
+		}
+		return services;
 	},
 	afterModel(){
 		// . Match current url to service and redirect to it
 	},
 	pushTestPayload(){
-		this.store.pushPayload({
-			services: [{
-				id: 'AirbnbService',
-				pages: ['MainPage','SearchApartmentPage', 'ApartmentPage']
-			}]
-		});
+		// this.store.pushPayload({
+		// 	services: [{
+		// 		id: 'AirbnbService',
+		// 		pages: ['MainPage','SearchApartmentPage', 'ApartmentPage']
+		// 	}]
+		// });
 
 		this.store.pushPayload({
 			pageTypes: [
