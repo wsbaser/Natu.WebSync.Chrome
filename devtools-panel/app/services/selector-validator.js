@@ -5,8 +5,8 @@ import RSVP from 'rsvp';
 export default Ember.Service.extend({
 	validate(selector){
 		return RSVP.hash({
-			css: this.validateCss(selector.css),
-			xpath: this.validateXpath(selector.xpath)
+			css: this.validateCss(selector),
+			xpath: this.validateXpath(selector)
 		});
 	},
 	validateCss(css){

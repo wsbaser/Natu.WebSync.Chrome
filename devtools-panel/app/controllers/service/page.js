@@ -32,18 +32,27 @@ export default Ember.Controller.extend({
 		var selectorValidator = this.get('selectorValidator');
 		selectorValidator.validate(treeNode.rootScss).then(function(validationData){
 			treeNode.a_attr = this._generateNodeParams(validationData);
+			this.get('jstreeActionReceiver').send('redraw');
 		}.bind(this));
 	},
 	_generateNodeParams(validationData){
 		var _class;
+		var getClass = function(selectorValidationData){
+			return selectorValidationData.count===1 ? 
+				'one-node' :
+				(selectorValidationData.count>0?'several-nodes':'no-nodes');
+		};
 		if(validationData.css.isValid){
-			_class = validationData.css.count>0 ? 'has-results' : 'no-results';
+			_class = getClass(validationData.css);
 		}else if(validationData.xpath.isValid){
-			_class = validationData.xpath.count>0 ? 'has-results' : 'no-results';
+			_class = getClass(validationData.xpath);
 		}else{
 			_class = 'invalid'; 
 		}
 		return {class:_class};
+	},
+	_getNodeValidationClass(validationData){
+
 	},
     iterateComponents(parentId, components){
 		var nodes=[];

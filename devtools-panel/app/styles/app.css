@@ -77,3 +77,27 @@
 .status.connected:after{
 	content: "Connected";
 }
+
+.navigation-wrap{
+	margin: 10px 0;
+}
+
+.content-wrap{
+	margin: 10px 0;
+}
+
+.no-nodes {
+    background-color: #F7907C !important;
+}
+
+.one-node {
+    background-color: #CAF77C !important;
+}
+
+.several-nodes{
+	background-color: yellow !important;
+}
+
+.invalid-selector{
+	background-color: pink !important;
+}
