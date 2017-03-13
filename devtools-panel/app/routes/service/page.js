@@ -8,8 +8,12 @@ export default Ember.Route.extend({
 	model(params){
 		return this.store.peekRecord('page-type', params.page_id);
 	},
+	afterModel(model){
+		localStorage.currentPage = model.id;
+	},
 	setupController: function(controller, model){
 		this._super(controller, model);
+
 		controller.recalculateTreeData();
 		controller.validateTreeSelectors();
 	}
