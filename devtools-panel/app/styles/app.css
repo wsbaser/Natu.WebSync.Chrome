@@ -101,3 +101,8 @@
 .invalid-selector{
 	background-color: pink !important;
 }
+
+#expandAllTreeNodes, #collapseAllTreeNodes{
+	margin-bottom: 10px;
+	margin-right: 10px;
+}

@@ -25,7 +25,7 @@ export default Ember.Controller.extend({
 	onTargetSelectorReceived(json){
 		var data = JSON.parse(json);
 		this.set('targetScss', data.Scss);
-		this.set('targetCss', data.Css);
-		this.set('targetXPath', data.XPath);
+		this.set('targetCss', data.Css||'');
+		this.set('targetXPath', data.XPath||'');
 	}
 });

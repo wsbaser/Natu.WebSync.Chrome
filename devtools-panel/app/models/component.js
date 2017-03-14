@@ -6,5 +6,6 @@ export default Model.extend({
   componentType: belongsTo('component-type', { inverse: null }),
   name: attr('string'),
   rootScss: attr('string'),
+  fullRootScss: attr('string'),
   constructorParams: attr()
 });

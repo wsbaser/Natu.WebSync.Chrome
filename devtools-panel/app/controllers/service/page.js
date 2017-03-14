@@ -25,18 +25,44 @@ export default Ember.Controller.extend({
 		this.recalculateTreeData();
 		this.redrawTree();
 	},
-	redrawTree(){
-		this.get('jstreeActionReceiver').send('redraw');
-	},
 	recalculateTreeData(){
 		var page = this.get('model');
 		if(page){
 			var data = [];
 			var components = page.get('components').toArray();
-			data = this.iterateComponents(null, components);
+			data = this.iterateComponents(null, null, components);
 			this.set('data', data);
 			return data;
 		}
+	},
+	iterateComponents(parentId, parentRootScss, components){
+		var nodes=[];
+		if(components){
+			for (var i = components.length - 1; i >= 0; i--) {
+				var componentId = components[i].id;
+				var componentName = components[i].get('name');
+				var rootScss = components[i].get('rootScss');
+				var fullRootScss = rootScss && rootScss.startsWith("root:")?
+                	this.innerScss(parentRootScss, rootScss.replace("root:", '')):
+            		rootScss;
+				nodes.push({
+					id: componentId,
+					parent: parentId||'#',
+					text:  componentName + ' (' + rootScss + ')',
+					rootScss: rootScss,
+					fullRootScss: fullRootScss
+				});
+				// TODO: remove this
+				var component = this.get('store').peekRecord('component', componentId);
+				component.set('fullRootScss', fullRootScss);
+				var childNodes = this.iterateComponents(componentId, fullRootScss, components[i].get('componentType.components').toArray());
+				nodes = nodes.concat(childNodes);
+			}
+		}
+		return nodes;
+	},
+	innerScss(rootScss, relativeScss){
+		return rootScss.trim() + ' ' + relativeScss.trim();
 	},
 	validateTreeSelectors(){
 		var data = this.get('data', data);
@@ -44,7 +70,7 @@ export default Ember.Controller.extend({
 	},
 	validateTreeSelector(treeNode){
 		var selectorValidator = this.get('selectorValidator');
-		selectorValidator.validate(treeNode.rootScss).then(function(validationData){
+		selectorValidator.validate(treeNode.fullRootScss).then(function(validationData){
 			treeNode.a_attr = this._generateNodeParams(validationData);
 			this.redrawTree();
 		}.bind(this));
@@ -65,32 +91,28 @@ export default Ember.Controller.extend({
 		}
 		return {class:_class};
 	},
-    iterateComponents(parentId, components){
-		var nodes=[];
-		if(components){
-			for (var i = components.length - 1; i >= 0; i--) {
-				var componentId = components[i].id;
-				var componentName = components[i].get('name');
-				var rootScss = components[i].get('rootScss');
-				nodes.push({
-					id: componentId,
-					parent: parentId||'#',
-					text:  componentName + ' (' + rootScss + ')',
-					rootScss: rootScss
-				});
-				var childNodes = this.iterateComponents(componentId, components[i].get('componentType.components').toArray());
-				nodes = nodes.concat(childNodes);
-			}
-		}
-		return nodes;
+	redrawTree(){
+		this.get('jstreeActionReceiver').send('redraw');
+	},
+	expandAllTreeNodes(){
+		this.get('jstreeActionReceiver').send('openAll');
+	},
+	collapseAllTreeNodes(){
+		this.get('jstreeActionReceiver').send('closeAll');
 	},
 	actions:{
 		onComponentNodeSelected(node){
 			var component = this.get('store').peekRecord('component', node.id);
-			var rootScss = component.get('rootScss');
-			this.set('applicationCtrl.inputValue', rootScss);
+			var fullRootScss = component.get('fullRootScss');
+			this.set('applicationCtrl.inputValue', fullRootScss);
 			// TODO: trigger selector changed action
 			// this.actions.onSourceSelectorChanged.call(this, rootScss);
+		},
+		onExpandAllTreeNodes(){
+			this.expandAllTreeNodes();
+		},
+		onCollapseAllTreeNodes(){
+			this.collapseAllTreeNodes();
 		}
 	}
 });
