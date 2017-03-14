@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+	vsclient: Ember.inject.service(),
 	applicationCtrl: Ember.inject.controller('application'),
 	selectorValidator: Ember.inject.service(),
 	plugins: "wholerow, types",
@@ -16,13 +17,26 @@ export default Ember.Controller.extend({
         }
     },
     data: null,
+	addEventHandlers(){
+		var vsclient = this.get('vsclient');
+		vsclient.on("SessionWebData", this.rebuildTree.bind(this));	
+	},
+	rebuildTree(){
+		this.recalculateTreeData();
+		this.redrawTree();
+	},
+	redrawTree(){
+		this.get('jstreeActionReceiver').send('redraw');
+	},
 	recalculateTreeData(){
 		var page = this.get('model');
-		var data = [];
-		var components = page.get('components').toArray();
-		data = this.iterateComponents(null, components);
-		this.set('data', data);
-		return data;
+		if(page){
+			var data = [];
+			var components = page.get('components').toArray();
+			data = this.iterateComponents(null, components);
+			this.set('data', data);
+			return data;
+		}
 	},
 	validateTreeSelectors(){
 		var data = this.get('data', data);
@@ -32,7 +46,7 @@ export default Ember.Controller.extend({
 		var selectorValidator = this.get('selectorValidator');
 		selectorValidator.validate(treeNode.rootScss).then(function(validationData){
 			treeNode.a_attr = this._generateNodeParams(validationData);
-			this.get('jstreeActionReceiver').send('redraw');
+			this.redrawTree();
 		}.bind(this));
 	},
 	_generateNodeParams(validationData){

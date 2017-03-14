@@ -32,6 +32,7 @@ var service = Ember.Service.extend({
 		var message = this.parseMessage(event.data);
 		if(message.Type===SIMessageTypes.SessionWebData){
 			this.updateStore(message.Data);
+			this.trigger(SIMessageTypes.SessionWebData);
 		}else if(message.Type === SIMessageTypes.ConvertedSelector){
 			this.trigger(SIMessageTypes.ConvertedSelector, message.Data);
 		}
