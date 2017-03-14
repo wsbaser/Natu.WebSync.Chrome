@@ -51,9 +51,6 @@ export default Ember.Controller.extend({
 		}
 		return {class:_class};
 	},
-	_getNodeValidationClass(validationData){
-
-	},
     iterateComponents(parentId, components){
 		var nodes=[];
 		if(components){

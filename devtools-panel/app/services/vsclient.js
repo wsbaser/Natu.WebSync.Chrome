@@ -69,6 +69,16 @@ var service = Ember.Service.extend({
 		var data = JSON.parse(jsonData);
 		this.get('store').unloadAll();
 		this.get('store').pushPayload(data);
+		// TODO: create services in WebSync.VS
+		var pageIds = this.get('store').peekAll('page-type').toArray().map(p=>p.id);
+		if(pageIds.length>0){
+			this.get('store').pushPayload({
+				services: [{
+					id: 'SpikeService',
+					pages: pageIds
+				}]
+			});
+		}
 	}
 });
 
