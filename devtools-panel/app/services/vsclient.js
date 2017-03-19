@@ -11,21 +11,47 @@ let SIMessageTypes = {
 var service = Ember.Service.extend({
 	store: Ember.inject.service(),
 	isConnected: false,
+	requests:{},
+	saveRequestPromise(requestId, resolve, reject){
+		let requests = this.get('requests');
+		requests[requestId] = {resolve, reject};
+	},
+	resolveRequestPromise(requestId, data){
+		let requests = this.get('requests');
+		let request = requests[requestId];
+		if(request){
+			request.resolve(data);
+			delete requests[requestId];
+		}
+	},
+	rejectRequestPromise(requestId,error){
+		let requests = this.get('requests');
+		let request = requests[requestId];
+		if(request){
+			request.reject(error);
+			delete requests[requestId];
+		}
+	},
 	connect(){
-		console.log("Trying to connect to WebSync on url: "+ENV.APP.WEBSYNC_WS_URL);
-		let webSocket = new WebSocket(ENV.APP.WEBSYNC_WS_URL);
-		webSocket.onopen = this.onopen.bind(this);
-		webSocket.onmessage = this.onmessage.bind(this);
-		webSocket.onclose = this.onclose.bind(this);
-		this.set('webSocket', webSocket);
+		return new Promise(function(resolve, reject){
+			this.saveRequestPromise('connect', resolve, reject);
+			console.log("Trying to connect to WebSync on url: "+ENV.APP.WEBSYNC_WS_URL);
+			let webSocket = new WebSocket(ENV.APP.WEBSYNC_WS_URL);
+			webSocket.onopen = this.onopen.bind(this);
+			webSocket.onmessage = this.onmessage.bind(this);
+			webSocket.onclose = this.onclose.bind(this);
+			this.set('webSocket', webSocket);
+		}.bind(this));
 	},
 	onclose(){
+		this.rejectRequestPromise('connect');
 		this.set('isConnected', false);
 	},
 	onopen(){
-		console.log('Connection to '+ENV.APP.WEBSYNC_WS_URL+' established succesfully!');
+		console.log('Connection to ' + ENV.APP.WEBSYNC_WS_URL + ' established succesfully!');
+		this.resolveRequestPromise('connect');
 		this.set('isConnected', true);
-		this.sendSessionWebRequest();
+		//this.sendSessionWebRequest();
 	},
 	onmessage(event){
 		console.log('Message received!');
@@ -33,6 +59,7 @@ var service = Ember.Service.extend({
 		if(message.Type===SIMessageTypes.SessionWebData){
 			this.updateStore(message.Data);
 			this.trigger(SIMessageTypes.SessionWebData);
+			this.resolveRequestPromise(SIMessageTypes.SessionWebRequest);
 		}else if(message.Type === SIMessageTypes.ConvertedSelector){
 			this.trigger(SIMessageTypes.ConvertedSelector, message.Data);
 		}
@@ -43,14 +70,18 @@ var service = Ember.Service.extend({
 	convertSelector(selector){
 		this.send(this.createMessage(SIMessageTypes.ConvertSelector,selector));
 	},
-	sendSessionWebRequest(){
+	requestSessionWeb(){
 		this.send(this.createMessage(SIMessageTypes.SessionWebRequest));
 	},
 	sendSessionWeb(sessionWeb){
 		this.send(this.createMessage(SIMessageTypes.SessionWebData, sessionWeb));
 	},
 	send(message){
-		this.get('webSocket').send(JSON.stringify(message));
+		//let requestId = Math.random().toString(36).substr(2, 9);
+		return new Promise(function(resolve, reject){
+			this.get('webSocket').send(JSON.stringify(message));
+			this.saveRequestPromise(message.Type,resolve,reject)
+		}.bind(this));
 	},
 	parseMessage(data){
 		return JSON.parse(data);

@@ -1,18 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-	vsclient: Ember.inject.service(),
 	beforeModel(){
-		var vsclient = this.get('vsclient');
-		vsclient.connect();
-
 		this.pushTestPayload();
 	},
 	model(){
 		return this.store.peekAll('service');
-	},
-	afterModel(){
-		// . Match current url to service and redirect to it
 	},
 	pushTestPayload(){
 		// this.store.pushPayload({
