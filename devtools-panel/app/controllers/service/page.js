@@ -24,6 +24,7 @@ export default Ember.Controller.extend({
 	},
 	rebuildTree(){
 		this.recalculateTreeData();
+		this.validateTreeSelectors();
 		this.redrawTree();
 	},
 	recalculateTreeData(){
@@ -63,7 +64,16 @@ export default Ember.Controller.extend({
 		return nodes;
 	},
 	innerScss(rootScss, relativeScss){
-		return rootScss.trim() + ' ' + relativeScss.trim();
+		if(rootScss && relativeScss){
+			return rootScss.trim() + ' ' + relativeScss.trim();
+		}
+		else if(rootScss){
+			return rootScss;
+		}
+		else if(relativeScss){
+			return relativeScss;
+		}
+		return null;
 	},
 	validateTreeSelectors(){
 		var data = this.get('data', data);
@@ -93,7 +103,10 @@ export default Ember.Controller.extend({
 		return {class:_class};
 	},
 	redrawTree(){
-		this.get('jstreeActionReceiver').send('redraw');
+		var actionReceiver = this.get('jstreeActionReceiver');
+		if(actionReceiver){
+			actionReceiver.send('redraw');
+		}
 	},
 	expandAllTreeNodes(){
 		this.get('jstreeActionReceiver').send('openAll');
@@ -125,6 +138,13 @@ export default Ember.Controller.extend({
 		},
 		onCollapseAllTreeNodes(){
 			this.collapseAllTreeNodes();
+		},
+		onRefreshTree(){
+			var vsclient = this.get('vsclient');
+			vsclient.sendSessionWebRequest();
+		},
+		onRevalidateTreeSelector(){
+			this.validateTreeSelectors();
 		}
 	}
 });
