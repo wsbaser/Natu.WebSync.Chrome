@@ -12,14 +12,15 @@ export default Ember.Route.extend({
 		return vsclient.connect()
 			.then(()=>vsclient.requestSessionWeb())
 			.then(()=>this.store.peekAll('service'))
-			.catch(()=>null);
+			.catch(()=>this.store.peekAll('service'));
 	},
 	redirect(model, transition){
-		if(model){
-			var currentService = model.findBy('id', localStorage.currentService);
-			if(currentService){
-				this.transitionTo('service', currentService);
-			}
+		var currentService = model.findBy('id', localStorage.currentService);
+		if(!currentService && model.get('length')){
+			currentService = model.firstObject;
+		}
+		if(currentService){
+			this.transitionTo('service', currentService);
 		}
 	}
 });

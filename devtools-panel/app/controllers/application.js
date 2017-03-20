@@ -20,7 +20,7 @@ export default Ember.Controller.extend({
 			console.log('Convertion service not available. Using selector without conversion.');
 			this.set('targetCss', selector);
 			this.set('targetXPath', selector);
-		}		
+		}
 	}),
 	onTargetSelectorReceived(json){
 		var data = JSON.parse(json);

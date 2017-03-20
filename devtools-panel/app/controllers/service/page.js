@@ -2,8 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 	vsclient: Ember.inject.service(),
-	applicationCtrl: Ember.inject.controller('application'),
 	selectorValidator: Ember.inject.service(),
+	selectorHighlighter: Ember.inject.service(),
+	applicationCtrl: Ember.inject.controller('application'),
 	plugins: "wholerow, types",
     themes: {
         name: 'default',
@@ -100,13 +101,24 @@ export default Ember.Controller.extend({
 	collapseAllTreeNodes(){
 		this.get('jstreeActionReceiver').send('closeAll');
 	},
+	getComponentById(id){
+		return this.get('store').peekRecord('component', id);
+	},
 	actions:{
 		onComponentNodeSelected(node){
-			var component = this.get('store').peekRecord('component', node.id);
+			var component = this.getComponentById(node.id);
 			var fullRootScss = component.get('fullRootScss');
 			this.set('applicationCtrl.inputValue', fullRootScss);
 			// TODO: trigger selector changed action
 			// this.actions.onSourceSelectorChanged.call(this, rootScss);
+		},
+		onComponentNodeHovered(node){
+			var component = this.getComponentById(node.id);
+			var fullRootScss = component.get('fullRootScss');
+			this.get('selectorHighlighter').highlight(fullRootScss);
+		},
+		onComponentNodeDehovered(){
+			this.get('selectorHighlighter').removeHighlighting();			
 		},
 		onExpandAllTreeNodes(){
 			this.expandAllTreeNodes();
