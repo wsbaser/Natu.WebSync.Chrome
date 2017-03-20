@@ -17,7 +17,7 @@ export default Ember.Route.extend({
 	redirect(model, transition){
 		var currentService = model.findBy('id', localStorage.currentService);
 		if(!currentService && model.get('length')){
-			currentService = model.firstObject;
+			currentService = model.get('firstObject');
 		}
 		if(currentService){
 			this.transitionTo('service', currentService);
