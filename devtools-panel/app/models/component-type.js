@@ -9,5 +9,8 @@ export default DS.Model.extend({
 	  	var components = this.get('components');
 	  	var baseComponents = this.get('baseComponentType.components') || [];
 	  	return components.concat(baseComponents);
+	}),
+	isWebElement: Ember.computed('id', function(){
+		return this.get('id').startsWith('natunamespace.Web');
 	})
 });

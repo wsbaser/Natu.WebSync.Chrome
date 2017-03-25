@@ -92,7 +92,7 @@ export default Ember.Route.extend({
 					id: 'SearchForm.SearchLocation',
 					componentType: 'natunamespace.WebInput',
 					name: 'Search Location',
-					rootScss: '#search-location'
+					rootScss: null
 				},
 				{
 					id: 'SearchForm.CheckinDate',

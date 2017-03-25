@@ -90,6 +90,10 @@
     background-color: #F7907C !important;
 }
 
+.not-specified{
+	background-color: grey !important;
+}
+
 .one-node {
     background-color: #CAF77C !important;
 }

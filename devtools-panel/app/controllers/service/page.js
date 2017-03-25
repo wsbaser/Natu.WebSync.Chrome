@@ -8,7 +8,6 @@ export default Ember.Controller.extend({
 	plugins: "wholerow, types",
     themes: {
         name: 'default',
-        responsive: true,
         dots: true,
         icons: true
     },
@@ -54,7 +53,7 @@ export default Ember.Controller.extend({
 					text:  componentName + ' (' + rootScss + ')',
 					rootScss: rootScss,
 					fullRootScss: fullRootScss,
-					type: components[i].get('componentType.id').startsWith('natunamespace.Web')?'web-element':'default'
+					type: components[i].get('componentType.isWebElement')?'web-element':'default'
 				});
 				// TODO: remove this
 				var component = this.get('store').peekRecord('component', componentId);
@@ -95,7 +94,10 @@ export default Ember.Controller.extend({
 				'one-node' :
 				(selectorValidationData.count>0?'several-nodes':'no-nodes');
 		};
-		if(validationData.css.isValid){
+		if(!validationData){
+			_class = 'not-specified';
+		}
+		else if(validationData.css.isValid){
 			_class = getClass(validationData.css);
 		}else if(validationData.xpath.isValid){
 			_class = getClass(validationData.xpath);
