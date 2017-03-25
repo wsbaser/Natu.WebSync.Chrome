@@ -13,10 +13,11 @@ export default Ember.Controller.extend({
         icons: true
     },
     typesOptions: {
-        'single-child': {
-            'max_children': '1'
-        }
-    },
+    	'web-element' : {
+        	"icon" : "jstree-file",
+        	"valid_children" : []
+		}
+	},
     data: null,
 	addEventHandlers(){
 		var vsclient = this.get('vsclient');
@@ -52,7 +53,8 @@ export default Ember.Controller.extend({
 					parent: parentId||'#',
 					text:  componentName + ' (' + rootScss + ')',
 					rootScss: rootScss,
-					fullRootScss: fullRootScss
+					fullRootScss: fullRootScss,
+					type: components[i].get('componentType.id').startsWith('natunamespace.Web')?'web-element':'default'
 				});
 				// TODO: remove this
 				var component = this.get('store').peekRecord('component', componentId);

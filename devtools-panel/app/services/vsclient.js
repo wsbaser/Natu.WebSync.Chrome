@@ -80,7 +80,7 @@ var service = Ember.Service.extend({
 		//let requestId = Math.random().toString(36).substr(2, 9);
 		return new Promise(function(resolve, reject){
 			this.get('webSocket').send(JSON.stringify(message));
-			this.saveRequestPromise(message.Type,resolve,reject)
+			this.saveRequestPromise(message.Type,resolve,reject);
 		}.bind(this));
 	},
 	parseMessage(data){
