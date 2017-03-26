@@ -111,3 +111,7 @@ window.removeHighlighting = function(){
 		removeHighlightingInIframe(iframeNode.contentDocument);
 	});
 };
+
+window.getCurrentUrl=function(){
+	return window.location;
+}

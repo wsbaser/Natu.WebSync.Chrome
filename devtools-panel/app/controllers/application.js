@@ -8,6 +8,12 @@ export default Ember.Controller.extend({
 		console.log ("Init ConvertController...");
 		var vsclient = this.get('vsclient');
 		vsclient.on("ConvertedSelector", this.onTargetSelectorReceived.bind(this));
+		chrome.devtools.inspectedWindow.eval(
+	      "getCurrentUrl()",
+	      { useContentScriptContext: true },
+	      function(result, isException) {
+	     	this.set('currentUrl', result.href);
+	      }.bind(this));
 	},
 	onSourceSelectorChanged: Ember.observer('inputValue', function(){
 		var selector = this.get('inputValue');

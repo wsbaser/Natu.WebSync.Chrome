@@ -11,8 +11,11 @@
 #target{
 	padding: 10px;
 	list-style-type: none;
-	background: #E0EAEA;
 	margin-top: 10px; 
+}
+
+#target{
+	background-color: #E0EAEA;
 }
 
 #target>li{
@@ -78,8 +81,24 @@
 	content: "Connected";
 }
 
+
+.currenturl-wrap{
+	padding: 5px 10px;
+}
+
+.currenturl-wrap.matched{
+	background-color:  #CAF77C;
+}
+
+#currentUrl{
+	font-size: 1.1em;
+	font-style: italic;
+}
+
 .navigation-wrap{
 	margin: 10px 0;
+	padding: 5px 10px;
+	background-color: #E0EAEA;
 }
 
 .content-wrap{
@@ -91,7 +110,7 @@
 }
 
 .not-specified{
-	background-color: grey !important;
+	background-color: lightgrey !important;
 }
 
 .one-node {
