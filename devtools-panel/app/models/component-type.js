@@ -11,6 +11,7 @@ export default DS.Model.extend({
 	  	return components.concat(baseComponents);
 	}),
 	isWebElement: Ember.computed('id', function(){
-		return this.get('id').startsWith('natunamespace.Web');
+		console.log(this.get('id'));
+		return this.get('id').startsWith('selenium.core.Framework.PageElements.Web');
 	})
 });
