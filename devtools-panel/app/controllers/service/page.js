@@ -32,57 +32,58 @@ export default Ember.Controller.extend({
 		if(page){
 			var data = [];
 			var components = page.get('components').toArray();
-			data = this.iterateComponents(null, null, components);
+			data = this.iterateComponents(null, components);
 			this.set('data', data);
 			return data;
 		}
 	},
-	iterateComponents(parentId, parentRootScss, components){
+	iterateComponents(parentId, components){
 		var nodes=[];
 		if(components){
 			for (var i = components.length - 1; i >= 0; i--) {
 				var componentId = components[i].id;
 				var componentName = components[i].get('name');
-				var rootScss = components[i].get('rootScss');
-				var fullRootScss = rootScss && rootScss.startsWith("root:")?
-                	this.innerScss(parentRootScss, rootScss.replace("root:", '')):
-            		rootScss;
+				var rootSelector = components[i].get('rootSelector');
+				var fullRootSelector = components[i].get('fullRootSelector');
+	// var fullRootScss = rootScss && rootScss.startsWith("root:")?
+    //             	this.innerScss(parentRootScss, rootScss.replace("root:", '')):
+    //         		rootScss;
 				nodes.push({
 					id: componentId,
 					parent: parentId||'#',
-					text:  componentName + ' (' + rootScss + ')',
-					rootScss: rootScss,
-					fullRootScss: fullRootScss,
+					text:  componentName + ' (' + (rootSelector ? rootSelector.scss : null) + ')',
+					rootSelector: rootSelector,
+					fullRootSelector: fullRootSelector,
 					type: components[i].get('componentType.isWebElement')?'web-element':'default'
 				});
 				// TODO: remove this
 				var component = this.get('store').peekRecord('component', componentId);
-				component.set('fullRootScss', fullRootScss);
-				var childNodes = this.iterateComponents(componentId, fullRootScss, components[i].get('componentType.components').toArray());
+				//component.set('fullRootScss', fullRootScss);
+				var childNodes = this.iterateComponents(componentId, components[i].get('componentType.components').toArray());
 				nodes = nodes.concat(childNodes);
 			}
 		}
 		return nodes;
 	},
-	innerScss(rootScss, relativeScss){
-		if(rootScss && relativeScss){
-			return rootScss.trim() + ' ' + relativeScss.trim();
-		}
-		else if(rootScss){
-			return rootScss;
-		}
-		else if(relativeScss){
-			return relativeScss;
-		}
-		return null;
-	},
+	// innerScss(rootScss, relativeScss){
+	// 	if(rootScss && relativeScss){
+	// 		return rootScss.trim() + ' ' + relativeScss.trim();
+	// 	}
+	// 	else if(rootScss){
+	// 		return rootScss;
+	// 	}
+	// 	else if(relativeScss){
+	// 		return relativeScss;
+	// 	}
+	// 	return null;
+	// },
 	validateTreeSelectors(){
 		var data = this.get('data', data);
 		data.forEach(treeNode=>this.validateTreeSelector(treeNode));
 	},
 	validateTreeSelector(treeNode){
 		var selectorValidator = this.get('selectorValidator');
-		selectorValidator.validate(treeNode.fullRootScss).then(function(validationData){
+		selectorValidator.validate(treeNode.fullRootSelector).then(function(validationData){
 			treeNode.a_attr = this._generateNodeParams(validationData);
 			this.redrawTree();
 		}.bind(this));
@@ -124,15 +125,15 @@ export default Ember.Controller.extend({
 	actions:{
 		onComponentNodeSelected(node){
 			var component = this.getComponentById(node.id);
-			var fullRootScss = component.get('fullRootScss');
-			this.set('applicationCtrl.inputValue', fullRootScss);
+			var fullRootSelector = component.get('fullRootSelector');
+			this.set('applicationCtrl.inputValue', fullRootSelector?fullRootSelector.scss:"");
 			// TODO: trigger selector changed action
 			// this.actions.onSourceSelectorChanged.call(this, rootScss);
 		},
 		onComponentNodeHovered(node){
 			var component = this.getComponentById(node.id);
-			var fullRootScss = component.get('fullRootScss');
-			this.get('selectorHighlighter').highlight(fullRootScss);
+			var fullRootSelector = component.get('fullRootSelector');
+			this.get('selectorHighlighter').highlight(fullRootSelector);
 		},
 		onComponentNodeDehovered(){
 			this.get('selectorHighlighter').removeHighlighting();			

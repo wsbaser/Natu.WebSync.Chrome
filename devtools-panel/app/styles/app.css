@@ -83,7 +83,8 @@
 
 
 .currenturl-wrap{
-	padding: 5px 10px;
+	padding: 4px;
+	border-radius: 4px;
 }
 
 .currenturl-wrap.matched{
@@ -93,6 +94,7 @@
 #currentUrl{
 	font-size: 1.1em;
 	color: olivedrab;
+
 }
 
 .navigation-wrap{

@@ -4,12 +4,12 @@ import RSVP from 'rsvp';
 
 export default Ember.Service.extend({
 	validate(selector){
-		if(!selector){
+		if( !selector || (!selector.css && !selector.xpath)){
 			return Promise.resolve(null);
 		}
 		return RSVP.hash({
-			css: this.validateCss(selector),
-			xpath: this.validateXpath(selector)
+			css: selector.css ? this.validateCss(selector.css) : { isValid:false },
+			xpath: selector.xpath ? this.validateXpath(selector.xpath) : { isValid:false }
 		});
 	},
 	validateCss(css){

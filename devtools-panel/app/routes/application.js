@@ -72,57 +72,130 @@ export default Ember.Route.extend({
 			components:[
 				{
 					id: 'MainPage.SearchForm',
-					componentType:'mynamespace.SearchForm',
+					componentType: 'mynamespace.SearchForm',
 					name: 'Search Form',
-					rootScss: '.SearchForm'
+					rootSelector: {
+						scss: '.SearchForm',
+						css: '.SearchForm',
+						xpath: '//*[contains(@class,"SearchForm")]'
+					},
+					fullRootSelector:{
+						scss: '.SearchForm',
+						css: '.SearchForm',
+						xpath: '//*[contains(@class,"SearchForm")]'						
+					}
 				},
 				{
 					id: 'SearchApartmentPage.FiltersWidget',
 					componentType:'mynamespace.FiltersWidget',
 					name: 'Filters',
-					rootScss: '.filters'
+					rootSelector: {
+						scss: '.filters',
+						css: '.filters',
+						xpath: '//*[contains(@class,"filters")]'
+					},
+					fullRootSelector:{
+						scss: '.filters',
+						css: '.filters',
+						xpath: '//*[contains(@class,"filters")]'						
+					}
 				},
 				{
 					id: 'ApartmentPage.ApartmentSummary',
 					componentType:'mynamespace.ApartmentSummary',
 					name: 'Apartment Summary',
-					rootScss: '#summary'
+					rootSelector: {
+						scss: '#summary',
+						css: '#summary',
+						xpath: '//*[@id="summary"]'
+					},
+					fullRootSelector: {
+						scss: '#summary',
+						css: '#summary',
+						xpath: '//*[@id="summary"]'
+					}
 				},
 				{
 					id: 'SearchForm.SearchLocation',
 					componentType: 'natunamespace.WebInput',
 					name: 'Search Location',
-					rootScss: null
+					rootSelector: null,
+					fullRootSelector: null
 				},
 				{
 					id: 'SearchForm.CheckinDate',
 					componentType: 'natunamespace.WebInput',
 					name: 'Checkin Date',
-					rootScss: '#startDate'
+					rootSelector: {
+						css: '#startDate',
+						scss: '#startDate',
+						xpath: '//*[@id="startDate"]'
+					},
+					fullRootSelector: {
+						css: '.SearchForm #startDate',
+						scss: '.SearchForm #startDate',
+						xpath: '//*[contains(@class,"SearchForm")]//*[@id="startDate"]'
+					}
 				},
 				{
 					id: 'SearchForm.CheckoutDate',
 					componentType: 'natunamespace.WebInput',
 					name: 'Checkout Date',
-					rootScss: '#endDate'
+					rootSelector: {
+						scss: '#endDate',
+						css: '#endDate',
+						xpath: '//*[@id="endDate"]'
+					},
+					fullRootSelector: {
+						scss: '.SearchForm #endDate',
+						css: '.SearchForm #endDate',
+						xpath: '//*[contains(@class,"SearchForm")]//*[@id="endDate"]'
+					}
 				},
 				{
 					id: 'SearchForm.SearchButton',
 					componentType: 'natunamespace.WebButton',
 					name: 'Search',
-					rootScss: '.SearchForm__submit>button'
+					rootSelector: {
+						scss: '.SearchForm__submit>button',
+						css: '.SearchForm__submit>button',
+						xpath: '//*[contains(@class, "SearchForm__submit")]/button'
+					},
+					fullRootSelector: {
+						scss: '.SearchForm .SearchForm__submit>button',
+						css: '.SearchForm .SearchForm__submit>button',
+						xpath: '//*[contains(@class,"SearchForm")]//*[contains(@class, "SearchForm__submit")]/button'
+					}
 				},
 				{
 					id: 'FiltersWidget.CheckinDate',
 					componentType: 'natunamespace.WebInput',
 					name: 'Checkin Date',
-					rootScss: '#datespan-checkin'
+					rootSelector: {
+						scss: '#datespan-checkin',
+						css: '#datespan-checkin',
+						xpath: '//*[@id="datespan-checkin"]'
+					},
+					fullRootSelector: {
+						scss: '.filters #datespan-checkin',
+						css: '.filters #datespan-checkin',
+						xpath: '//*[contains(@class,"filters")]//*[@id="datespan-checkin"]'
+					}
 				},
 				{
 					id: 'ApartmentSummary.HostProfileImage',
 					componentType: 'natunamespace.WebIcon',
 					name: 'Host Profile Image',
-					rootScss: '.host-profile-image'
+					rootSelector: {
+						scss: '.host-profile-image',
+						css: '.host-profile-image',
+						xpath: '//*[contains(@class, ".host-profile-image")]'
+					},
+					fullRootSelector: {
+						scss: '#summary .host-profile-image',
+						css: '#summary .host-profile-image',
+						xpath: '//*[@id="summary"]//*[contains(@class,".host-profile-image")]'
+					}
 				}
 		]});
 	}
