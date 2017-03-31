@@ -18,7 +18,12 @@ export default Ember.Route.extend({
 		this.store.pushPayload({
 			pageTypes: [
 				{
+					id: 'AirBnbPageBase',
+					components: ['AirBnbPageBase.LogoIcon']
+				},
+				{
 					id:'MainPage',
+					basePageType: 'AirBnbPageBase',
 					absolutePath: '',
 					components:['MainPage.SearchForm']
 				},
@@ -70,6 +75,16 @@ export default Ember.Route.extend({
 
 		this.store.pushPayload({
 			components:[
+				{
+					id: 'AirBnbPageBase.LogoIcon',
+					componentType: 'natunamespace.WebIcon',
+					name: 'AirBnb Logo Icon',
+					rootSelector: {
+						scss: '.icon-airbnb-alt',
+						css: '.icon-airbnb-alt',
+						xpath: '//*[contains(@class,"icon-airbnb-alt")]'
+					}
+				},
 				{
 					id: 'MainPage.SearchForm',
 					componentType: 'mynamespace.SearchForm',

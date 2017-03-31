@@ -6,14 +6,26 @@ export default Ember.Controller.extend({
 	selectorHighlighter: Ember.inject.service(),
 	selectorBuilder: Ember.inject.service(),
 	applicationCtrl: Ember.inject.controller('application'),
-	plugins: "wholerow, types",
+	skipLoading: true,
+	plugins: "wholerow, types, state",
     themes: {
         name: 'default',
         dots: true,
-        icons: true
+        icons: true,
+        stripes: true
+    },
+    stateOptions:{
+    	"key" : "websync",
+    	"filter": function(state){
+    		console.log(state);
+    		return state;
+    	}
     },
     typesOptions: {
-    	'web-element' : {
+    	"web-page" : {
+			"valid_children" : ['web-element','default']
+		},
+    	"web-element" : {
         	"icon" : "jstree-file",
         	"valid_children" : []
 		}
@@ -28,20 +40,33 @@ export default Ember.Controller.extend({
 		this.validateTreeSelectors();
 		this.redrawTree();
 	},
-	recalculateTreeData(){
+	recalculateTreeData(){		
 		var page = this.get('model');
-		let data = [];
-		let pageId = page.get('id'); 
-		let pageNode = {
-				id: pageId,
-				parent: '#',
-				text:  page.get('name'),
-				type: 'web-page'
-			};
-		var components = page.get('components').toArray();
-		data = this.iterateComponents(pageId, null, components);
+		var data = this.iteratePages(page);
 		this.set('data', data);
 		return data;
+	},
+	iteratePages(page){
+		let nodes = [];
+		if(page){
+			var basePage = page.get('basePageType').content;
+			var basePageComponentNodes = this.iteratePages(basePage);
+			nodes = nodes.concat(basePageComponentNodes);
+
+			let pageId = page.get('id'); 
+			let pageNode = {
+					id: pageId,
+					parent: '#',
+					text:  page.get('name'),
+					type: 'web-page'
+				};
+			nodes.push(pageNode);
+			
+			var components = page.get('components').toArray();
+			let componentNodes = this.iterateComponents(pageId, null, components);
+			nodes = nodes.concat(componentNodes);
+		}
+		return nodes;
 	},
 	iterateComponents(parentId, parentRootSelector, components){
 		var nodes=[];
@@ -72,7 +97,11 @@ export default Ember.Controller.extend({
 	},
 	validateTreeSelectors(){
 		var data = this.get('data', data);
-		data.forEach(treeNode=>this.validateTreeSelector(treeNode));
+		data.forEach(treeNode=>{
+			if(treeNode.type!='web-page'){
+				this.validateTreeSelector(treeNode);
+			}
+		});
 	},
 	validateTreeSelector(treeNode){
 		var selectorValidator = this.get('selectorValidator');
@@ -117,13 +146,17 @@ export default Ember.Controller.extend({
 	},
 	actions:{
 		onComponentNodeSelected(node){
-			var fullRootSelector = node.original.fullRootSelector;
-			this.set('applicationCtrl.inputValue', fullRootSelector ? fullRootSelector.scss : "");
-			// TODO: trigger selector changed action
-			// this.actions.onSourceSelectorChanged.call(this, rootScss);
+			if(node.type!='web-page'){
+				var fullRootSelector = node.original.fullRootSelector;
+				this.set('applicationCtrl.inputValue', fullRootSelector ? fullRootSelector.scss : "");
+				// TODO: trigger selector changed action
+				// this.actions.onSourceSelectorChanged.call(this, rootScss);
+			}
 		},
 		onComponentNodeHovered(node){
-			this.get('selectorHighlighter').highlight(node.original.fullRootSelector);
+			if(node.type!='web-page'){
+				this.get('selectorHighlighter').highlight(node.original.fullRootSelector);
+			}
 		},
 		onComponentNodeDehovered(){
 			this.get('selectorHighlighter').removeHighlighting();			

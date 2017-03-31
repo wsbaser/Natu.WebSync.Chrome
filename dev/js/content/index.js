@@ -77,6 +77,7 @@ window.createHighlighterElement = function(documentNode,clientRect){
 	highlighterElement.style.height = clientRect.height+'px';
 	highlighterElement.style.position = 'absolute';
 	highlighterElement.style.backgroundColor = 'yellow';
+	highlighterElement.style.border = '1px solid red';
 	highlighterElement.style.opacity = 0.5;
 	let bodyElement = documentNode.documentElement.querySelector('body');
 	bodyElement.appendChild(highlighterElement);
