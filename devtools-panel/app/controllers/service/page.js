@@ -30,13 +30,18 @@ export default Ember.Controller.extend({
 	},
 	recalculateTreeData(){
 		var page = this.get('model');
-		if(page){
-			var data = [];
-			var components = page.get('components').toArray();
-			data = this.iterateComponents(null, null, components);
-			this.set('data', data);
-			return data;
-		}
+		let data = [];
+		let pageId = page.get('id'); 
+		let pageNode = {
+				id: pageId,
+				parent: '#',
+				text:  page.get('name'),
+				type: 'web-page'
+			};
+		var components = page.get('components').toArray();
+		data = this.iterateComponents(pageId, null, components);
+		this.set('data', data);
+		return data;
 	},
 	iterateComponents(parentId, parentRootSelector, components){
 		var nodes=[];
