@@ -2,6 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
 	highlight(selector){
+		if(!selector){
+			return;
+		}
 		if(selector.css){
 			this._callEval('highlightSelector("' + selector.css + '", false)');
 		}

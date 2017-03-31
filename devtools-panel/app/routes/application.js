@@ -78,11 +78,6 @@ export default Ember.Route.extend({
 						scss: '.SearchForm',
 						css: '.SearchForm',
 						xpath: '//*[contains(@class,"SearchForm")]'
-					},
-					fullRootSelector:{
-						scss: '.SearchForm',
-						css: '.SearchForm',
-						xpath: '//*[contains(@class,"SearchForm")]'						
 					}
 				},
 				{
@@ -93,11 +88,6 @@ export default Ember.Route.extend({
 						scss: '.filters',
 						css: '.filters',
 						xpath: '//*[contains(@class,"filters")]'
-					},
-					fullRootSelector:{
-						scss: '.filters',
-						css: '.filters',
-						xpath: '//*[contains(@class,"filters")]'						
 					}
 				},
 				{
@@ -108,19 +98,13 @@ export default Ember.Route.extend({
 						scss: '#summary',
 						css: '#summary',
 						xpath: '//*[@id="summary"]'
-					},
-					fullRootSelector: {
-						scss: '#summary',
-						css: '#summary',
-						xpath: '//*[@id="summary"]'
 					}
 				},
 				{
 					id: 'SearchForm.SearchLocation',
 					componentType: 'natunamespace.WebInput',
 					name: 'Search Location',
-					rootSelector: null,
-					fullRootSelector: null
+					rootSelector: null
 				},
 				{
 					id: 'SearchForm.CheckinDate',
@@ -130,11 +114,6 @@ export default Ember.Route.extend({
 						css: '#startDate',
 						scss: '#startDate',
 						xpath: '//*[@id="startDate"]'
-					},
-					fullRootSelector: {
-						css: '.SearchForm #startDate',
-						scss: '.SearchForm #startDate',
-						xpath: '//*[contains(@class,"SearchForm")]//*[@id="startDate"]'
 					}
 				},
 				{
@@ -145,11 +124,6 @@ export default Ember.Route.extend({
 						scss: '#endDate',
 						css: '#endDate',
 						xpath: '//*[@id="endDate"]'
-					},
-					fullRootSelector: {
-						scss: '.SearchForm #endDate',
-						css: '.SearchForm #endDate',
-						xpath: '//*[contains(@class,"SearchForm")]//*[@id="endDate"]'
 					}
 				},
 				{
@@ -160,11 +134,6 @@ export default Ember.Route.extend({
 						scss: '.SearchForm__submit>button',
 						css: '.SearchForm__submit>button',
 						xpath: '//*[contains(@class, "SearchForm__submit")]/button'
-					},
-					fullRootSelector: {
-						scss: '.SearchForm .SearchForm__submit>button',
-						css: '.SearchForm .SearchForm__submit>button',
-						xpath: '//*[contains(@class,"SearchForm")]//*[contains(@class, "SearchForm__submit")]/button'
 					}
 				},
 				{
@@ -175,11 +144,6 @@ export default Ember.Route.extend({
 						scss: '#datespan-checkin',
 						css: '#datespan-checkin',
 						xpath: '//*[@id="datespan-checkin"]'
-					},
-					fullRootSelector: {
-						scss: '.filters #datespan-checkin',
-						css: '.filters #datespan-checkin',
-						xpath: '//*[contains(@class,"filters")]//*[@id="datespan-checkin"]'
 					}
 				},
 				{
@@ -190,11 +154,6 @@ export default Ember.Route.extend({
 						scss: '.host-profile-image',
 						css: '.host-profile-image',
 						xpath: '//*[contains(@class, ".host-profile-image")]'
-					},
-					fullRootSelector: {
-						scss: '#summary .host-profile-image',
-						css: '#summary .host-profile-image',
-						xpath: '//*[@id="summary"]//*[contains(@class,".host-profile-image")]'
 					}
 				}
 		]});

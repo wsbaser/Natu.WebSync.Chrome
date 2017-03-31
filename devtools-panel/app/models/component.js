@@ -7,6 +7,5 @@ export default Model.extend({
   componentType: belongsTo('component-type', { inverse: null }),
   name: attr('string'),
   rootSelector: DS.attr(),
-  fullRootSelector: DS.attr(),
   constructorParams: attr()
 });

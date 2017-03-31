@@ -4,6 +4,7 @@ export default Ember.Controller.extend({
 	vsclient: Ember.inject.service(),
 	selectorValidator: Ember.inject.service(),
 	selectorHighlighter: Ember.inject.service(),
+	selectorBuilder: Ember.inject.service(),
 	applicationCtrl: Ember.inject.controller('application'),
 	plugins: "wholerow, types",
     themes: {
@@ -32,51 +33,38 @@ export default Ember.Controller.extend({
 		if(page){
 			var data = [];
 			var components = page.get('components').toArray();
-			data = this.iterateComponents(null, components);
+			data = this.iterateComponents(null, null, components);
 			this.set('data', data);
 			return data;
 		}
 	},
-	iterateComponents(parentId, components){
+	iterateComponents(parentId, parentRootSelector, components){
 		var nodes=[];
 		if(components){
+			var selectorBuilder = this.get('selectorBuilder');
 			for (var i = components.length - 1; i >= 0; i--) {
 				var componentId = components[i].id;
 				var componentName = components[i].get('name');
 				var rootSelector = components[i].get('rootSelector');
-				var fullRootSelector = components[i].get('fullRootSelector');
-	// var fullRootScss = rootScss && rootScss.startsWith("root:")?
-    //             	this.innerScss(parentRootScss, rootScss.replace("root:", '')):
-    //         		rootScss;
+				var fullRootSelector = selectorBuilder.innerSelector(parentRootSelector, rootSelector);
+			    var rootScss = (rootSelector ? rootSelector.scss : null);
 				nodes.push({
 					id: componentId,
 					parent: parentId||'#',
-					text:  componentName + ' (' + (rootSelector ? rootSelector.scss : null) + ')',
+					text:  componentName + ' (' + rootScss + ')',
 					rootSelector: rootSelector,
 					fullRootSelector: fullRootSelector,
-					type: components[i].get('componentType.isWebElement')?'web-element':'default'
+					type: components[i].get( 'componentType.isWebElement') ? 'web-element' : 'default'
 				});
 				// TODO: remove this
-				var component = this.get('store').peekRecord('component', componentId);
-				//component.set('fullRootScss', fullRootScss);
-				var childNodes = this.iterateComponents(componentId, components[i].get('componentType.components').toArray());
+				// var component = this.get('store').peekRecord('component', componentId);
+				// component.set('fullRootSelector', fullRootSelector);
+				var childNodes = this.iterateComponents(componentId, fullRootSelector, components[i].get('componentType.components').toArray());
 				nodes = nodes.concat(childNodes);
 			}
 		}
 		return nodes;
 	},
-	// innerScss(rootScss, relativeScss){
-	// 	if(rootScss && relativeScss){
-	// 		return rootScss.trim() + ' ' + relativeScss.trim();
-	// 	}
-	// 	else if(rootScss){
-	// 		return rootScss;
-	// 	}
-	// 	else if(relativeScss){
-	// 		return relativeScss;
-	// 	}
-	// 	return null;
-	// },
 	validateTreeSelectors(){
 		var data = this.get('data', data);
 		data.forEach(treeNode=>this.validateTreeSelector(treeNode));
@@ -124,16 +112,13 @@ export default Ember.Controller.extend({
 	},
 	actions:{
 		onComponentNodeSelected(node){
-			var component = this.getComponentById(node.id);
-			var fullRootSelector = component.get('fullRootSelector');
-			this.set('applicationCtrl.inputValue', fullRootSelector?fullRootSelector.scss:"");
+			var fullRootSelector = node.original.fullRootSelector;
+			this.set('applicationCtrl.inputValue', fullRootSelector ? fullRootSelector.scss : "");
 			// TODO: trigger selector changed action
 			// this.actions.onSourceSelectorChanged.call(this, rootScss);
 		},
 		onComponentNodeHovered(node){
-			var component = this.getComponentById(node.id);
-			var fullRootSelector = component.get('fullRootSelector');
-			this.get('selectorHighlighter').highlight(fullRootSelector);
+			this.get('selectorHighlighter').highlight(node.original.fullRootSelector);
 		},
 		onComponentNodeDehovered(){
 			this.get('selectorHighlighter').removeHighlighting();			
