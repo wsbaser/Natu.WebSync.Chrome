@@ -98,7 +98,7 @@ export default Ember.Controller.extend({
 	validateTreeSelectors(){
 		var data = this.get('data', data);
 		data.forEach(treeNode=>{
-			if(treeNode.type!='web-page'){
+			if(treeNode.type!=='web-page'){
 				this.validateTreeSelector(treeNode);
 			}
 		});
@@ -146,7 +146,7 @@ export default Ember.Controller.extend({
 	},
 	actions:{
 		onComponentNodeSelected(node){
-			if(node.type!='web-page'){
+			if(node.type!=='web-page'){
 				var fullRootSelector = node.original.fullRootSelector;
 				this.set('applicationCtrl.inputValue', fullRootSelector ? fullRootSelector.scss : "");
 				// TODO: trigger selector changed action
@@ -154,7 +154,7 @@ export default Ember.Controller.extend({
 			}
 		},
 		onComponentNodeHovered(node){
-			if(node.type!='web-page'){
+			if(node.type!=='web-page'){
 				this.get('selectorHighlighter').highlight(node.original.fullRootSelector);
 			}
 		},

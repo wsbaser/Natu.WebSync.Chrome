@@ -9,7 +9,7 @@ export default Model.extend({
   components: hasMany('component'),
   name: Ember.computed('id', function(){
   	let id = this.get('id');
-  	let arr = id.split(',');
+  	let arr = id.split('.');
   	return arr[arr.length-1];
   })
 });
