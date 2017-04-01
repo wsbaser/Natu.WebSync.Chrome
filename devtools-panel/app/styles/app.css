@@ -31,14 +31,14 @@
 }
 
 #target .validator .part>.value{
-	background: #F7907C;
+	background: #FF5A5F; /*#F7907C;*/
 	cursor: pointer;
 	padding: 2px 4px;
 	border-radius: 5px;
 }
 
 #target .validator .part.exist>.value{
-	background: #CAF77C;
+	background: #30C251; /*#CAF77C;*/
 }
 
 #target .validator .part.exist.several>.value{
@@ -88,13 +88,11 @@
 }
 
 .currenturl-wrap.matched{
-	background-color:  #CAF77C;
+	background-color:  #30C251; /*#CAF77C;*/
 }
 
 #currentUrl{
 	font-size: 1.1em;
-	color: olivedrab;
-
 }
 
 .navigation-wrap{
@@ -116,7 +114,7 @@
 }
 
 .one-node {
-    background-color: #CAF77C !important;
+    background-color: #30C251 !important; /* #CAF77C !important;*/
 }
 
 .several-nodes{
