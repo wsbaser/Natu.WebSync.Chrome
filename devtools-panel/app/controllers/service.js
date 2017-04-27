@@ -4,4 +4,5 @@ export default Ember.Controller.extend({
 	pages: Ember.computed.alias('model.pages'),
 	pagesSorting: ['id:desc'],
 	sortedPages: Ember.computed.sort('pages','pagesSorting'),
+	pageCtrl: Ember.inject.controller('service.page')
 });

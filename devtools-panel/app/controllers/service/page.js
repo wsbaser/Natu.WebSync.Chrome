@@ -31,10 +31,6 @@ export default Ember.Controller.extend({
 		}
 	},
     data: null,
-	addEventHandlers(){
-		var vsclient = this.get('vsclient');
-		vsclient.on("SessionWebData", this.rebuildTree.bind(this));	
-	},
 	rebuildTree(){
 		this.recalculateTreeData();
 		this.validateTreeSelectors();

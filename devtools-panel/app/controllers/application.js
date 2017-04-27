@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-	services: Ember.computed.alias('model'),
 	vsclient: Ember.inject.service('vsclient'),
 	inputValue: '',
 	init(){

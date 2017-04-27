@@ -2,11 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
 	vsclient: Ember.inject.service('vsclient'),
-	renderTemplate(){
-		this.render('current-page', { outlet: 'current-page' });
-		this.render('current-service', { outlet: 'current-service' });
-		this.render('content', { outlet: 'content' });
-	},
+	// renderTemplate(){
+	// 	this.render('current-page', { outlet: 'current-page' });
+	// 	this.render('current-service', { outlet: 'current-service' });
+	// 	this.render('content', { outlet: 'content' });
+	// },
 	model(){
 		var vsclient = this.get('vsclient');
 		return vsclient.connect()
@@ -19,8 +19,6 @@ export default Ember.Route.extend({
 		if(!currentService && model.get('length')){
 			currentService = model.get('firstObject');
 		}
-		if(currentService){
-			this.transitionTo('service', currentService);
-		}
+		this.transitionTo('service', currentService);
 	}
 });

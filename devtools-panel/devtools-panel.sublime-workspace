@@ -4,8 +4,20 @@
 		"selected_items":
 		[
 			[
+				"Air",
+				"AirBnbPageBase"
+			],
+			[
+				"iter",
+				"iteratePages"
+			],
+			[
+				"tr",
+				"treeNode"
+			],
+			[
 				"page",
-				"pageId"
+				"pageNode"
 			],
 			[
 				"ba",
@@ -210,10 +222,6 @@
 			[
 				"cre",
 				"_createAddTranslation"
-			],
-			[
-				"tr",
-				"translationList"
 			],
 			[
 				"transl",
@@ -506,48 +514,16 @@
 			[
 				"getSe",
 				"getSessionBookWordsForWord"
-			],
-			[
-				"boo",
-				"bookWords"
-			],
-			[
-				"bookWor",
-				"bookWordIds"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "app/controllers/service/page.js",
+			"file": "app/templates/application.hbs",
 			"settings":
 			{
-				"buffer_size": 4830,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/models/component.js",
-			"settings":
-			{
-				"buffer_size": 366,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/routes/application.js",
-			"settings":
-			{
-				"buffer_size": 4998,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/models/page-type.js",
-			"settings":
-			{
-				"buffer_size": 456,
+				"buffer_size": 1419,
 				"line_ending": "Windows"
 			}
 		}
@@ -584,22 +560,24 @@
 	},
 	"file_history":
 	[
-		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/application.hbs",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/services/vsclient.js",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/loading.hbs",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/routes/index.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/styles/app.css",
+		"/C/dev/Natu.WebSync.Chrome/dev/js/content/index.js",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/service/page/content.hbs",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/controllers/service/page.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/routes/application.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/models/component.js",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/models/page-type.js",
+		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/application.hbs",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/routes/service/page.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/services/selector-validator.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/services/selector-highlighter.js",
-		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/controllers/service/page.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/models/component-type.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/controllers/application.js",
 		"/C/dev/Natu.WebSync.Chrome/public/assets/content.js",
-		"/C/dev/Natu.WebSync.Chrome/dev/js/content/index.js",
-		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/routes/index.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/services/selector-inspector.js",
-		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/service/page/content.hbs",
-		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/services/vsclient.js",
 		"/C/dev/Natu.WebSync.Chrome/public/manifest.json",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/routes/service.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/controllers/convert.js",
@@ -611,7 +589,6 @@
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/router.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/navigation.hbs",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/templates/content.hbs",
-		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/models/page-type.js",
 		"/C/dev/ember-cli-jstree/dist/assets/dummy.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/components/css-validator.js",
 		"/C/dev/Natu.WebSync.Chrome/devtools-panel/app/models/page.js",
@@ -710,8 +687,7 @@
 		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/services/common/dictionary-service.js",
 		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/styles/language-selector.styl",
 		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/services/tfd/styles.styl",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/services/abby/styles.styl",
-		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/styles/notification-popup.styl"
+		"/C/dev/CoolVocabulary/CoolVocabulary/Scripts/cool-translator/dev/js/services/abby/styles.styl"
 	],
 	"find":
 	{
@@ -734,6 +710,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"span",
+			"saveRequestPromise",
+			"addEventHandlers",
+			"SessionWebData",
+			"SIMessageTypes",
+			"high",
 			"fullSelector",
 			"fullRootSelector",
 			"fullSele",
@@ -855,13 +837,7 @@
 			"_atta",
 			"initSiteDialog",
 			"loader-pane",
-			"load",
-			"hide",
-			"\\.hide",
-			"_hide",
-			"keyDow",
-			"keydown",
-			"cancelEvent"
+			"load"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -884,106 +860,27 @@
 			[
 				{
 					"buffer": 0,
-					"file": "app/controllers/service/page.js",
+					"file": "app/templates/application.hbs",
 					"settings":
 					{
-						"buffer_size": 4830,
+						"buffer_size": 1419,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								940,
-								940
+								392,
+								392
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"syntax": "Packages/Handlebars/grammars/Handlebars.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 221.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "app/models/component.js",
-					"settings":
-					{
-						"buffer_size": 366,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								178,
-								178
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "app/routes/application.js",
-					"settings":
-					{
-						"buffer_size": 4998,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								628,
-								628
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 252.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "app/models/page-type.js",
-					"settings":
-					{
-						"buffer_size": 456,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								444,
-								444
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 9.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
