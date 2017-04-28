@@ -68,13 +68,13 @@ var service = Ember.Service.extend({
 		}
 	},
 	convertSelector(selector){
-		this.send(this.createMessage(SIMessageTypes.ConvertSelector,selector));
+		return this.send(this.createMessage(SIMessageTypes.ConvertSelector,selector));
 	},
 	requestSessionWeb(){
-		this.send(this.createMessage(SIMessageTypes.SessionWebRequest));
+		return this.send(this.createMessage(SIMessageTypes.SessionWebRequest));
 	},
 	sendSessionWeb(sessionWeb){
-		this.send(this.createMessage(SIMessageTypes.SessionWebData, sessionWeb));
+		return this.send(this.createMessage(SIMessageTypes.SessionWebData, sessionWeb));
 	},
 	send(message){
 		//let requestId = Math.random().toString(36).substr(2, 9);

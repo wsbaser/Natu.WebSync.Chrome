@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-	model(params){
-		return this.store.peekRecord('page-type', params.page_id);
-	},
+	// model(params){
+	// 	return this.store.peekRecord('page-type', params.page_id);
+	// },
 	afterModel(model){
 		this.controllerFor('service').set('page', model);
 		if(model){
@@ -14,7 +14,6 @@ export default Ember.Route.extend({
 		this._super(controller, model);
 		if(model){
 			controller.rebuildTree();
-			controller.addEventHandlers();
 		}
 	}
 });

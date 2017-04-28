@@ -1,24 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-	vsclient: Ember.inject.service('vsclient'),
-	beforeModel(){
-		setTimeout(function(){
-			console.log("push payload");
-			this.pushTestPayload();
-		}.bind(this), 3000);
-		var vsclient = this.get('vsclient');
-		vsclient.on("SessionWebData", this.invalidateRoute.bind(this));
-	},
-	invalidateRoute(){
-		var serviceModel = this.controllerFor('service').get('model');
-		if(!serviceModel){
-			var services = this.store.peekAll('service');
-			if(services.get('length')){
-				this.transitionTo('service', services.get('firstObject'));
-			}
-		}
-	},
 	pushTestPayload(){
 		this.store.pushPayload({
 			services: [{
