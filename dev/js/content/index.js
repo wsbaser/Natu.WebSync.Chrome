@@ -71,8 +71,8 @@ window.inspectCssSelector = function(css,index){
 window.createHighlighterElement = function(documentNode,clientRect){
 	var highlighterElement = documentNode.createElement('div');
 	highlighterElement.classList.add('websync-highlighter');
-	highlighterElement.style.left = clientRect.left+'px';
-	highlighterElement.style.top = clientRect.top+'px';
+	highlighterElement.style.left = (documentNode.scrollingElement.scrollLeft + clientRect.left) + 'px';
+	highlighterElement.style.top = (documentNode.scrollingElement.scrollTop + clientRect.top) +'px';
 	highlighterElement.style.width = clientRect.width+'px';
 	highlighterElement.style.height = clientRect.height+'px';
 	highlighterElement.style.position = 'absolute';
