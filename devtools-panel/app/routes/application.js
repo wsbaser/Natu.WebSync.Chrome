@@ -1,6 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+	model(){
+		this.pushTestPayload();
+	},
 	pushTestPayload(){
 		this.store.pushPayload({
 			services: [{
@@ -165,6 +168,6 @@ export default Ember.Route.extend({
 					}
 				}
 		]});
-		this.invalidateRoute();
+		//this.invalidateRoute();
 	}
 });

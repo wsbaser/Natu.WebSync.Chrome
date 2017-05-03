@@ -7,6 +7,7 @@ export default Ember.Controller.extend({
 	selectorBuilder: Ember.inject.service(),
 	applicationCtrl: Ember.inject.controller('application'),
 	skipLoading: true,
+	highlightAll:false,
 	plugins: "wholerow, types, state",
     themes: {
         name: 'default',
@@ -150,12 +151,25 @@ export default Ember.Controller.extend({
 			}
 		},
 		onComponentNodeHovered(node){
-			if(node.type!=='web-page'){
+			if(!this.get('highlightAll') && node.type!=='web-page'){
 				this.get('selectorHighlighter').highlight(node.original.fullRootSelector);
 			}
 		},
 		onComponentNodeDehovered(){
-			this.get('selectorHighlighter').removeHighlighting();			
+			if(!this.get('highlightAll')){
+				this.get('selectorHighlighter').removeHighlighting();			
+			}
+		},
+		onHighlightAllComponents(){
+			this.toggleProperty('highlightAll');
+			if(this.get('highlightAll')){
+				var webElementSelectors = this.get('data')
+					.filter(e=>e.type==='web-element' || e.type==='default')
+					.map(e=>e.fullRootSelector);
+				this.get('selectorHighlighter').highlightAll(webElementSelectors);
+			}else{
+				this.get('selectorHighlighter').removeHighlighting();				
+			} 
 		},
 		onExpandAllTreeNodes(){
 			this.expandAllTreeNodes();

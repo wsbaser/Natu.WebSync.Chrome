@@ -12,6 +12,9 @@ export default Ember.Service.extend({
 			this._callEval('highlightSelector("' + selector.xpath + '", true)');
 		}
 	},
+	highlightAll(selectors){
+		selectors.forEach(s=>this.highlight(s));
+	},
 	removeHighlighting(){
 		this._callEval('removeHighlighting()');
 	},
