@@ -34,104 +34,127 @@ export default Ember.Controller.extend({
     data: null,
 	rebuildTree(){
 		this.recalculateTreeData();
-		this.validateTreeSelectors();
-		this.redrawTree();
+		// this.validateTreeSelectors();
+		//this.redrawTree();
 	},
-	recalculateTreeData(){		
-		var page = this.get('model');
-		var data = this.iteratePages(page);
+	recalculateTreeData(){	
+		let page = this.get('model');
+		let data = this.iteratePages(page);
 		this.set('data', data);
 		return data;
 	},
 	iteratePages(page){
 		let nodes = [];
 		if(page){
-			var basePage = page.get('basePageType').content;
-			var basePageComponentNodes = this.iteratePages(basePage);
+			let basePage = page.get('basePageType').content;
+			let basePageComponentNodes = this.iteratePages(basePage);
 			nodes = nodes.concat(basePageComponentNodes);
 
 			let pageId = page.get('id'); 
+			let components = page.get('components').toArray();
+			let componentNodes = this.iterateComponents(pageId, null, components);
 			let pageNode = {
 					id: pageId,
-					parent: '#',
+					// parent: '#',
 					text:  page.get('name'),
-					type: 'web-page'
+					type: 'web-page',
+					children: componentNodes
 				};
 			nodes.push(pageNode);
-			
-			var components = page.get('components').toArray();
-			let componentNodes = this.iterateComponents(pageId, null, components);
-			nodes = nodes.concat(componentNodes);
 		}
 		return nodes;
 	},
 	iterateComponents(parentId, parentRootSelector, components){
-		var nodes=[];
+		let nodes=[];
 		if(components){
-			var selectorBuilder = this.get('selectorBuilder');
-			for (var i = components.length - 1; i >= 0; i--) {
-				var componentId = components[i].id;
-				var componentName = components[i].get('name');
-				var rootSelector = components[i].get('rootSelector');
-				var fullRootSelector = selectorBuilder.innerSelector(parentRootSelector, rootSelector);
-			    var rootScss = (rootSelector ? rootSelector.scss : null);
+			let selectorBuilder = this.get('selectorBuilder');
+			for (let i = components.length - 1; i >= 0; i--) {
+				let componentId = components[i].id;
+				let componentName = components[i].get('name');
+				let rootSelector = components[i].get('rootSelector');
+				let fullRootSelector = selectorBuilder.innerSelector(parentRootSelector, rootSelector);
+			    let rootScss = (rootSelector ? rootSelector.scss : null);
+				let childNodes = this.iterateComponents(componentId, fullRootSelector, components[i].get('componentType.components').toArray());
 				nodes.push({
-					id: componentId,
-					parent: parentId||'#',
+					id: parentId +'.'+ componentId,
 					text:  componentName + ' (' + rootScss + ')',
 					rootSelector: rootSelector,
 					fullRootSelector: fullRootSelector,
-					type: components[i].get( 'componentType.isWebElement') ? 'web-element' : 'default'
+					type: components[i].get( 'componentType.isWebElement') ? 'web-element' : 'default',
+					children: childNodes
 				});
 				// TODO: remove this
 				// var component = this.get('store').peekRecord('component', componentId);
 				// component.set('fullRootSelector', fullRootSelector);
-				var childNodes = this.iterateComponents(componentId, fullRootSelector, components[i].get('componentType.components').toArray());
-				nodes = nodes.concat(childNodes);
 			}
 		}
 		return nodes;
 	},
+	getTreeNode(id){
+		return this.get('jstreeObject').jstree(true).get_node(id);
+	},
+	getRootTreeNode(id){
+		return this.getTreeNode("#");
+	},
 	validateTreeSelectors(){
-		var data = this.get('data', data);
-		data.forEach(treeNode=>{
-			if(treeNode.type!=='web-page'){
-				this.validateTreeSelector(treeNode);
-			}
+		var rootNode = this.getRootTreeNode();
+		this.validateChildrenNodeSelectors(rootNode);
+	},
+	validateChildrenNodeSelectors(node){
+		node.children.forEach(childId=>{
+			let childNode = this.getTreeNode(childId);
+			this.validateNodeSelector(childNode);
 		});
 	},
-	validateTreeSelector(treeNode){
-		var selectorValidator = this.get('selectorValidator');
-		selectorValidator.validate(treeNode.fullRootSelector).then(function(validationData){
-			treeNode.a_attr = this._generateNodeParams(validationData);
-			this.redrawTree();
-		}.bind(this));
+	validateNodeSelector(node){
+		if(this.isComponent(node)){
+			console.log(node.id);
+			let selectorValidator = this.get('selectorValidator');	
+			selectorValidator.validate(node.original.fullRootSelector).then(function(validationData){
+				this.setComponentNodeValidationStatus(node.id, validationData);
+			}.bind(this));
+		}
+		if(node.state.opened){
+			this.validateChildrenNodeSelectors(node);
+		}
 	},
-	_generateNodeParams(validationData){
+	isComponent(node){
+		return node.type==='default' || node.type==='web-element';
+	},
+	setComponentNodeValidationStatus(nodeId, validationData){
+		let nodeElement = document.getElementById(nodeId+"_anchor");
+		Array.from(nodeElement.classList).forEach(item=>{
+			if(item.startsWith('natu-')){
+				nodeElement.classList.remove(item);
+			}
+		});
+		nodeElement.classList.add(this._getValidationClass(validationData));
+	},
+	_getValidationClass(validationData){
 		var _class;
 		var getClass = function(selectorValidationData){
 			return selectorValidationData.count===1 ? 
-				'one-node' :
-				(selectorValidationData.count>0?'several-nodes':'no-nodes');
+				'natu-one-node' :
+				(selectorValidationData.count>0?'natu-several-nodes':'natu-no-nodes');
 		};
 		if(!validationData){
-			_class = 'not-specified';
+			_class = 'natu-not-specified';
 		}
 		else if(validationData.css.isValid){
 			_class = getClass(validationData.css);
 		}else if(validationData.xpath.isValid){
 			_class = getClass(validationData.xpath);
 		}else{
-			_class = 'invalid'; 
+			_class = 'natu-invalid';
 		}
-		return {class:_class};
+		return _class;
 	},
-	redrawTree(){
-		var actionReceiver = this.get('jstreeActionReceiver');
-		if(actionReceiver){
-			actionReceiver.send('redraw');
-		}
-	},
+	// redrawTree(){
+	// 	var actionReceiver = this.get('jstreeActionReceiver');
+	// 	if(actionReceiver){
+	// 		actionReceiver.send('redraw');
+	// 	}
+	// },
 	expandAllTreeNodes(){
 		this.get('jstreeActionReceiver').send('openAll');
 	},
@@ -154,6 +177,9 @@ export default Ember.Controller.extend({
 			if(!this.get('highlightAll') && node.type!=='web-page'){
 				this.get('selectorHighlighter').highlight(node.original.fullRootSelector);
 			}
+		},
+		onOpenComponentNode(node){
+			this.validateNodeSelector(node);
 		},
 		onComponentNodeDehovered(){
 			if(!this.get('highlightAll')){

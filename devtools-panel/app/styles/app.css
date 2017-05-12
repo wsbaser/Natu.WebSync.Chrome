@@ -109,23 +109,23 @@
 	margin: 10px 0;
 }
 
-.no-nodes {
+.natu-no-nodes {
     background-color: #FF5A5F !important; /*#F7907C !important;*/
 }
 
-.not-specified{
+.natu-not-specified{
 	background-color: lightgrey !important;
 }
 
-.one-node {
+.natu-one-node {
     background-color: #30C251 !important; /* #CAF77C !important;*/
 }
 
-.several-nodes{
+.natu-several-nodes{
 	background-color: yellow !important;
 }
 
-.invalid-selector{
+.natu-invalid-selector{
 	background-color: pink !important;
 }
 

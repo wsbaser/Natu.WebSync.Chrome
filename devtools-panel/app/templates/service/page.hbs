@@ -12,6 +12,7 @@
     </label>
     <div id="pageTree">
         {{ember-jstree
+            treeObject=jstreeObject
             actionReceiver=jstreeActionReceiver
             data=data
             plugins=plugins
@@ -22,6 +23,7 @@
             typesOptions=typesOptions
             stateOptions=stateOptions
             skipLoading=skipLoading
+            eventDidOpen="onOpenComponentNode"
         }}
     </div>
 {{/if}}
