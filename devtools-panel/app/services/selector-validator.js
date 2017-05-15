@@ -32,15 +32,18 @@ export default Ember.Service.extend({
 			else{
 				validationData.isValid = true;
 				validationData.count = this._getNodesCount(result);
+				validationData.displayedCount = this._getNodesCount(result, true);
 			}
 			deferred.resolve(validationData);
 	      }.bind(this));
 		return deferred.promise();
 	},
-	_getNodesCount(iframesDataList){
+	_getNodesCount(iframesDataList, displayedOnly){
 		var count=0;
 		iframesDataList.forEach(function(iframeData){
-			count+=iframeData.elements.length;
+			count += displayedOnly?
+				iframeData.elements.filter(e=>e.displayed).length:
+				iframeData.elements.length;
 		});
 		return count;
 	}

@@ -8,7 +8,7 @@ function evaluteSelectorInAllIframes(selector, evaluateFunc){
 	var result = [];
 	result.push({
 		documentNode:document,
-		elements:evaluateFunc(document, selector)
+		elements: evaluateFunc(document, selector)
 	});
 	getIframes().forEach(function(iframeNode){
 		try{
@@ -25,11 +25,23 @@ function evaluteSelectorInAllIframes(selector, evaluateFunc){
 	return result;
 }
 
+function serializeElements(iframeData){
+	for (var i = iframeData.length - 1; i >= 0; i--) {
+		iframeData[i].elements = iframeData[i].elements.map(e=>{
+			return Object.assign(e, {
+				displayed: e.style.display!=='none',
+				html: e.outerHTML
+			});
+		});
+	};
+	return iframeData;
+}
+
 window.evaluateXpath = function find(xpath) {
     if(!xpath){
     	return [];
     }
-	return evaluteSelectorInAllIframes(xpath, function(rootElement, selector){
+	return serializeElements(evaluteSelectorInAllIframes(xpath, function(rootElement, selector){
 	    var result = [];
 	    var nodes = document.evaluate(selector, rootElement, null, XPathResult.ANY_TYPE, null);
 	    var currentNode = nodes.iterateNext();
@@ -38,16 +50,16 @@ window.evaluateXpath = function find(xpath) {
 	        currentNode = nodes.iterateNext();
 	    }
 	    return result;
-	});
+	}));
 };
 
 window.evaluateCss = function find(css) {
 	if(!css){
 		return {};
 	}
-	return evaluteSelectorInAllIframes(css, function(rootElement,selector){
+	return serializeElements(evaluteSelectorInAllIframes(css, function(rootElement,selector){
 		return Array.from(rootElement.querySelectorAll(selector));
-	});
+	}));
 };
 
 window.evaluateSelector = function(selector, isXpath){

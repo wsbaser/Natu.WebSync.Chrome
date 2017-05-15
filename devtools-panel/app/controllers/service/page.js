@@ -128,24 +128,31 @@ export default Ember.Controller.extend({
 				nodeElement.classList.remove(item);
 			}
 		});
-		nodeElement.classList.add(this._getValidationClass(validationData));
+		this._getValidationClass(validationData).forEach(_class=>{
+			nodeElement.classList.add(_class);
+		});
 	},
 	_getValidationClass(validationData){
 		var _class;
 		var getClass = function(selectorValidationData){
-			return selectorValidationData.count===1 ? 
+			let result = [];
+			result.push(selectorValidationData.count===1 ? 
 				'natu-one-node' :
-				(selectorValidationData.count>0?'natu-several-nodes':'natu-no-nodes');
+				(selectorValidationData.count>0?'natu-several-nodes':'natu-no-nodes'));
+			if(selectorValidationData.displayedCount<selectorValidationData.count){
+				result.push('natu-has-hidden');
+			}
+			return result;
 		};
 		if(!validationData){
-			_class = 'natu-not-specified';
+			_class =['natu-not-specified'];
 		}
 		else if(validationData.css.isValid){
 			_class = getClass(validationData.css);
 		}else if(validationData.xpath.isValid){
 			_class = getClass(validationData.xpath);
 		}else{
-			_class = 'natu-invalid';
+			_class = ['natu-invalid'];
 		}
 		return _class;
 	},
@@ -169,8 +176,10 @@ export default Ember.Controller.extend({
 			if(node.type!=='web-page'){
 				var fullRootSelector = node.original.fullRootSelector;
 				this.set('applicationCtrl.inputValue', fullRootSelector ? fullRootSelector.scss : "");
+				// this.set('applicationCtrl.targetCss', node.original.fullRootSelector.css);
+				// this.set('applicationCtrl.targetXPath', node.original.fullRootSelector.xpath);
 				// TODO: trigger selector changed action
-				// this.actions.onSourceSelectorChanged.call(this, rootScss);
+				//this.actions.onSourceSelectorChanged.call(this, rootScss);
 			}
 		},
 		onComponentNodeHovered(node){

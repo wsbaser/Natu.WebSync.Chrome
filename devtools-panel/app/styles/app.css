@@ -46,7 +46,11 @@
 }
 
 #target .validator .part.exist.several>.value{
-	background: #EFF74A;	
+	background: #EFF74A;
+}
+
+#target .validator .part.exist.hidden>.value{
+	opacity: 0.5;
 }
 
 #target .validator .part>.count{
@@ -127,6 +131,10 @@
 
 .natu-invalid-selector{
 	background-color: pink !important;
+}
+
+.natu-has-hidden{
+	opacity: 0.5;
 }
 
 #expandAllTreeNodes, #collapseAllTreeNodes, #refreshTree, #revalidateTreeSelectors{

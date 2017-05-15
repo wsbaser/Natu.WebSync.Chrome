@@ -9,15 +9,21 @@ export default Ember.Service.extend({
 			return relativeSelector;
 		}
 		rootSelector = rootSelector || {};
-		var css = this.innerScss(rootSelector.css, relativeSelector.css);
-		var xpath = this.innerXpath(rootSelector.xpath, relativeSelector.xpath);
+		let invalidRootCss = !rootSelector.css && rootSelector.xpath;
+		let invalidRootXpath = rootSelector.css && !rootSelector.xpath;
+		var css = invalidRootCss ? null : this.innerCss(rootSelector.css, relativeSelector.css);
+		var xpath = invalidRootXpath ? null : this.innerXpath(rootSelector.xpath, relativeSelector.xpath);
+		xpath = this.normalizeXpath(xpath);
 		return {
 			scss: css || xpath,
 			css: css,
 			xpath: xpath
 		};
 	},
-	innerScss(rootScss, relativeScss){
+	normalizeXpath(xpath){
+		return xpath.startsWith('//') ? xpath: '//' + xpath;
+	},
+	innerCss(rootScss, relativeScss){
 		if(rootScss && relativeScss){
 			return rootScss + ' ' + relativeScss;
 		}
@@ -44,7 +50,7 @@ export default Ember.Service.extend({
 			return root;
 		}
 		else if(relative){
-			return relative.startsWith('//')?relative:"//${relativeScss}";
+			return relative;
 		}
 		return null;
 	},
