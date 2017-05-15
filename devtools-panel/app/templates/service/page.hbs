@@ -3,12 +3,12 @@
     <input id="collapseAllTreeNodes" type="button" {{action "onCollapseAllTreeNodes"}} value="Collapse All"/>
     <input id="revalidateTreeSelectors" type="button" {{action "onRevalidateTreeSelector"}} value="Revalidate Selectors"/>
     <label class="checkbox" style="display: inline-block; margin-left: 20px;">
-        {{#if highlightAll}}
-            <input id="highlightAllComponents" type="checkbox" checked {{action "onHighlightAllComponents"}}/>
+        {{#if highlightInner}}
+            <input id="highlightInnerComponents" type="checkbox" checked {{action "onHighlightInnerComponents"}}/>
         {{else}}
-            <input id="highlightAllComponents" type="checkbox" {{action "onHighlightAllComponents"}}/>
+            <input id="highlightInnerComponents" type="checkbox" {{action "onHighlightInnerComponents"}}/>
         {{/if}}
-        <span>Highlight All Components</span>
+        <span>Highlight Inner Components</span>
     </label>
     <div id="pageTree">
         {{ember-jstree

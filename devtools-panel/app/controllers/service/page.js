@@ -7,7 +7,7 @@ export default Ember.Controller.extend({
 	selectorBuilder: Ember.inject.service(),
 	applicationCtrl: Ember.inject.controller('application'),
 	skipLoading: true,
-	highlightAll:false,
+	highlightInner:false,
 	plugins: "wholerow, types, state",
     themes: {
         name: 'default',
@@ -32,6 +32,9 @@ export default Ember.Controller.extend({
 		}
 	},
     data: null,
+    init(){
+    	this.set('highlightInner', localStorage.highlightInner);
+    },
 	rebuildTree(){
 		this.recalculateTreeData();
 		// this.validateTreeSelectors();
@@ -118,6 +121,20 @@ export default Ember.Controller.extend({
 			this.validateChildrenNodeSelectors(node);
 		}
 	},
+	highlightChildrenNodes(node){
+		node.children.forEach(childId=>{
+			let childNode = this.getTreeNode(childId);
+			this.highlightNode(childNode);
+		});
+	},
+	highlightNode(node){
+		if(this.isComponent(node)){
+			this.get('selectorHighlighter').highlight(node.original.fullRootSelector);
+		}
+		if(this.get('highlightInner')){
+			this.highlightChildrenNodes(node);
+		}
+	},
 	isComponent(node){
 		return node.type==='default' || node.type==='web-element';
 	},
@@ -183,28 +200,17 @@ export default Ember.Controller.extend({
 			}
 		},
 		onComponentNodeHovered(node){
-			if(!this.get('highlightAll') && node.type!=='web-page'){
-				this.get('selectorHighlighter').highlight(node.original.fullRootSelector);
-			}
+			this.highlightNode(node);
 		},
 		onOpenComponentNode(node){
 			this.validateNodeSelector(node);
 		},
 		onComponentNodeDehovered(){
-			if(!this.get('highlightAll')){
-				this.get('selectorHighlighter').removeHighlighting();			
-			}
+			this.get('selectorHighlighter').removeHighlighting();
 		},
-		onHighlightAllComponents(){
-			this.toggleProperty('highlightAll');
-			if(this.get('highlightAll')){
-				var webElementSelectors = this.get('data')
-					.filter(e=>e.type==='web-element' || e.type==='default')
-					.map(e=>e.fullRootSelector);
-				this.get('selectorHighlighter').highlightAll(webElementSelectors);
-			}else{
-				this.get('selectorHighlighter').removeHighlighting();				
-			} 
+		onHighlightInnerComponents(){
+			this.toggleProperty('highlightInner');
+			localStorage.highlightInner = this.get('highlightInner');
 		},
 		onExpandAllTreeNodes(){
 			this.expandAllTreeNodes();
