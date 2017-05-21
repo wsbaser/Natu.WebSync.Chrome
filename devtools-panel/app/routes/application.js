@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
 	model(){
-		this.pushTestPayload();
+		//this.pushTestPayload();
 	},
 	pushTestPayload(){
 		this.store.pushPayload({

@@ -5,7 +5,9 @@ let SIMessageTypes = {
 	SessionWebData: "SessionWebData",
 	SessionWebRequest: "SessionWebRequest",
 	ConvertSelector: "ConvertSelector",
-	ConvertedSelector: "ConvertedSelector"
+	ConvertedSelector: "ConvertedSelector",
+	MatchUrl: "MatchUrl",
+	UrlMatchResult: "UrlMatchResult"
 };
 
 var service = Ember.Service.extend({
@@ -63,6 +65,9 @@ var service = Ember.Service.extend({
 		}else if(message.Type === SIMessageTypes.ConvertedSelector){
 			this.trigger(SIMessageTypes.ConvertedSelector, message.Data);
 		}
+		else if(message.Type === SIMessageTypes.UrlMatchResult){
+			this.resolveRequestPromise(SIMessageTypes.MatchUrl, JSON.parse(message.Data));
+		}
 		else{
 			console.error('Received message with invalid message type:',message);
 		}
@@ -75,6 +80,9 @@ var service = Ember.Service.extend({
 	},
 	sendSessionWeb(sessionWeb){
 		return this.send(this.createMessage(SIMessageTypes.SessionWebData, sessionWeb));
+	},
+	matchUrl(url){
+		return this.send(this.createMessage(SIMessageTypes.MatchUrl, url));
 	},
 	send(message){
 		//let requestId = Math.random().toString(36).substr(2, 9);
