@@ -20,7 +20,7 @@ export default Ember.Controller.extend({
 	urlMatchResultObserver: Ember.observer("applicationCtrl.urlMatchResult", function(){
 		var urlMatchResult = this.get("applicationCtrl.urlMatchResult");
 		if(urlMatchResult != null) {
-			this.transitionToRoute('service', "SpikeService");
+			this.transitionToRoute('service.page', 'SpikeService', urlMatchResult.PageId);
 		}
 	}),
 	currentUrlObserver: Ember.observer("currentUrl", function(){

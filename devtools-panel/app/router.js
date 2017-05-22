@@ -7,7 +7,7 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('service',{path:'/:service_id'}, function(){
-    this.route('page', {path:'/:page_id'}, function(){
+    this.route('page', {path:'/:pageType_id'}, function(){
         this.route('content', {path:'/content'});
     });
   });

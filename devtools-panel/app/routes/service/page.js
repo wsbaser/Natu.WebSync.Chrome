@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-	// model(params){
-	// 	return this.store.peekRecord('page-type', params.page_id);
-	// },
+	model(params){
+		return this.store.peekRecord('page-type', params.pageType_id);
+	},
 	afterModel(model){
 		this.controllerFor('service').set('page', model);
 		if(model){
