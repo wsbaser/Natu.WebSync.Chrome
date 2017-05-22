@@ -1,5 +1,29 @@
 console.log('WebSync content script injected');
 
+// document.addEventListener("DOMContentLoaded", function(){
+// 	chrome.runtime.sendMessage({
+// 		type: "urlchanged",
+// 		location: window.location
+// 	});
+// });
+
+window.onload = window.onUrlChanged;
+window.onhashchange = window.onUrlChanged;
+
+function onUrlChanged(){
+	chrome.runtime.sendMessage({
+		type: "urlchanged",
+		data: {
+			url: window.location.href
+		}
+	});
+	console.log("Sent urlchanged message to Backround Page.");
+}
+
+window.getCurrentUrl = function(){
+	return window.location;
+}
+
 window.getIframes = function(){
 	return document.querySelectorAll('iframe');
 }
@@ -125,7 +149,3 @@ window.removeHighlighting = function(){
 		removeHighlightingInIframe(iframeNode.contentDocument);
 	});
 };
-
-window.getCurrentUrl=function(){
-	return window.location;
-}

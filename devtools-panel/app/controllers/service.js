@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 	vsclient: Ember.inject.service('vsclient'),
+	backgroundConnection: Ember.inject.service('background-connection'),
 	pages: Ember.computed.alias('model.pages'),
 	pagesSorting: ['id:desc'],
 	sortedPages: Ember.computed.sort('pages','pagesSorting'),
@@ -16,6 +17,11 @@ export default Ember.Controller.extend({
 	      function(result, isException) {
 	     	this.set('currentUrl', result.href);
 	      }.bind(this));
+
+		var backgroundConnection = this.get('backgroundConnection');
+		backgroundConnection.on("urlchanged", function(data){
+			this.set('currentUrl', data.url);
+		}.bind(this));
 	},
 	urlMatchResultObserver: Ember.observer("applicationCtrl.urlMatchResult", function(){
 		var urlMatchResult = this.get("applicationCtrl.urlMatchResult");
