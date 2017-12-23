@@ -32,7 +32,7 @@ module.exports = {
   devtool: NODE_ENV == 'development' ? "cheap-inline-module-source-map" : null,
 
   plugins: [
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(NODE_ENV)
     }),
@@ -57,24 +57,24 @@ module.exports = {
   ],
 
   resolve: {
-    modulesDirectories: ['node_modules'],
-    extensions:         ['', '.js', '.styl'],
-    root: [
-      path.resolve('./dev/js/utils'),
-      path.resolve('./dev/js')
-    ]
+    modules: [
+      path.join(__dirname, "./dev/js"),
+      "node_modules"
+    ],
+    extensions: ['.js']
   },
 
   resolveLoader: {
-    modulesDirectories: ['node_modules'],
-    moduleTemplates:    ['*-loader', '*'],
-    extensions:         ['', '.js']
+    modules: [
+      "node_modules"
+    ],
+    extensions: ['.js']
   },        
 
   module: {
-  	loaders:[{
+  	rules:[{
   		test: /\.js$/,
-  		loader: 'babel?presets[]=es2015'
+  		loader: 'babel-loader?presets[]=es2015'
   	},{
       test:/\.styl$/,
       loader: ExtractTextPlugin.extract('style','css!stylus?resolve url')
