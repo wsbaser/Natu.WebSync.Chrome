@@ -30,11 +30,11 @@ export default Ember.Controller.extend({
 		}
 	}),
 	currentUrlObserver: Ember.observer("currentUrl", function(){
-		var vsclient = this.get('vsclient');
-		var currentUrl = this.get('currentUrl');
-		vsclient.matchUrl(currentUrl).then(urlMatchResult=>{
-			this.set('applicationCtrl.urlMatchResult', urlMatchResult);
-		});
+		// var vsclient = this.get('vsclient');
+		// var currentUrl = this.get('currentUrl');
+		// vsclient.matchUrl(currentUrl).then(urlMatchResult=>{
+		// 	this.set('applicationCtrl.urlMatchResult', urlMatchResult);
+		// });
 
 	})
 });

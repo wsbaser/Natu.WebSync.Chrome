@@ -17,7 +17,7 @@ export default Ember.Route.extend({
 			.then(()=>this.store.peekAll('service'))
 			.catch(()=>this.store.peekAll('service'));
 	},
-	redirect(model, transition){
-		this.transitionTo('service', model.findBy('id', localStorage.currentService));
-	}
+	// redirect(model, transition){
+	// 	this.transitionTo('service', model.findBy('id', localStorage.currentService));
+	// }
 });
