@@ -18,9 +18,6 @@ export default Ember.Component.extend({
 	executeContentScript(script){
 	   	chrome.devtools.inspectedWindow.eval(script, { useContentScriptContext: true });
 	},
-	click(){
-		this.inspectSelector();
-	},
 	mouseEnter(){
 		console.log('Mouse over');
 		this.highlightSelector();
@@ -44,5 +41,10 @@ export default Ember.Component.extend({
 	   	chrome.devtools.inspectedWindow.eval(
 	      scriptToInspectSelector,
 	      { useContentScriptContext: true });
+	},
+	actions:{
+		onInspectSelector(selectorNode){
+			this.inspectSelector();
+		}
 	}
 });
