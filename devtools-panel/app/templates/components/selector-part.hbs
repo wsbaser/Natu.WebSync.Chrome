@@ -1,15 +1,14 @@
 <span class="value" {{action "onInspectSelector"}}>{{part.selector}}</span>
 <span class="count">{{part.count}}</span>
-
 {{#bs-dropdown tagName="span" as |dd|}}
   {{#dd.toggle}}Dropdown <span class="caret"></span>{{/dd.toggle}}
   {{#dd.menu as |menu|}}
     {{#menu.item}}
-      {{#menu.link-to "index"}}Home{{/menu.link-to}}
+      <a href="https://example.com" class="dropdown-item">External</a>
     {{/menu.item}}
     {{menu.divider}}
     {{#menu.item}}
-      {{#menu.link-to "demo.dropdown"}}Dropdowns{{/menu.link-to}}
+      <a href="https://example.com" class="dropdown-item">External</a>
     {{/menu.item}}
     {{menu.divider}}
     {{#menu.item}}
