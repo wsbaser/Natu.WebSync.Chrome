@@ -90,18 +90,35 @@ window.evaluateSelector = function(selector, isXpath){
 	return isXpath?evaluateXpath(selector):evaluateCss(selector);
 };
 
-function inspectElement(iframeDataList, index){
-	index = index||0;
-	var arr = [].concat.apply([], iframeDataList.map(function(iframeData){return iframeData.elements;}));
-	inspect(arr[index]);
+function inspectElement(iframeDataList, iframeIndex, elementIndex){
+	if(iframeIndex !=undefined && elementIndex!=undefined){
+		if(iframeDataList[iframeIndex]){
+			var iframeData = iframeDataList[iframeIndex];
+			if(iframeData){
+				inspect(iframeData.elements[elementIndex]);
+			}
+		}
+		else{
+			console.log('No element for specified iframeIndex and elementIndex: ' + iframeIndex + ', ' + elementIndex);
+		}
+	}else{
+		// inspect 
+		var arr = [].concat.apply([], iframeDataList.map(function(iframeData){return iframeData.elements;}));
+		if(arr[0]){
+			inspect(arr[0]);
+		}
+		else{
+			console.log('No elements to inspect.');
+		}
+	}
 };
 
-window.inspectXpathSelector = function(xpath,index){
-	inspectElement(evaluateXpath(xpath),index);
+window.inspectXpathSelector = function(xpath, iframeIndex, elementIndex){
+	inspectElement(evaluateXpath(xpath), iframeIndex, elementIndex);
 };
 
-window.inspectCssSelector = function(css,index){
-	inspectElement(evaluateCss(css),index);
+window.inspectCssSelector = function(css, iframeIndex, elementIndex){
+	inspectElement(evaluateCss(css), iframeIndex, elementIndex);
 };
 
 window.createHighlighterElement = function(documentNode,clientRect){
@@ -129,11 +146,24 @@ window.hightlightElementsInIframe = function(iframeNode, iframeElements){
 	});
 };
 
-window.highlightSelector = function(selector,isXpath){
+window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex){
 	var iframeDataList = evaluateSelector(selector, isXpath);
-	iframeDataList.forEach((iframeData)=>{
-		hightlightElementsInIframe(iframeData.documentNode, iframeData.elements);
-	});
+	if(iframeIndex !=undefined && elementIndex!=undefined){
+		if(iframeDataList[iframeIndex]){
+			var iframeData = iframeDataList[iframeIndex];
+			if(iframeData){
+				hightlightElementsInIframe(iframeData.documentNode, [iframeData.elements[elementIndex]]);
+			}
+		}
+		else{
+			console.log('No element for specified iframeIndex and elementIndex: ' + iframeIndex + ', ' + elementIndex);
+		}
+	}
+	else{
+		iframeDataList.forEach((iframeData)=>{
+			hightlightElementsInIframe(iframeData.documentNode, iframeData.elements);
+		});
+	}
 };
 
 window.removeHighlightingInIframe = function(iframeNode){

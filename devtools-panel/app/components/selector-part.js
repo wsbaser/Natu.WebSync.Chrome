@@ -4,7 +4,6 @@ export default Ember.Component.extend({
 	tagName: 'span',
 	classNames: ['part'],
 	classNameBindings:['isExist:exist', 'isSeveral:several', 'hasHidden:hidden'],
-	count: 0,
 	isXPath:false,
 	isSeveral: Ember.computed('part.count', function(){
 		return this.get('part.count')>1;
@@ -18,26 +17,18 @@ export default Ember.Component.extend({
 	executeContentScript(script){
 	   	chrome.devtools.inspectedWindow.eval(script, { useContentScriptContext: true });
 	},
-	mouseEnter(){
-		console.log('Mouse over');
-		this.highlightSelector();
-	},
-	mouseLeave(){
-		console.log('Mouse leave');
-		this.removeHighlighting();
-	},
 	removeHighlighting(){
 		this.executeContentScript('removeHighlighting()');
 	},
-	highlightSelector(){
-		let script = 'highlightSelector("' + this.get('part.fullSelector') + '",' + this.get('isXPath') + ')';
+	highlightSelector(iframeIndex, elementIndex){
+		let script = 'highlightSelector("' + this.get('part.fullSelector') + '",' + this.get('isXPath') + ',' + iframeIndex + ',' + elementIndex +')';
 		this.executeContentScript(script);
 	},
-	inspectSelector(){
+	inspectSelector(iframeIndex, elementIndex){
 		let scriptToInspectSelector = 
 			this.get('isXPath')?
-			'inspectXpathSelector("' + this.get('part.fullSelector') + '")':
-			'inspectCssSelector("' + this.get('part.fullSelector') + '")';
+			'inspectXpathSelector("' + this.get('part.fullSelector') + '",' + iframeIndex + ',' + elementIndex + ')':
+			'inspectCssSelector("' + this.get('part.fullSelector') + '",' + iframeIndex + ',' + elementIndex + ')';
 	   	chrome.devtools.inspectedWindow.eval(
 	      scriptToInspectSelector,
 	      { useContentScriptContext: true });
@@ -45,6 +36,18 @@ export default Ember.Component.extend({
 	actions:{
 		onInspectSelector(selectorNode){
 			this.inspectSelector();
+		},
+		onInspectElement(element){
+			this.inspectSelector(element.get('iframeIndex'), element.get('elementIndex'));
+		},
+		onSelectorMouseEnter(){
+			this.highlightSelector();
+		},
+		onElementMouseEnter(element){
+			this.highlightSelector(element.get('iframeIndex'), element.get('elementIndex'));
+		},
+		onMouseLeave(){
+			this.removeHighlighting();		
 		}
 	}
 });

@@ -1,18 +1,15 @@
-<span class="value" {{action "onInspectSelector"}}>{{part.selector}}</span>
-<span class="count">{{part.count}}</span>
-{{#bs-dropdown tagName="span" as |dd|}}
-  {{#dd.toggle}}Dropdown <span class="caret"></span>{{/dd.toggle}}
-  {{#dd.menu as |menu|}}
-    {{#menu.item}}
-      <a href="https://example.com" class="dropdown-item">External</a>
-    {{/menu.item}}
-    {{menu.divider}}
-    {{#menu.item}}
-      <a href="https://example.com" class="dropdown-item">External</a>
-    {{/menu.item}}
-    {{menu.divider}}
-    {{#menu.item}}
-      <a href="https://example.com" class="dropdown-item">External</a>
-    {{/menu.item}}
-  {{/dd.menu}}
-{{/bs-dropdown}}
+<span class="value" {{action "onInspectSelector"}} {{action "onSelectorMouseEnter" on="mouseEnter"}} {{action "onMouseLeave" on="mouseLeave"}}>{{part.selector}}</span>
+{{#if isExist}}
+	{{#bs-dropdown tagName="span" classNames="count" as |dd|}}
+	  {{#dd.toggle}}{{part.count}}<span class="caret"></span>{{/dd.toggle}}
+	  {{#dd.menu classNames="selector-part-elements" as |menu|}}
+	  	{{#each part.elements as |element|}}
+			{{#menu.item}}
+				<a {{action "onInspectElement" element}} {{action "onElementMouseEnter" element on="mouseEnter"}} {{action "onMouseLeave" on="mouseLeave"}}>{{element.htmlFormated}}</a>
+			{{/menu.item}}
+		{{/each}}
+	  {{/dd.menu}}
+	{{/bs-dropdown}}
+{{else}}
+	<span class="count">0</span>
+{{/if}}

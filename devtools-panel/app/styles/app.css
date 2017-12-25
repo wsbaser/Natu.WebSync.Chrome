@@ -54,7 +54,7 @@
 }
 
 #target .validator .part>.count{
-    font-size: 9px;
+    font-size: 10px;
     vertical-align: top;
     display: inline-block;
     padding-top: 5px;
@@ -140,4 +140,8 @@
 #expandAllTreeNodes, #collapseAllTreeNodes, #refreshTree, #revalidateTreeSelectors{
 	margin-bottom: 10px;
 	margin-right: 10px;
+}
+
+.selector-part-elements{
+	font-size: 10px;
 }
