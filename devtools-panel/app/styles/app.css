@@ -49,6 +49,10 @@
 	background: #EFF74A;
 }
 
+#target li.selected .value{
+	background: #1DA1F2 !important;
+}
+
 #target .validator .part.exist.hidden>.value{
 	opacity: 0.5;
 }
@@ -59,6 +63,15 @@
     display: inline-block;
     padding-top: 5px;
     cursor: pointer;
+}
+
+#target>li>label{
+	cursor: pointer;
+	opacity: 0.7;
+}
+
+#target>li>label:hover{
+	opacity: 1;
 }
 
 .status{

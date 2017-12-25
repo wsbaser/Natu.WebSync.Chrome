@@ -4,16 +4,28 @@
 		<div class="status {{if vsclient.isConnected 'connected'}}"></div>
 		{{input id="source" value=inputValue type="text" placeholder="Type selector here..."}}
 		<ul id="target">
-			<li>
-				<label>Scss: </label>
+			<li id="targetScss">
+				<label id="targetScssLabel"
+					{{action "copySelectorStart" 0 targetScss  on="mouseDown"}} 
+					{{action "copySelectorEnd" 0 on="mouseUp"}} 
+					{{action "copySelectorEnd" 0 on="mouseLeave"}}>Scss: </label>
+				{{bs-tooltip triggerElement="#targetScssLabel" title="Copy SCSS selector" placement="bottom" delayShow=300}}
 				{{targetScss}}
 			</li>
-			<li>
-				<label>Css: </label>
+			<li id="targetCss">
+				<label id="targetCssLabel"
+					{{action "copySelectorStart" 1 targetCss on="mouseDown"}}
+					{{action "copySelectorEnd" 1 on="mouseUp"}}
+					{{action "copySelectorEnd" 1 on="mouseLeave"}}>Css: </label>
+				{{bs-tooltip triggerElement="#targetCssLabel" title="Copy CSS selector" placement="bottom" delayShow=300}}
 				{{css-validator value=targetCss}}
 			</li>
-			<li>
-				<label>XPath: </label>
+			<li id="targetXPath">
+				<label id="targetXPathLabel"
+					{{action "copySelectorStart" 2 targetXPath on="mouseDown"}}
+					{{action "copySelectorEnd" 2 on="mouseUp"}}
+					{{action "copySelectorEnd" 2 on="mouseLeave"}}>XPath: </label>
+				{{bs-tooltip triggerElement="#targetXPathLabel" title="Copy XPath selector" placement="bottom" delayShow=300}}
 				{{xpath-validator value=targetXPath}}
 			</li>
 		</ul>
