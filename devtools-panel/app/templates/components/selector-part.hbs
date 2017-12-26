@@ -1,11 +1,13 @@
-<span class="value" {{action "onInspectSelector"}} {{action "onSelectorMouseEnter" on="mouseEnter"}} {{action "onMouseLeave" on="mouseLeave"}}>{{part.selector}}</span>
+<span class="value" onclick={{action "onInspectSelector"}} {{action "onSelectorMouseEnter" on="mouseEnter"}} {{action "onMouseLeave" on="mouseLeave"}}>{{part.selector}}</span>
 {{#if isExist}}
 	{{#bs-dropdown tagName="span" classNames="count" as |dd|}}
-	  {{#dd.toggle}}{{part.count}}<span class="caret"></span>{{/dd.toggle}}
+	{{#dd.toggle}}{{part.count}}<span class="caret"></span>{{/dd.toggle}}
 	  {{#dd.menu classNames="selector-part-elements" as |menu|}}
 	  	{{#each part.elements as |element|}}
 			{{#menu.item}}
-				<a {{action "onInspectElement" element}} {{action "onElementMouseEnter" element on="mouseEnter"}} {{action "onMouseLeave" on="mouseLeave"}}>{{element.htmlFormated}}</a>
+				<a {{action "onInspectElement" element allowedKeys="ctrl"}}
+					{{action "onElementMouseEnter" element on="mouseEnter"}}
+					{{action "onMouseLeave" on="mouseLeave"}}>{{element.htmlFormated}}</a>
 			{{/menu.item}}
 		{{/each}}
 	  {{/dd.menu}}

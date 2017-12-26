@@ -34,8 +34,17 @@ export default Ember.Component.extend({
 	      { useContentScriptContext: true });
 	},
 	actions:{
-		onInspectSelector(selectorNode){
-			this.inspectSelector();
+		onInspectSelector(e){
+			if(e.ctrlKey){
+				let partSelector = this.get('part.selector');
+				let fullSelector = this.get('part.fullSelector');
+				let sourceEl = $('#source')[0];
+				sourceEl.focus()
+				sourceEl.setSelectionRange(fullSelector.length-partSelector.length, fullSelector.length);
+			}
+			else{
+				this.inspectSelector();
+			}
 		},
 		onInspectElement(element){
 			this.inspectSelector(element.get('iframeIndex'), element.get('elementIndex'));
@@ -47,7 +56,7 @@ export default Ember.Component.extend({
 			this.highlightSelector(element.get('iframeIndex'), element.get('elementIndex'));
 		},
 		onMouseLeave(){
-			this.removeHighlighting();		
+			this.removeHighlighting();
 		}
 	}
 });
