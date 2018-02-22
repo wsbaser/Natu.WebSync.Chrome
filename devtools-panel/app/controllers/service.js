@@ -35,6 +35,5 @@ export default Ember.Controller.extend({
 		// vsclient.matchUrl(currentUrl).then(urlMatchResult=>{
 		// 	this.set('applicationCtrl.urlMatchResult', urlMatchResult);
 		// });
-
 	})
 });

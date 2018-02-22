@@ -2,8 +2,8 @@
   "manifest_version": 2,
   "author": "wsbaser",
   "name": "Natu WebSync",
-  "version": "0.0.14",
-  "description": "Browser extension to synchronize web page in Chrome and it's Page Object in Visual Studio.",
+  "version": "0.0.17",
+  "description": "Easily write and verify CSS and XPath selectors.",
   "content_security_policy": "script-src 'self' ; object-src 'self'",
   "icons": {
     "64": "icons/icon64.png"

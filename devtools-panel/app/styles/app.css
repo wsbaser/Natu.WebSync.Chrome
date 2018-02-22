@@ -1,3 +1,7 @@
+#selectorsConverter{
+	margin-top: 10px;
+}
+
 .loading{
 	margin: 30px 10px;
 }
@@ -19,7 +23,7 @@
 }
 
 #target{
-	background-color: #E0EAEA;
+	/*background-color: #E0EAEA;*/
 }
 
 #target>li{
@@ -35,14 +39,14 @@
 }
 
 #target .validator .part>.value{
-	background: #FF5A5F; /*#F7907C;*/
+	background: #fc6f44; /*#FF5A5F;*/ /*#F7907C;*/
 	cursor: pointer;
 	padding: 2px 4px;
 	border-radius: 5px;
 }
 
 #target .validator .part.exist>.value{
-	background: #30C251; /*#CAF77C;*/
+	background: #b6f22b; /*#30C251; /*#CAF77C;*/
 }
 
 #target .validator .part.exist.several>.value{

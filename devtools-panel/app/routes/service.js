@@ -23,18 +23,18 @@ export default Ember.Route.extend({
 		vsclient.on("SessionWebData", this.invalidateRoute.bind(this));
 	},
 	redirect(model, transition){
-		// var currentPage;
-		// if(model){
-		// 	var urlMatchResult = this.controllerFor('application').get('urlMatchResult');
-		// 	var pageIdToRedirect = urlMatchResult ? urlMatchResult.PageId: localStorage.currentPage;
-		// 	currentPage = model.get('pages').findBy('id', pageIdToRedirect);
-		// }
-		// this.transitionTo('service.page', currentPage);
+		var currentPage;
+		if(model){
+			var urlMatchResult = this.controllerFor('application').get('urlMatchResult');
+			var pageIdToRedirect = urlMatchResult ? urlMatchResult.PageId: localStorage.currentPage;
+			currentPage = model.get('pages').findBy('id', pageIdToRedirect);
+		}
+		this.transitionTo('service.page', currentPage);
 	},
 	invalidateRoute(){
 		var serviceModel = this.controller.get('model');
 		if(!serviceModel){
-			this.getCurent
+			// this.getCurent
 			var currentService = this.store.peekAll('service').findBy('id', localStorage.currentService)
 			if(currentService){
 				this.transitionTo('service', currentService);

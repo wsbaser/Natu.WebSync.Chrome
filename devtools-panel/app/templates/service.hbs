@@ -1,21 +1,23 @@
-<div class="currenturl-wrap matched clearfix" style="display:none;">
+<div class="currenturl-wrap matched clearfix">
 	<span id="currentUrl">{{currentUrl}}</span>
 </div>
-<div class="navigation-wrap clearfix" style="display:none;">
+<div class="navigation-wrap clearfix">
  	<div id="servicesNavigation" class="navigation-item pull-left">
 		{{#if model}}
 			{{model.id}}
 		{{else}}
 			Service not matched
 		{{/if}}
-<!--		{{#bs-dropdown tagName="span"}}
-			{{#bs-dropdown-toggle class="btn btn-xs btn-danger"}}<span class="caret"></span>{{/bs-dropdown-toggle}}
-	        {{#bs-dropdown-menu}}
-			  	{{#each services as |service|}}
-	    			<li>{{#link-to "service" service}}{{service.id}}{{/link-to}}</li>
-	  			{{/each}}
-	        {{/bs-dropdown-menu}}
-		{{/bs-dropdown}} -->
+		{{#bs-dropdown tagName="span" as |dd|}}
+		  {{#dd.toggle class="btn btn-xs btn-danger"}}<span class="caret"></span>{{/dd.toggle}}
+		  {{#dd.menu as |menu|}}
+		  	{{#each services as |service|}}
+		  		{{#menu.item}}
+		      		{{#menu.link-to "service" service}}{{service.id}}{{/menu.link-to}}
+		    	{{/menu.item}}
+			{{/each}}
+		  {{/dd.menu}}
+		{{/bs-dropdown}}
 	</div>	
  	<div class="vertical-divider pull-left">-</div>
 	<div id="pageNavigation" class="navigation-item pull-left">
@@ -24,14 +26,16 @@
 		{{else}}
 			Page not matched
 		{{/if}}
-<!--		{{#bs-dropdown tagName="span"}}
-			{{#bs-dropdown-toggle class="btn btn-xs btn-danger"}}<span class="caret"></span>{{/bs-dropdown-toggle}}
-		    {{#bs-dropdown-menu}}
-			  	{{#each sortedPages as |page|}}
-					<li>{{#link-to "service.page" page}}{{page.id}}{{/link-to}}</li>
-					{{/each}}
-		    {{/bs-dropdown-menu}}
-		{{/bs-dropdown}}-->
+		{{#bs-dropdown tagName="span" as |dd|}}
+		  {{#dd.toggle class="btn btn-xs btn-danger"}}<span class="caret"></span>{{/dd.toggle}}
+		  {{#dd.menu as |menu|}}
+		  	{{#each sortedPages as |page|}}
+		  		{{#menu.item}}
+		      		{{#menu.link-to "service.page" page}}{{page.id}}{{/menu.link-to}}
+		    	{{/menu.item}}
+			{{/each}}
+		  {{/dd.menu}}
+		{{/bs-dropdown}}
 	</div>
 </div>
 {{!-- CONTENT --}}

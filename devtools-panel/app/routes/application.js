@@ -169,5 +169,8 @@ export default Ember.Route.extend({
 				}
 		]});
 		//this.invalidateRoute();
+	},
+	redirect(model, transition){
+		this.transitionTo('index');
 	}
 });

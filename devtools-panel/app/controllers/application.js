@@ -7,6 +7,9 @@ export default Ember.Controller.extend({
 		console.log ("Init ConvertController...");
 		var vsclient = this.get('vsclient');
 		vsclient.on("ConvertedSelector", this.onTargetSelectorReceived.bind(this));
+		Ember.run.schedule("afterRender", this, function() {
+      		document.getElementById('source').focus();
+    	});
 	},
 	onSourceSelectorChanged: Ember.observer('inputValue', function(){
 		var selector = this.get('inputValue').trim();
