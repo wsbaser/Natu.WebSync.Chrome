@@ -1,7 +1,7 @@
 {{#if model}}
-    <input id="expandAllTreeNodes" type="button" {{action "onExpandAllTreeNodes"}} value="Expand All"/>
-    <input id="collapseAllTreeNodes" type="button" {{action "onCollapseAllTreeNodes"}} value="Collapse All"/>
-    <input id="revalidateTreeSelectors" type="button" {{action "onRevalidateTreeSelector"}} value="Revalidate Selectors"/>
+    {{#bs-button type="primary" onClick=(action "onExpandAllTreeNodes")}}Expand All{{/bs-button}}
+    {{#bs-button type="primary" onClick=(action "onCollapseAllTreeNodes")}}Collapse All{{/bs-button}}
+    {{#bs-button type="primary" onClick=(action "onRevalidateTreeSelector")}}Revalidate Selectors{{/bs-button}}
     <label class="checkbox" style="display: inline-block; margin-left: 20px;">
         {{#if highlightInner}}
             <input id="highlightInnerComponents" type="checkbox" checked {{action "onHighlightInnerComponents"}}/>

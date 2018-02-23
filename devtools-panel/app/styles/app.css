@@ -39,14 +39,14 @@
 }
 
 #target .validator .part>.value{
-	background: #fc6f44; /*#FF5A5F;*/ /*#F7907C;*/
+	background: #FF5A5F;
 	cursor: pointer;
 	padding: 2px 4px;
 	border-radius: 5px;
 }
 
 #target .validator .part.exist>.value{
-	background: #b6f22b; /*#30C251; /*#CAF77C;*/
+	background: #30C251;
 }
 
 #target .validator .part.exist.several>.value{
