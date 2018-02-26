@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-	vsclient: Ember.inject.service('vsclient'),
+	vsclient: Ember.inject.service(),
 	backgroundConnection: Ember.inject.service('background-connection'),
 	// renderTemplate(){
 	// 	this.render('current-page', { outlet: 'current-page' });
@@ -9,8 +9,7 @@ export default Ember.Route.extend({
 	// 	this.render('content', { outlet: 'content' });
 	// },
 	model(){
-		var backgroundConnection = this.get('backgroundConnection');
-		backgroundConnection.connect();
+		this.get('backgroundConnection').connect();
 		var vsclient = this.get('vsclient');
 		return vsclient.connect()
 			.then(()=>vsclient.requestSessionWeb())
