@@ -38,22 +38,33 @@ export default Ember.Route.extend({
 		vsclient.on("SessionWebData", this.invalidateRoute.bind(this));
 	},
 	redirect(model, transition){
-		var currentPage;
-		if(model){
+		this.transitionToCurrentPage();
+	},
+	transitionToCurrentPage(serviceModel){
+		if(serviceModel){
 			var urlMatchResult = this.controllerFor('application').get('urlMatchResult');
 			var pageIdToRedirect = urlMatchResult ? urlMatchResult.PageId: localStorage.currentPage;
-			currentPage = model.get('pages').findBy('id', pageIdToRedirect);
+			var currentPage = serviceModel.get('pages').findBy('id', pageIdToRedirect);
+			if(currentPage){
+				this.transitionTo('service.page', currentPage);
+			}
 		}
-		this.transitionTo('service.page', currentPage);
 	},
 	invalidateRoute(){
-		var serviceModel = this.controller.get('model');
-		if(!serviceModel){
-			// this.getCurent
-			var currentService = this.store.peekAll('service').findBy('id', localStorage.currentService)
-			if(currentService){
-				this.transitionTo('service', currentService);
+		var currentServiceModel = this.controller.get('model');
+		var newServiceModel = this.store.peekAll('service').findBy('id', localStorage.currentService);
+		if(currentServiceModel){
+			if(newServiceModel){
+				// . service did not change. update page.
+				this.transitionToCurrentPage(newServiceModel);
+
+			}else{
+				// . service dissapeared
+				this.transitionTo('service', '');
 			}
+		}else if(newServiceModel){
+			// . received service
+			this.transitionTo('service', newServiceModel);
 		}
 	}
 });
