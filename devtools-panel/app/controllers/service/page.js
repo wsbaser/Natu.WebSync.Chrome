@@ -78,6 +78,8 @@ export default Ember.Controller.extend({
 				let fullRootSelector = selectorBuilder.innerSelector(parentRootSelector, rootSelector);
 			    let rootScss = (rootSelector ? rootSelector.scss : null);
 				let childNodes = this.iterateComponents(componentId, fullRootSelector, components[i].get('componentType.components').toArray());
+				let baseTypeNodes = this.iterateComponents(componentId, fullRootSelector, components[i].get('componentType.baseComponentType.components').toArray());
+				childNodes = childNodes.concat(baseTypeNodes);
 				nodes.push({
 					id: parentId +'.'+ componentId,
 					text:  componentName + ' (' + rootScss + ')',
