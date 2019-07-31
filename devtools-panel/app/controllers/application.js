@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 	vsclient: Ember.inject.service('vsclient'),
+	scssbuilder: Ember.inject.service('selector-scss-builder'),
 	inputValue: '',
 	init(){
 		console.log ("Init ConvertController...");
@@ -14,14 +15,36 @@ export default Ember.Controller.extend({
 	onSourceSelectorChanged: Ember.observer('inputValue', function(){
 		var selector = this.get('inputValue').trim();
 		var vsclient = this.get('vsclient');
+		var scssBuilder = this.get('scssbuilder');
 		console.log('KeyUp');
 		if(vsclient.get("isConnected")){
 			vsclient.convertSelector(selector);
 		}
 		else{
 			console.log('Convertion service not available. Using selector without conversion.');
-			this.set('targetCss', selector);
-			this.set('targetXPath', selector);
+
+			let vScss = "";
+			let vCss = "";
+			let vXPath = "";
+			try {
+				let scssSelector = scssBuilder.create(selector);
+				if (scssSelector.css) {
+					vScss = "Css";
+					vCss = scssSelector.css;
+					vXPath = "";					
+				} else {
+					vScss = "XPath";
+					vCss = "";
+					vXPath = scssSelector.xpath;					
+				}
+			} catch (e) {
+				vScss = e;
+				vCss = "";
+				vXPath = "";
+			}
+			this.set('targetScss', vScss);
+			this.set('targetCss', vCss);
+			this.set('targetXPath', vXPath);
 		}
 	}),
 	onTargetSelectorReceived(json){
