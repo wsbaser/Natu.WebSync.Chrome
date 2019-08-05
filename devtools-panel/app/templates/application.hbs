@@ -1,7 +1,7 @@
 <div class="container-fluid">
 	{{!-- CONVERTER --}}
 	<div id="selectorsConverter">
-		<div class="status {{if vsclient.isConnected 'connected'}}"></div>
+		{{!-- <div class="status {{if vsclient.isConnected 'connected'}}"></div> --}}
 		{{input id="source" value=inputValue type="text" placeholder="Type selector here..."}}
 		<ul id="target">
 			<li id="targetScss">
@@ -31,5 +31,5 @@
 		</ul>
 	</div>
 	{{!-- NAVIGATION --}}
-	{{outlet}}
+	{{!-- {{outlet}} --}}
 </div>
