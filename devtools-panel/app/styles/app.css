@@ -1,5 +1,12 @@
+#root{
+	padding: 0;
+}
+
 #selectorsConverter{
-	margin-top: 10px;
+	padding: 5px; 
+	/*margin-top: 10px;*/
+	background: #f2f7f9;
+	border-bottom: 1px solid #1880004f;
 }
 
 .loading{
@@ -11,15 +18,24 @@
 	text-align: center;
 }
 
-#source{
-	padding: 10px;
+.source-wrap{
+	margin-left: 36px;
+}
+
+input#source{
+	padding: 2px;
 	width: 100%;
 }
 
+input#source:focus{
+	outline: none;
+}
+
 #target{
-	padding: 10px;
+	margin: 0; 
+	padding: 5px 0 0 0;
 	list-style-type: none;
-	margin-top: 10px; 
+	font-size: 12px;
 }
 
 #target{
@@ -27,30 +43,39 @@
 }
 
 #target>li{
-	padding: 5px;
+	padding: 2px 0;
 }
 
 #target>li>label{
 	margin:0;
 	padding:0;
-	width: 50px;
+	width: 32px;
 	text-align: right;
-	padding-right: 5px;
+	color: darkslategrey;
+	font-weight: 400;
+}
+
+#target .validator{
+	margin-left: 2px;
 }
 
 #target .validator .part>.value{
-	background: #FF5A5F;
+	background: gainsboro;
 	cursor: pointer;
-	padding: 2px 4px;
-	border-radius: 5px;
+	padding: 1px 2px;
+	border-radius: 2px;
+	border: 1px solid #ccc;
+	color: darkslategrey;
+	opacity: 0.5;
 }
 
 #target .validator .part.exist>.value{
-	background: #30C251;
+	background: rgba(100,256,50,0.35);
+	opacity: 1;
 }
 
 #target .validator .part.exist.several>.value{
-	background: #EFF74A;
+	background: rgba(256,256,0,0.5);
 }
 
 #target li.selected .value{

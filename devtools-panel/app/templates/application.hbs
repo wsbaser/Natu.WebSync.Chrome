@@ -1,8 +1,10 @@
-<div class="container-fluid">
+<div id="root" class="container-fluid">
 	{{!-- CONVERTER --}}
 	<div id="selectorsConverter">
 		{{!-- <div class="status {{if vsclient.isConnected 'connected'}}"></div> --}}
-		{{input id="source" value=inputValue type="text" placeholder="Type selector here..."}}
+		<div class="source-wrap">
+			{{input id="source" value=inputValue type="text" placeholder="Type selector (xpath,css,scss) here..."}}
+		</div>
 		<ul id="target">
 			{{!-- <li id="targetScss">
 				<label id="targetScssLabel"
@@ -17,7 +19,7 @@
 				<label id="targetCssLabel"
 					{{action "copySelectorStart" 1 targetCss on="mouseDown"}}
 					{{action "copySelectorEnd" 1 on="mouseUp"}}
-					{{action "copySelectorEnd" 1 on="mouseLeave"}}>Css: </label>
+					{{action "copySelectorEnd" 1 on="mouseLeave"}}>Css</label>
 				{{bs-tooltip triggerElement="#targetCssLabel" title="Copy CSS selector" placement="bottom" delayShow=300}}
 				{{css-validator value=targetCss}}
 			</li>
@@ -25,7 +27,7 @@
 				<label id="targetXPathLabel"
 					{{action "copySelectorStart" 2 targetXPath on="mouseDown"}}
 					{{action "copySelectorEnd" 2 on="mouseUp"}}
-					{{action "copySelectorEnd" 2 on="mouseLeave"}}>XPath: </label>
+					{{action "copySelectorEnd" 2 on="mouseLeave"}}>XPath</label>
 				{{bs-tooltip triggerElement="#targetXPathLabel" title="Copy XPath selector" placement="bottom" delayShow=300}}
 				{{xpath-validator value=targetXPath}}
 			</li>
