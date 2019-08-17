@@ -51,6 +51,7 @@ export default Service.extend({
         let readCondition = false;
         let readFunctionArgument = false;
         let conditionOpenBrackets =  { Count: 0 };
+        scssSelector = scssSelector || '';
         for (let i = 0; i < scssSelector.length; i++) {
             let c = scssSelector[i];
             if (readCondition) {

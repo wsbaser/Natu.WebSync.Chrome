@@ -12,52 +12,45 @@
 }
 
 #source{
+	padding: 10px;
 	width: 100%;
-	height: 100%;
-    font-size: 12px;
-    color: #101820FF;
-	display: inline-block;
-    overflow: hidden;
 }
 
 #target{
-	/* padding: 10px; */
+	padding: 10px;
 	list-style-type: none;
 	margin-top: 10px; 
-	/* margin:0; */
-	padding:0;
-	padding-inline-start: 0px
+}
+
+#target{
+	/*background-color: #E0EAEA;*/
 }
 
 #target>li{
-	/* padding: 5px; */
-	margin:0;
-	padding:0;
-	font-size: 12px;
-	font-weight: 600;
+	padding: 5px;
 }
 
 #target>li>label{
 	margin:0;
 	padding:0;
 	width: 50px;
-	text-align: left;
-	/* padding-right: 5px; */
+	text-align: right;
+	padding-right: 5px;
 }
 
 #target .validator .part>.value{
-	background: #FC766AFF;
+	background: #FF5A5F;
 	cursor: pointer;
-	padding: 2px 2px;
+	padding: 2px 4px;
 	border-radius: 5px;
 }
 
 #target .validator .part.exist>.value{
-	background: #97BC62FF;
+	background: #30C251;
 }
 
 #target .validator .part.exist.several>.value{
-	background: #FEE715FF;
+	background: #EFF74A;
 }
 
 #target li.selected .value{

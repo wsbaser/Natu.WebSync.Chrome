@@ -29,7 +29,7 @@
 import { moduleFor, test } from 'ember-qunit';
 import cases from 'qunit-parameterize';
 
-moduleFor('service:selector-scss-builder', 'Unit | Service | selector scss builder', {
+moduleFor('service:scss-builder', 'Unit | Service | selector scss builder', {
   // Specify the other units that are required for this test.
   // needs: ['service:foo']
 });

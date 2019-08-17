@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 	vsclient: Ember.inject.service('vsclient'),
-	scssbuilder: Ember.inject.service('selector-scss-builder'),
+	scssBuilder: Ember.inject.service(),
 	inputValue: '',
 	init(){
 		console.log ("Init ConvertController...");
@@ -15,48 +15,30 @@ export default Ember.Controller.extend({
 	onSourceSelectorChanged: Ember.observer('inputValue', function(){
 		var selector = this.get('inputValue').trim();
 		var vsclient = this.get('vsclient');
-		var scssBuilder = this.get('scssbuilder');
-		console.log('KeyUp');
-		if(vsclient.get("isConnected")){
-			vsclient.convertSelector(selector);
-		}
-		else{
-			console.log('Convertion service not available. Using selector without conversion.');
+		var scssBuilder = this.get('scssBuilder');
 
-			let vScss = "";
-			let vCss = "";
-			let vXPath = "";
-			try {
-				let scssSelector = scssBuilder.create(selector);
-				if (scssSelector.css) {
-					vScss = "Css";
-					vCss = scssSelector.css;
-					vXPath = "";					
-				} else {
-					vScss = "XPath";
-					vCss = "";
-					vXPath = scssSelector.xpath;					
-				}
-			} catch (e) {
-				vScss = e;
-				vCss = "";
-				vXPath = "";
-			}
-			this.set('targetScss', vScss);
-			this.set('targetCss', vCss);
-			this.set('targetXPath', vXPath);
+		let css = "";
+		let xpath = "";
+		try {
+			let scss = scssBuilder.create(selector);
+			css = scss.css;
+			xpath = scss.xpath;
+		} catch (e) {
+			console.log('Unable to convert scss selector "' + selector + '"');
 		}
+		this.set('targetCss', css || '');
+		this.set('targetXPath', xpath || '');
 	}),
 	onTargetSelectorReceived(json){
 		var data = JSON.parse(json);
-		this.set('targetScss', data.Scss);
+		// this.set('targetScss', data.Scss);
 		this.set('targetCss', data.Css||'');
 		this.set('targetXPath', data.XPath||'');
 	},
 	getSelectorRootElement(selectorType){
 		switch(selectorType){
-			case 0:
-				return $('#targetScss');
+			// case 0:
+				// return $('#targetScss');
 			case 1:
 				return $('#targetCss');
 			case 2:
