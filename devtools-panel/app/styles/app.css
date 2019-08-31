@@ -10,8 +10,7 @@
 
 #selectorsConverter{
 	padding: 5px; 
-	/*margin-top: 10px;*/
-	background: #f2f7f9;
+	background: ghostwhite;
 	border-bottom: 1px solid #1880004f;
 }
 
@@ -76,7 +75,7 @@ input#source:focus{
 }
 
 #target .validator .part.exist>.value{
-	background: rgba(100,256,50,0.35);
+	background: rgba(100,256,50,0.5);
 	opacity: 1;
 }
 
@@ -195,7 +194,7 @@ input#source:focus{
 }
 
 #elementsList{
-	padding-top: 5px;
+	padding: 5px 0 0 0;
 	list-style-type: none;
 }
 

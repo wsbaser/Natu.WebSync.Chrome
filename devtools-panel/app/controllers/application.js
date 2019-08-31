@@ -3,6 +3,8 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
 	vsclient: Ember.inject.service('vsclient'),
 	scssBuilder: Ember.inject.service(),
+	selectorHighlighter: Ember.inject.service(),
+	selectorInspector: Ember.inject.service(),
 	inputValue: '',
 	init(){
 		console.log ("Init ConvertController...");
@@ -66,13 +68,19 @@ export default Ember.Controller.extend({
 			this.set('selectedPart', part);
 		},
 		onInspectElement(element){
-			this.inspectSelector(element.get('iframeIndex'), element.get('elementIndex'));
+			this.get('selectorInspector').inspect(
+				element.get('part.fullSelectorObj'), 
+				element.get('iframeIndex'), 
+				element.get('elementIndex'));
 		},
 		onElementMouseEnter(element){
-			this.highlightSelector(element.get('iframeIndex'), element.get('elementIndex'));
+			this.get('selectorHighlighter').highlight(
+				element.get('part.fullSelectorObj'), 
+				element.get('iframeIndex'),
+				element.get('elementIndex'));
 		},
 		onMouseLeave(){
-			this.removeHighlighting();
+			this.get('selectorHighlighter').removeHighlighting();
 		}
 	}
 });

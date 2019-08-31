@@ -4,6 +4,8 @@ export default Ember.Component.extend({
 	tagName: 'span',
 	classNames: ['part'],
 	classNameBindings:['isExist:exist', 'isSeveral:several', 'hasHidden:hidden'],
+	selectorHighlighter: Ember.inject.service(),
+	selectorInspector: Ember.inject.service(),
 	isXPath:false,
 	isSeveral: Ember.computed('part.count', function(){
 		return this.get('part.count')>1;
@@ -14,24 +16,11 @@ export default Ember.Component.extend({
 	hasHidden: Ember.computed('part.displayedCount', 'part.count', function(){
 		return this.get('part.count')>this.get('part.displayedCount');
 	}),
-	executeContentScript(script){
-	   	chrome.devtools.inspectedWindow.eval(script, { useContentScriptContext: true });
-	},
-	removeHighlighting(){
-		this.executeContentScript('removeHighlighting()');
-	},
 	highlightSelector(iframeIndex, elementIndex){
-		let script = 'highlightSelector("' + this.get('part.fullSelector') + '",' + this.get('isXPath') + ',' + iframeIndex + ',' + elementIndex +')';
-		this.executeContentScript(script);
+		this.get('selectorHighlighter').highlight(this.get('part.fullSelectorObj'), iframeIndex, elementIndex);
 	},
 	inspectSelector(iframeIndex, elementIndex){
-		let scriptToInspectSelector = 
-			this.get('isXPath')?
-			'inspectXpathSelector("' + this.get('part.fullSelector') + '",' + iframeIndex + ',' + elementIndex + ')':
-			'inspectCssSelector("' + this.get('part.fullSelector') + '",' + iframeIndex + ',' + elementIndex + ')';
-	   	chrome.devtools.inspectedWindow.eval(
-	      scriptToInspectSelector,
-	      { useContentScriptContext: true });
+		this.get('selectorInspector').inspect(this.get('part.fullSelectorObj'), iframeIndex, elementIndex);
 	},
 	actions:{
 		onInspectSelector(e){
@@ -57,7 +46,7 @@ export default Ember.Component.extend({
 		// 	this.highlightSelector(element.get('iframeIndex'), element.get('elementIndex'));
 		// },
 		onMouseLeave(){
-			this.removeHighlighting();
+			this.get('selectorHighlighter').removeHighlighting();
 		}
 	}
 });

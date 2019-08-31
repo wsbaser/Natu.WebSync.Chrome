@@ -1,15 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
-	highlight(selector){
+	highlight(selector, iframeIndex, elementIndex){
 		if(!selector){
 			return;
 		}
 		if(selector.css){
-			this._callEval('highlightSelector("' + selector.css + '", false)');
+			this._callEval('highlightSelector("' + selector.css + '", false' + ',' + iframeIndex + ',' + elementIndex +')');
 		}
 		else{
-			this._callEval('highlightSelector("' + selector.xpath + '", true)');
+			this._callEval('highlightSelector("' + selector.xpath + '", true' + ',' + iframeIndex + ',' + elementIndex +')');
 		}
 	},
 	highlightAll(selectors){

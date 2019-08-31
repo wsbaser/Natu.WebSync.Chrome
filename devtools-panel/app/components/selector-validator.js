@@ -5,6 +5,7 @@ import SelectorPartElement from '../models/selector-part-element';
 export default Ember.Component.extend({
 	tagName: 'span',
 	classNames: ['validator'],
+	isXPath: false,
 	validateSelectorPart(part, scriptToEvaluateSelector){
 	   	chrome.devtools.inspectedWindow.eval(
 	      scriptToEvaluateSelector,
@@ -16,21 +17,21 @@ export default Ember.Component.extend({
 				part.set('count', 0);
 			}
 			else{
-				var elements = this.getElements(result);
+				var elements = this.getElements(part, result);
 				part.set('isValid', true);
 				part.set('elements', elements);
 				part.set('count', elements.length);
-
 			}
 	      }.bind(this));
 	},
-	getElements(iframesDataList){
+	getElements(part, iframesDataList){
 		let elements = [];
 		for (var i = 0; i < iframesDataList.length; i++) {
 			let iframeData = iframesDataList[i];
 			for (var j = 0; j < iframeData.elements.length; j++) {
 				let element = iframeData.elements[j];
 				elements.push(SelectorPartElement.create({
+					part: part,
 					displayed: element.displayed,
 					html: element.html,
 					iframeIndex: i,
@@ -54,10 +55,11 @@ export default Ember.Component.extend({
   		partSelectors.forEach(function(partSelector){
 			fullSelector+=partSelector;
 			parts.push(SelectorPart.create({
+				isXPath: this.get('isXPath'),
 				selector:partSelector,
 				fullSelector:fullSelector
 			}));
-  		});
+  		}.bind(this));
   		return parts;
   	},
 	splitIgnoringConditions(selector, delimiters) {
