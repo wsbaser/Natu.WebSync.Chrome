@@ -4,6 +4,10 @@
   clear: both;
 }
 
+.hidden{
+	display: none;
+}
+
 #root{
 	padding: 0;
 }
@@ -89,6 +93,10 @@ input#source:focus{
 
 #target .validator .part.exist.hidden>.value{
 	opacity: 0.5;
+}
+
+#target li .value.selected:before{
+	/*content:'...';*/
 }
 
 #target .validator .part>.count{
@@ -202,16 +210,20 @@ input#source:focus{
 
 }
 
+#elementsList li:hover{
+	background-color: #e9f0fb;
+}
+
+#elementsList li.selected{
+	background: rgb(207, 232, 252);
+}
+
 #elementsList .part-element{
 	font-size: 10px;
 	cursor: pointer;
 	float: left;
 	font-family: Menlo, monospace;
 	color: rgb(136, 18, 128);
-}
-
-#elementsList li:hover{
-	background-color: #e9f0fb;
 }
 
 /*#elementsList li:hover .element-index{

@@ -15,7 +15,7 @@
 				{{targetScss}}
 			</li>
 			--}}
-			<li id="targetCss">
+			<li id="targetCss" >
 				<label id="targetCssLabel"
 					{{action "copySelectorStart" 1 targetCss on="mouseDown"}}
 					{{action "copySelectorEnd" 1 on="mouseUp"}}
@@ -23,7 +23,8 @@
 				{{bs-tooltip triggerElement="#targetCssLabel" title="Copy CSS selector" placement="bottom" delayShow=300}}
 				{{css-validator value=targetCss onPartSelected=(action "onPartSelected") }}
 			</li>
-			<li id="targetXPath">
+			
+			<li id="targetXPath" >
 				<label id="targetXPathLabel"
 					{{action "copySelectorStart" 2 targetXPath on="mouseDown"}}
 					{{action "copySelectorEnd" 2 on="mouseUp"}}
@@ -36,7 +37,7 @@
 	<ul id="elementsList">
 		{{#if selectedPart}}
 			{{#each selectedPart.elements as |element|}}
-				<li class="clearfix">
+				<li class="clearfix {{if element.isSelected "selected" }}">
 					<div class="element-index">{{element.elementIndex}}.</div>
 					<div class="part-element"
 						{{action "onInspectElement" element allowedKeys="ctrl"}}

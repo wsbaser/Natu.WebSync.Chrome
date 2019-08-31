@@ -52,12 +52,14 @@ export default Ember.Component.extend({
   		var fullSelector='';
   		var parts = [];
   		var partSelectors = this.splitIgnoringConditions(selectorString, delimiters);
+  		let partIndex=0;
   		partSelectors.forEach(function(partSelector){
 			fullSelector+=partSelector;
 			parts.push(SelectorPart.create({
 				isXPath: this.get('isXPath'),
 				selector:partSelector,
-				fullSelector:fullSelector
+				fullSelector:fullSelector,
+				index: partIndex++
 			}));
   		}.bind(this));
   		return parts;
@@ -99,5 +101,15 @@ export default Ember.Component.extend({
 			selectorParts.push(value);
 		}
 		return selectorParts;
-	}
+	},
+	actions:{
+  		onPartSelected(part){
+	        this.get('parts').forEach(function(p){
+	          if(p != part){
+	            p.set('isSelected', false);
+	          }
+	        });
+  			this.get('onPartSelected')(part);
+  		}
+  	}
 });

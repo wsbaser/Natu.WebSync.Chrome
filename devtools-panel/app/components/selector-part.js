@@ -16,12 +16,6 @@ export default Ember.Component.extend({
 	hasHidden: Ember.computed('part.displayedCount', 'part.count', function(){
 		return this.get('part.count')>this.get('part.displayedCount');
 	}),
-	highlightSelector(iframeIndex, elementIndex){
-		this.get('selectorHighlighter').highlight(this.get('part.fullSelectorObj'), iframeIndex, elementIndex);
-	},
-	inspectSelector(iframeIndex, elementIndex){
-		this.get('selectorInspector').inspect(this.get('part.fullSelectorObj'), iframeIndex, elementIndex);
-	},
 	actions:{
 		onInspectSelector(e){
 			if(e.ctrlKey){
@@ -32,19 +26,21 @@ export default Ember.Component.extend({
 				sourceEl.setSelectionRange(fullSelector.length-partSelector.length, fullSelector.length);
 			}
 			else{
-				this.inspectSelector();
+				let partElements = this.get('part.elements');
+				if(partElements.length>0){
+					for (var i = partElements.length - 1; i >= 0; i--) {
+						partElements[i].set('isSelected', false);
+					};
+					partElements[0].set('isSelected', true);
+					this.get('selectorInspector').inspect(this.get('part.fullSelectorObj'));
+				}
+				this.set('part.isSelected', true);
+				this.get('onPartSelected')(this.get('part'));
 			}
-			this.get('onPartSelected')(this.get('part'));
 		},
 		onSelectorMouseEnter(){
-			this.highlightSelector();
+			this.get('selectorHighlighter').highlight(this.get('part.fullSelectorObj'));
 		},
-		// onInspectElement(element){
-		// 	this.inspectSelector(element.get('iframeIndex'), element.get('elementIndex'));
-		// },
-		// onElementMouseEnter(element){
-		// 	this.highlightSelector(element.get('iframeIndex'), element.get('elementIndex'));
-		// },
 		onMouseLeave(){
 			this.get('selectorHighlighter').removeHighlighting();
 		}

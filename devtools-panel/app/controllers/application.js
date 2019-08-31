@@ -30,6 +30,7 @@ export default Ember.Controller.extend({
 		}
 		this.set('targetCss', css || '');
 		this.set('targetXPath', xpath || '');
+		this.set('selectedPart', null);
 	}),
 	onTargetSelectorReceived(json){
 		var data = JSON.parse(json);
@@ -72,6 +73,12 @@ export default Ember.Controller.extend({
 				element.get('part.fullSelectorObj'), 
 				element.get('iframeIndex'), 
 				element.get('elementIndex'));
+			element.set('isSelected', true);
+			element.get('part.elements').forEach(function(e){
+	          if(e != element){
+	            e.set('isSelected', false);
+	          }
+	        });
 		},
 		onElementMouseEnter(element){
 			this.get('selectorHighlighter').highlight(
