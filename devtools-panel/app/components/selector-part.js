@@ -3,10 +3,18 @@ import Ember from 'ember';
 export default Ember.Component.extend({
 	tagName: 'span',
 	classNames: ['part'],
-	classNameBindings:['isExist:exist', 'isSeveral:several', 'hasHidden:hidden'],
+	classNameBindings:[
+		'isExist:exist',
+		'isSeveral:several', 
+		'hasHidden:hidden',
+		'isNotDisplayed:not-displayed',
+		'part.isSelected:selected'],
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
 	isXPath:false,
+	isNotDisplayed: Ember.computed('part.displayed', function(){
+		return !this.get('part.displayed');
+	}),
 	isSeveral: Ember.computed('part.count', function(){
 		return this.get('part.count')>1;
 	}),

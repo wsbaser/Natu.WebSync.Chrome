@@ -4,10 +4,6 @@
   clear: both;
 }
 
-.hidden{
-	display: none;
-}
-
 #root{
 	padding: 0;
 }
@@ -66,6 +62,10 @@ input#source:focus{
 
 #target .validator{
 	margin-left: 2px;
+}
+
+#target .validator .part.not-displayed{
+	opacity: 0.5;
 }
 
 #target .validator .part>.value{
@@ -224,6 +224,10 @@ input#source:focus{
 	float: left;
 	font-family: Menlo, monospace;
 	color: rgb(136, 18, 128);
+}
+
+#elementsList li.not-displayed .part-element{
+	opacity: 0.5;
 }
 
 /*#elementsList li:hover .element-index{

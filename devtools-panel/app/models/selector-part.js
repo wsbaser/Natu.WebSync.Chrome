@@ -10,5 +10,10 @@ export default Ember.Object.extend({
 		return this.get('isXPath')?
 			{xpath: this.get('fullSelector')}:
 			{css: this.get('fullSelector')};
+	}),
+	displayed: Ember.computed('elements', function(){
+		return this.get('elements')? 
+			this.get('elements').some(e=>e.get('displayed')):
+			false;
 	})
 });
