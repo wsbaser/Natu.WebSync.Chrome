@@ -1,3 +1,9 @@
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 #root{
 	padding: 0;
 }
@@ -187,3 +193,41 @@ input#source:focus{
 .selector-part-elements{
 	font-size: 10px;
 }
+
+#elementsList{
+	padding-top: 5px;
+	list-style-type: none;
+}
+
+#elementsList>li{
+
+}
+
+#elementsList .part-element{
+	font-size: 10px;
+	cursor: pointer;
+	float: left;
+	font-family: Menlo, monospace;
+	color: rgb(136, 18, 128);
+}
+
+#elementsList li:hover{
+	background-color: #e9f0fb;
+}
+
+/*#elementsList li:hover .element-index{
+	color: grey;
+	font-weight: bold;
+}
+*/
+
+#elementsList .element-index{
+	padding-right: 5px;
+    width: 43px;
+    float: left;
+    padding-top: 1px;
+    font-size: 9px;
+    text-align: right;
+    color: lightgrey;
+}
+

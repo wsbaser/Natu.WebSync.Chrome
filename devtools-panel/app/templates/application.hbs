@@ -3,7 +3,7 @@
 	<div id="selectorsConverter">
 		{{!-- <div class="status {{if vsclient.isConnected 'connected'}}"></div> --}}
 		<div class="source-wrap">
-			{{input id="source" value=inputValue type="text" placeholder="Type selector (xpath,css,scss) here..."}}
+			{{input id="source" value=inputValue type="text" placeholder="Type selector here..."}}
 		</div>
 		<ul id="target">
 			{{!-- <li id="targetScss">
@@ -21,7 +21,7 @@
 					{{action "copySelectorEnd" 1 on="mouseUp"}}
 					{{action "copySelectorEnd" 1 on="mouseLeave"}}>Css</label>
 				{{bs-tooltip triggerElement="#targetCssLabel" title="Copy CSS selector" placement="bottom" delayShow=300}}
-				{{css-validator value=targetCss}}
+				{{css-validator value=targetCss onPartSelected=(action "onPartSelected") }}
 			</li>
 			<li id="targetXPath">
 				<label id="targetXPathLabel"
@@ -29,10 +29,24 @@
 					{{action "copySelectorEnd" 2 on="mouseUp"}}
 					{{action "copySelectorEnd" 2 on="mouseLeave"}}>XPath</label>
 				{{bs-tooltip triggerElement="#targetXPathLabel" title="Copy XPath selector" placement="bottom" delayShow=300}}
-				{{xpath-validator value=targetXPath}}
+				{{xpath-validator value=targetXPath onPartSelected=(action "onPartSelected") }}
 			</li>
 		</ul>
 	</div>
+	<ul id="elementsList">
+		{{#if selectedPart}}
+			{{#each selectedPart.elements as |element|}}
+				<li class="clearfix">
+					<div class="element-index">{{element.elementIndex}}.</div>
+					<div class="part-element"
+						{{action "onInspectElement" element allowedKeys="ctrl"}}
+						{{action "onElementMouseEnter" element on="mouseEnter"}}
+						{{action "onMouseLeave" on="mouseLeave"}}>{{element.htmlFormated}}</div>
+				</li>
+			{{/each}}
+		{{/if}}
+	</ul>
+
 	{{!-- NAVIGATION --}}
 	{{!-- {{outlet}} --}}
 </div>

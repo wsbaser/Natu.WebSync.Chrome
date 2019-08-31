@@ -9,5 +9,10 @@ export default SelectorValidator.extend({
 		parts.forEach(function(part){
 			this.validateSelectorPart(part,'evaluateXpath("' + part.get('fullSelector') + '")');
 		}.bind(this));
-  	})
+  	}),
+  	actions:{
+  		onPartSelected(part){
+  			this.get('onPartSelected')(part);
+  		}
+  	}
 });

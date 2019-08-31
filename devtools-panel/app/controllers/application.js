@@ -61,6 +61,18 @@ export default Ember.Controller.extend({
 		},
 		copySelectorEnd(selectorType){
 			this.getSelectorRootElement(selectorType).removeClass('selected');
+		},
+		onPartSelected(part){
+			this.set('selectedPart', part);
+		},
+		onInspectElement(element){
+			this.inspectSelector(element.get('iframeIndex'), element.get('elementIndex'));
+		},
+		onElementMouseEnter(element){
+			this.highlightSelector(element.get('iframeIndex'), element.get('elementIndex'));
+		},
+		onMouseLeave(){
+			this.removeHighlighting();
 		}
 	}
 });

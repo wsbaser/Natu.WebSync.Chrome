@@ -45,16 +45,17 @@ export default Ember.Component.extend({
 			else{
 				this.inspectSelector();
 			}
-		},
-		onInspectElement(element){
-			this.inspectSelector(element.get('iframeIndex'), element.get('elementIndex'));
+			this.get('onPartSelected')(this.get('part'));
 		},
 		onSelectorMouseEnter(){
 			this.highlightSelector();
 		},
-		onElementMouseEnter(element){
-			this.highlightSelector(element.get('iframeIndex'), element.get('elementIndex'));
-		},
+		// onInspectElement(element){
+		// 	this.inspectSelector(element.get('iframeIndex'), element.get('elementIndex'));
+		// },
+		// onElementMouseEnter(element){
+		// 	this.highlightSelector(element.get('iframeIndex'), element.get('elementIndex'));
+		// },
 		onMouseLeave(){
 			this.removeHighlighting();
 		}
