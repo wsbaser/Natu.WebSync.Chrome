@@ -1,4 +1,5 @@
 <span class="value" onclick={{action "onInspectSelector"}} {{action "onSelectorMouseEnter" on="mouseEnter"}} {{action "onMouseLeave" on="mouseLeave"}}>{{part.selector}}</span>
+<i class="remove-icon" onclick={{action "onRemovePart"}} />
 {{!-- 
 {{#if isExist}}
 	{{#bs-dropdown tagName="span" classNames="count" as |dd|}}
