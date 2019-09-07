@@ -242,24 +242,6 @@ input#source:focus{
 	background: rgb(207, 232, 252);
 }
 
-#elementsList .part-element{
-	font-size: 10px;
-	cursor: pointer;
-	float: left;
-	font-family: Menlo, monospace;
-	color: rgb(136, 18, 128);
-}
-
-#elementsList li.not-displayed .part-element{
-	opacity: 0.5;
-}
-
-/*#elementsList li:hover .element-index{
-	color: grey;
-	font-weight: bold;
-}
-*/
-
 #elementsList .element-index{
 	padding-right: 5px;
     width: 43px;
@@ -267,6 +249,63 @@ input#source:focus{
     padding-top: 1px;
     font-size: 9px;
     text-align: right;
-    color: lightgrey;
+    color: rgb(48, 57, 66);
+    cursor: pointer;
 }
+
+#elementsList .part-element{
+	font-size: 10px;
+	float: left;
+	font-family: Menlo, monospace;
+	cursor: default;
+}
+
+#elementsList li.not-displayed .part-element{
+	opacity: 0.5;
+}
+
+.part-element .tag{
+	color: rgb(168, 148, 166);
+}
+
+.part-element .tag>.tag-name{
+	cursor: pointer;
+	color: rgb(136, 18, 128);
+	text-transform: lowercase;
+}
+
+.part-element .attribute{
+	color: rgb(168, 148, 166);
+}
+
+
+.part-element .attribute>.name{
+	cursor: pointer;
+	color: rgb(153,69,0);
+}
+
+.part-element .attribute>.value{
+	cursor: pointer;
+	color: rgb(26, 26, 166);
+}
+
+.part-element .text{
+	cursor: pointer;
+	display: inline-block;
+	max-width: 300px;
+	vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgb(48, 57, 66);
+}
+
+li.selected #elementsList .element-index:hover,
+li.selected .part-element .tag>.tag-name:hover,
+li.selected .part-element .attribute>.value:hover,
+li.selected .part-element .text:hover,
+.part-element .selected{
+	font-weight: bold;
+}
+
 

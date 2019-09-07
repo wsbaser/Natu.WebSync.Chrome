@@ -53,6 +53,7 @@ function serializeElements(iframeData){
 	for (var i = iframeData.length - 1; i >= 0; i--) {
 		iframeData[i].elements = iframeData[i].elements.map(e=>{
 			return {
+				domElement: e,
 				tagName: e.tagName,
 				id: e.id,
 				name: e.name,
@@ -113,8 +114,8 @@ function inspectElement(iframeDataList, iframeIndex, elementIndex){
 		var arr = [].concat.apply([], iframeDataList.map(function(iframeData){return iframeData.elements;}));
 		let element = arr[0];
 		if(element){
-			element.scrollIntoViewIfNeeded();
-			inspect(element);
+			element.domElement.scrollIntoViewIfNeeded();
+			inspect(element.domElement);
 		}
 		else{
 			console.log('No elements to inspect.');
@@ -149,14 +150,14 @@ window.createHighlighterElement = function(documentNode,clientRect){
 window.hightlightElementsInIframe = function(iframeNode, iframeElements){
 	if(iframeElements[0]){
 		// .scroll to first
-		iframeElements[0].scrollIntoViewIfNeeded();
+		iframeElements[0].domElement.scrollIntoViewIfNeeded();
 		// iframeElements[0].scrollIntoView({
 		//   	behavior: "smooth",
 		//     block:   "end"
 		// });
 	}
 	iframeElements.forEach((iframeElement)=>{
-		let clientRects = Array.from(iframeElement.getClientRects());
+		let clientRects = Array.from(iframeElement.domElement.getClientRects());
 		clientRects.forEach((clientRect)=>{
 			createHighlighterElement(iframeNode, clientRect);
 		});

@@ -11,6 +11,7 @@ export default Component.extend({
 			for (var i = 0; i < arr.length-1; i++) {
 				values.push(Ember.Object.create({text: arr[i]+' '}));
 			}
+			values.push(Ember.Object.create({text: arr[arr.length-1]}));
 		}else{
 			values.push(Ember.Object.create({text: attributeValue}));
 		}
