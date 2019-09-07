@@ -52,10 +52,15 @@ function evaluteSelectorInAllIframes(selector, evaluateFunc){
 function serializeElements(iframeData){
 	for (var i = iframeData.length - 1; i >= 0; i--) {
 		iframeData[i].elements = iframeData[i].elements.map(e=>{
-			return Object.assign(e, {
+			return {
+				tagName: e.tagName,
+				id: e.id,
+				name: e.name,
+				className: e.className,
+				innerText: e.innerText,
 				displayed: e.style.display!=='none',
-				html: e.outerHTML
-			});
+				containsTags: e.innerHTML.indexOf('<') != -1
+			};
 		});
 	};
 	return iframeData;

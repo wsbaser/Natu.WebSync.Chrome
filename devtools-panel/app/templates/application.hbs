@@ -40,13 +40,7 @@
 	<ul id="elementsList">
 		{{#if selectedPart}}
 			{{#each selectedPart.elements as |element|}}
-				<li class="clearfix {{if element.isSelected "selected" }} {{unless element.displayed "not-displayed" }}">
-					<div class="element-index">{{element.elementIndex}}.</div>
-					<div class="part-element"
-						{{action "onInspectElement" element allowedKeys="ctrl"}}
-						{{action "onElementMouseEnter" element on="mouseEnter"}}
-						{{action "onMouseLeave" on="mouseLeave"}}>{{element.htmlFormated}}</div>
-				</li>
+				{{selector-part-element partElement=element}}
 			{{/each}}
 		{{/if}}
 	</ul>

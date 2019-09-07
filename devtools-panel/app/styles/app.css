@@ -83,7 +83,7 @@ input#source:focus{
 	margin-left: 2px;
 }
 
-#target .validator .part.not-displayed{
+#target .validator .part.not-displayed>.value{
 	opacity: 0.5;
 }
 

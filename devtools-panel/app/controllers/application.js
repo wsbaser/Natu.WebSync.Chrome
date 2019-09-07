@@ -3,8 +3,6 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
 	vsclient: Ember.inject.service('vsclient'),
 	scssBuilder: Ember.inject.service(),
-	selectorHighlighter: Ember.inject.service(),
-	selectorInspector: Ember.inject.service(),
 	inputValue: '',
 	init(){
 		console.log ("Init ConvertController...");
@@ -74,27 +72,6 @@ export default Ember.Controller.extend({
 		},
 		onPartSelected(part){
 			this.set('selectedPart', part);
-		},
-		onInspectElement(element){
-			this.get('selectorInspector').inspect(
-				element.get('part.fullSelectorObj'), 
-				element.get('iframeIndex'), 
-				element.get('elementIndex'));
-			element.set('isSelected', true);
-			element.get('part.elements').forEach(function(e){
-	          if(e != element){
-	            e.set('isSelected', false);
-	          }
-	        });
-		},
-		onElementMouseEnter(element){
-			this.get('selectorHighlighter').highlight(
-				element.get('part.fullSelectorObj'), 
-				element.get('iframeIndex'),
-				element.get('elementIndex'));
-		},
-		onMouseLeave(){
-			this.get('selectorHighlighter').removeHighlighting();
 		},
 		onRemoveSelector(){
 			this.set('inputValue', '');
