@@ -11,8 +11,11 @@ export default Ember.Controller.extend({
 		var vsclient = this.get('vsclient');
 		vsclient.on("ConvertedSelector", this.onTargetSelectorReceived.bind(this));
 		Ember.run.schedule("afterRender", this, function() {
-      		document.getElementById('source').focus();
+      		this.focusInput();
     	});
+	},
+	focusInput(){
+		document.getElementById('source').focus();
 	},
 	onSourceSelectorChanged: Ember.observer('inputValue', function(){
 		var selector = this.get('inputValue').trim();
@@ -31,6 +34,10 @@ export default Ember.Controller.extend({
 		this.set('targetCss', css || '');
 		this.set('targetXPath', xpath || '');
 		this.set('selectedPart', null);
+
+		if(!selector){
+			this.focusInput();
+		}
 	}),
 	onTargetSelectorReceived(json){
 		var data = JSON.parse(json);
@@ -88,6 +95,9 @@ export default Ember.Controller.extend({
 		},
 		onMouseLeave(){
 			this.get('selectorHighlighter').removeHighlighting();
+		},
+		onRemoveSelector(){
+			this.set('inputValue', '');
 		}
 	}
 });
