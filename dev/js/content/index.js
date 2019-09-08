@@ -102,8 +102,8 @@ function inspectElement(iframeDataList, iframeIndex, elementIndex){
 			var iframeData = iframeDataList[iframeIndex];
 			if(iframeData){
 				let element = iframeData.elements[elementIndex];
-				element.scrollIntoViewIfNeeded();
-				inspect(element);
+				element.domElement.scrollIntoViewIfNeeded();
+				inspect(element.domElement);
 			}
 		}
 		else{
