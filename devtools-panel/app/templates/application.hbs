@@ -7,6 +7,9 @@
 				onclick={{action "onRemoveSelector"}} 
 				title="Remove selector"/>
 			{{input id="source" value=inputValue type="text" placeholder="Type selector here..."}}
+			<i class="copy-icon"
+				onclick={{action "onCopySelector"}}
+				title="Copy selector"/>
 		</div>
 		<ul id="target">
 			{{!-- <li id="targetScss">

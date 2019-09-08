@@ -308,4 +308,15 @@ li.selected .part-element .text:hover,
 	font-weight: bold;
 }
 
+.source-wrap i.copy-icon{
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	cursor: pointer;
+	width: 18px;
+	height: 18px;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABmJLR0QA/wD/AP+gvaeTAAAAzElEQVRYw+3SvQrCMBQF4LydS1110RdQfA/BruKqD+DqK0iLolC6CY6url0Sm11Nen806Dlwtlzy5RJjfjW9+d5xm+XFQRV4vVty/fxwebb9vCySBW7rxg1aZLYoj0kCdxerh5QCRiElPvx0XZGBQaQ/zImfH69ObrapycC3SAlgdWvcqEVOIjf5DPgSKQH0l3ZBxnwbcWBXZOgBKkAppCpQAqkO5CLFgaF+FUjdMIAAAggggAACCCCAAAIYC6T0o0DDCYB/AdQuC5hyHvDPhXHUYAyIAAAAAElFTkSuQmCC);
+	background-size: cover;
+}
+
 

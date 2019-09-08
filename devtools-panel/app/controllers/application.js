@@ -15,6 +15,9 @@ export default Ember.Controller.extend({
 	focusInput(){
 		document.getElementById('source').focus();
 	},
+	selectInput(){
+		document.getElementById('source').select();
+	},
 	onSourceSelectorChanged: Ember.observer('inputValue', function(){
 		var selector = this.get('inputValue').trim();
 		var vsclient = this.get('vsclient');
@@ -75,6 +78,10 @@ export default Ember.Controller.extend({
 		},
 		onRemoveSelector(){
 			this.set('inputValue', '');
+		},
+		onCopySelector(){
+			this.copyToClipboard(this.get('inputValue'));
+			this.selectInput();
 		}
 	}
 });
