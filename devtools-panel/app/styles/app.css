@@ -319,4 +319,13 @@ li.selected .part-element .text:hover,
 	background-size: cover;
 }
 
+.source-wrap .selector-status{
+	width: 10px;
+    height: 13px;
+    right: 12px;
+    top: 9px;
+    position: absolute;
+    background: rgba(256,256,0,0.5);
+}
+
 
