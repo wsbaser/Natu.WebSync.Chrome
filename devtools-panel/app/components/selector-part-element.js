@@ -1,6 +1,11 @@
 import Component from '@ember/component';
 
 export default Component.extend({
+	tagName: 'li',
+	classNames: ['clearfix','part-element'],
+	classNameBindings:[
+		'partElement.isSelected:selected',
+		'partElement.displayed::not-displayed'],
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
 	actions:{

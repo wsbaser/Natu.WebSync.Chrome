@@ -2,8 +2,8 @@
 	{{!-- CONVERTER --}}
 	<div id="selectorsConverter">
 		{{!-- <div class="status {{if vsclient.isConnected 'connected'}}"></div> --}}
-		<div class="source-wrap">
-			<i class="trash-icon {{if inputValue "active"}}" 
+		<div class="source-wrap {{if inputValue "active"}}">
+			<i class="trash-icon"
 				onclick={{action "onRemoveSelector"}} 
 				title="Remove selector"/>
 			{{input id="source" value=inputValue type="text" placeholder="Type selector here..."}}

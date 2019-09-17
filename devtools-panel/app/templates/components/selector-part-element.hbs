@@ -1,27 +1,28 @@
-<li class="clearfix {{if partElement.isSelected "selected" }} {{unless partElement.displayed "not-displayed" }}">
-	<div class="element-index">{{partElement.elementIndex}}.</div>
-	<div class="part-element"
-		{{action "onInspectElement" partElement allowedKeys="ctrl"}}
-		{{action "onElementMouseEnter" partElement on="mouseEnter"}}
-		{{action "onMouseLeave" on="mouseLeave"}}>
-
-		<span class="tag">&lt;<span class="tag-name">{{partElement.tagName}}</span>
-			{{#if partElement.id ~}}
-				{{~tag-attribute attributeName="id" attributeValue=partElement.id~}}
-			{{~/if~}}
-			{{#if partElement.name ~}}
-				{{~tag-attribute attributeName="name" attributeValue=partElement.name~}}
-			{{~/if~}}
-			{{#if partElement.className ~}}
-				{{~tag-attribute attributeName="class" attributeValue=partElement.className splitBy=" "~}}
-			{{~/if~}}
-			&gt;
-		</span>
-
-		{{#if partElement.innerText ~}}
-			<span class="text">
-				"{{partElement.innerText}}"
-			</span>
-		{{/if}}
+<div
+	{{action "onInspectElement" partElement allowedKeys="ctrl"}}
+	{{action "onElementMouseEnter" partElement on="mouseEnter"}}
+	{{action "onMouseLeave" on="mouseLeave"}}>
+	<div class="element-index">
+		<span class="value">
+			{{~partElement.elementIndex~}}
+		</span>.
 	</div>
-</li>
+	<span class="tag">&lt;<span class="tag-name">{{partElement.tagName}}</span>
+		{{#if partElement.id ~}}
+			{{~tag-attribute attributeName="id" attributeValue=partElement.id~}}
+		{{~/if~}}
+		{{#if partElement.name ~}}
+			{{~tag-attribute attributeName="name" attributeValue=partElement.name~}}
+		{{~/if~}}
+		{{#if partElement.className ~}}
+			{{~tag-attribute attributeName="class" attributeValue=partElement.className splitBy=" "~}}
+		{{~/if~}}
+		&gt;
+	</span>
+
+	{{#if partElement.innerText ~}}
+		<span class="text value">
+			"{{partElement.innerText}}"
+		</span>
+	{{/if}}
+</div>
