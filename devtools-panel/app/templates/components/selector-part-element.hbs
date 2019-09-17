@@ -1,4 +1,4 @@
-<div
+<div class=""
 	{{action "onInspectElement" partElement allowedKeys="ctrl"}}
 	{{action "onElementMouseEnter" partElement on="mouseEnter"}}
 	{{action "onMouseLeave" on="mouseLeave"}}>
@@ -7,7 +7,7 @@
 			{{~partElement.elementIndex~}}
 		</span>.
 	</div>
-	<span class="tag">&lt;<span class="tag-name">{{partElement.tagName}}</span>
+	<span class="tag">&lt;<span class="tag-name value">{{partElement.tagName}}</span>
 		{{#if partElement.id ~}}
 			{{~tag-attribute attributeName="id" attributeValue=partElement.id~}}
 		{{~/if~}}
