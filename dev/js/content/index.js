@@ -58,13 +58,24 @@ function serializeElements(iframeData){
 				id: e.id,
 				name: e.name,
 				className: e.className,
-				innerText: e.innerText,
+				innerText: getFirstLevelText(e),
 				displayed: e.style.display!=='none',
 				containsTags: e.innerHTML.indexOf('<') != -1
 			};
 		});
 	};
 	return iframeData;
+}
+
+function getFirstLevelText(e){
+	var firstText = "";
+	for (var i = 0; i < e.childNodes.length; i++) {
+	    var curNode = e.childNodes[i];
+	    if (curNode.nodeType === Node.TEXT_NODE) {
+	        firstText += curNode.nodeValue;
+	    }
+	}
+	return firstText;
 }
 
 window.evaluateXpath = function find(xpath) {
