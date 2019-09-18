@@ -1,11 +1,15 @@
 import Ember from 'ember';
 import SelectorPart from '../models/selector-part';
 import SelectorPartElement from '../models/selector-part-element';
+import {A} from '@ember/array';
 
 export default Ember.Component.extend({
 	tagName: 'span',
 	classNames: ['validator'],
 	isXPath: false,
+	lastPartObserver: Ember.observer('parts.lastObject.count',function(){
+		this.set('status', this.get('parts.lastObject.count'));
+	}), 
 	validateSelectorPart(part, scriptToEvaluateSelector){
 	   	chrome.devtools.inspectedWindow.eval(
 	      scriptToEvaluateSelector,
@@ -66,7 +70,7 @@ export default Ember.Component.extend({
 				index: partIndex++
 			}));
   		}.bind(this));
-  		return parts;
+  		return A(parts);
   	},
 	splitIgnoringConditions(selector, delimiters) {
 		var selectorParts = [];

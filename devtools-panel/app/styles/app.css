@@ -69,7 +69,21 @@
     right: 1px;
     top: 1px;
     position: absolute;
-    background: gainsboro;
+    background: rgb(220, 220, 220);
+    display: none;
+    transition: all 100ms;
+}
+
+.source-wrap.active .selector-status{
+	display: block;
+}
+
+.source-wrap .selector-status.exist{
+	background: rgba(100,256,50,0.5);
+}
+
+.source-wrap .selector-status.exist.several{
+    background: rgba(256,256,0,0.5);
 }
 
 input#source{
