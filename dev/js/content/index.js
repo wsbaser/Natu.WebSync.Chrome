@@ -75,7 +75,7 @@ function getFirstLevelText(e){
 	        firstText += curNode.nodeValue;
 	    }
 	}
-	return firstText;
+	return firstText.trim();
 }
 
 window.evaluateXpath = function find(xpath) {
