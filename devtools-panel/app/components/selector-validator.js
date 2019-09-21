@@ -1,12 +1,9 @@
 import Ember from 'ember';
-import SelectorPart from '../models/selector-part';
 import SelectorPartElement from '../models/selector-part-element';
-import {A} from '@ember/array';
 
 export default Ember.Component.extend({
 	tagName: 'span',
 	classNames: ['validator'],
-	isXPath: false,
 	lastPartObserver: Ember.observer('parts.lastObject.count',function(){
 		this.set('status', this.get('parts.lastObject.count'));
 	}), 
@@ -56,60 +53,6 @@ export default Ember.Component.extend({
 	// 	});
 	// 	return count;
 	// },
-	splitToParts(selectorString, delimiters){
-  		var fullSelector='';
-  		var parts = [];
-  		var partSelectors = this.splitIgnoringConditions(selectorString, delimiters);
-  		let partIndex=0;
-  		partSelectors.forEach(function(partSelector){
-			fullSelector+=partSelector;
-			parts.push(SelectorPart.create({
-				isXPath: this.get('isXPath'),
-				selector:partSelector,
-				fullSelector:fullSelector,
-				index: partIndex++
-			}));
-  		}.bind(this));
-  		return A(parts);
-  	},
-	splitIgnoringConditions(selector, delimiters) {
-		var selectorParts = [];
-		var value = '';
-		var readCondition = false;
-		var conditionOpenBracketsCount = 0;
-		var hasCharsExeptDelimiters = function (d){return delimiters.indexOf(d)===-1;};
-		for (var i = 0; i < selector.length; i++) {
-		    var c = selector[i];
-		    if (readCondition) {
-			    if (c === '['){
-					conditionOpenBracketsCount++;
-			    }
-			    else if (c === ']') {
-			    	if(conditionOpenBracketsCount===0){
-			    		readCondition=false;
-			    	}
-			    	else{
-						conditionOpenBracketsCount--;
-			    	}
-			    }
-		    }
-		    else if (delimiters.indexOf(c)!==-1)
-		    {
-		    	if(Array.from(value).some(hasCharsExeptDelimiters)) {
-					selectorParts.push(value);
-					value = '';
-		    	}
-		    }
-		    else if (c === '[') {
-		    	readCondition = true;
-		    }
-		    value += c;
-		}
-		if(value){
-			selectorParts.push(value);
-		}
-		return selectorParts;
-	},
 	actions:{
   		onPartSelected(part){
 	        this.get('parts').forEach(function(p){

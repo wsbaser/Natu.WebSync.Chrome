@@ -5,6 +5,7 @@ export default Service.extend({
         if (!scssSelector) {
             return null;
         }
+
         let combineWithRoot = false;
         let ROOT_PREFIX = 'root:';
         if (scssSelector.startsWith(ROOT_PREFIX)) {
@@ -12,12 +13,9 @@ export default Service.extend({
             scssSelector = scssSelector.replace(ROOT_PREFIX, '').trim();
         }
 
+        let parts;
         try {
-            let parts = this.parseScss(scssSelector);
-            return {
-                parts: parts,
-                combineWithRoot: combineWithRoot
-            };
+            parts = this.parseScss(scssSelector);
         } catch (e) {
             // Это не scss, возможно это xpath
             try {
@@ -25,11 +23,28 @@ export default Service.extend({
             } catch (e) {
                 throw "Invalid scss: " + scssSelector + ". " + e.description;
             }
-            return {
-                xpath: scssSelector,
-                combineWithRoot: combineWithRoot
-            };
+            let xpathParts = this.splitScssToParts(scssSelector, ' ');
+            parts=[];
+            let fullXpath='';
+            for (var i = 0; i < xpathParts.length; i++) {
+                fullXpath+=xpathParts[i];
+                parts.push({
+                    index: i,
+                    xpath: xpathParts[i],
+                    fullXpath: fullXpath
+                });
+            }
         }
+        let isValidCss = parts.every(p=>p.css);
+        let css = isValidCss?parts.map(p=>p.css).join(' '):null;
+        let xpath = parts.map(p=>p.xpath).join('');
+
+        return {
+            combineWithRoot: combineWithRoot,
+            css: css,
+            xpath: xpath,
+            parts: parts,
+        };
     },
     // private
     IsNullOrWhiteSpace(input) {
@@ -93,6 +108,8 @@ export default Service.extend({
     parseScss(scss) {
         let scssParts = this.splitScssToParts(scss, ' ', '>', '+');
         let parts=[];
+        let fullCss='';
+        let fullXpath=''
         for (let i = 0; i < scssParts.length; i++){
             let part = this.parseScssPart(scssParts[i]);
             part.index = i;
@@ -100,6 +117,12 @@ export default Service.extend({
                 part.xpath = "//" + this.RemoveDescendantAxis(part.xpath);
             }else{
                 part.xpath = "/" + this.RemoveChildAxis(part.xpath);
+            }
+            fullXpath+=part.xpath;
+            part.fullXpath=fullXpath;
+            if(part.css){
+                fullCss+=part.css;
+                part.fullCss=fullCss;
             }
             parts.push(part);
         }
