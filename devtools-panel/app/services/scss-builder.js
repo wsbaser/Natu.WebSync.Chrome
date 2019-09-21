@@ -12,22 +12,12 @@ export default Service.extend({
             scssSelector = scssSelector.replace(ROOT_PREFIX, '').trim();
         }
 
-        let xpath = "";
-        let css = null;
-
         try {
-            let isTrueCss = true;
-            let parts = this.SplitIgnoringConditions(scssSelector, true, ',');
-            for(let i = 0; i < parts.length; i++) {
-                let partScssIsTrueCss = { flag: false };
-                let xpathPart = this.ScssPartToXpath(parts[i], partScssIsTrueCss);
-                xpath += "//" + this.RemoveDescendantAxis(xpathPart) + "|";
-                isTrueCss &= partScssIsTrueCss.flag;
-            }
-            xpath = xpath.substring(0, xpath.length - 1);
-            if (isTrueCss) {
-                css = scssSelector;
-            }
+            let parts = this.parseScss(scssSelector);
+            return {
+                parts: parts,
+                combineWithRoot: combineWithRoot
+            };
         } catch (e) {
             // Это не scss, возможно это xpath
             try {
@@ -35,9 +25,11 @@ export default Service.extend({
             } catch (e) {
                 throw "Invalid scss: " + scssSelector + ". " + e.description;
             }
-            xpath = scssSelector;
+            return {
+                xpath: scssSelector,
+                combineWithRoot: combineWithRoot
+            };
         }
-        return {xpath: xpath, css: css, combineWithRoot: combineWithRoot};
     },
     // private
     IsNullOrWhiteSpace(input) {
@@ -45,8 +37,8 @@ export default Service.extend({
         return input.replace(/\s/g, '').length < 1;
     },
     // private
-    SplitIgnoringConditions(scssSelector, cutDelimiters, ...delimiters) {
-        let scssParts = [];
+    splitScssToParts(scssSelector, ...delimiters) {
+        let parts = [];
         let value = '';
         let readCondition = false;
         let readFunctionArgument = false;
@@ -66,12 +58,9 @@ export default Service.extend({
             }
             else if (delimiters.includes(c)) {
                 if (!this.IsNullOrWhiteSpace(value)) {
-                    scssParts.push(value);
+                    parts.push(value);
                 }
                 value = '';
-                if (cutDelimiters) {
-                    continue; // выбрасывать разделители
-                }
             }
             else if (c == '[') {
                 readCondition = true;
@@ -84,10 +73,10 @@ export default Service.extend({
         if (!value
             || readCondition
             || readFunctionArgument) {
-            throw "SplitIgnoringConditions: unexpected end of line";
+            throw "splitScssToParts: unexpected end of line";
         }
-        scssParts.push(value);
-        return scssParts;
+        parts.push(value);
+        return parts;
     },
     // private
     IsClosingConditionBracket(conditionOpenBrackets, c) {
@@ -101,21 +90,21 @@ export default Service.extend({
         return false;
     },
     // private
-    ScssPartToXpath(scssPart, isTrueCss) {
-        let elementScssSelectors = this.SplitIgnoringConditions(scssPart, false, ' ', '>', '+');
-        let xpath = '';
-        isTrueCss.flag = true;
-        for (let i = 0; i < elementScssSelectors.length; i++) {
-            let elementScssSelector = elementScssSelectors[i];
-            let elementScssIsTrueCss = { flag: false };
-            let elementXpath = this.ElementScssToXpath(elementScssSelector, elementScssIsTrueCss);
-            if (i > 0) {
-                elementXpath = "/" + this.RemoveChildAxis(elementXpath);
+    parseScss(scss) {
+        let scssParts = this.splitScssToParts(scss, ' ', '>', '+');
+        let parts=[];
+        for (let i = 0; i < scssParts.length; i++){
+            let part = this.parseScssPart(scssParts[i]);
+            part.index = i;
+            if(i==0){
+                part.xpath = "//" + this.RemoveDescendantAxis(part.xpath);
+            }else{
+                part.xpath = "/" + this.RemoveChildAxis(part.xpath);
             }
-            xpath += elementXpath;
-            isTrueCss.flag &= elementScssIsTrueCss.flag;
+            parts.push(part);
         }
-        return xpath;
+        
+        return parts;
     },
     // private
     RemoveDescendantAxis(elementXpath)
@@ -132,7 +121,7 @@ export default Service.extend({
         return elementXpath;
     },
     // private
-    ElementScssToXpath(elementScss, isTrueCss) {
+    parseScssPart(partScss) {
         const State = {
             Undefined: 0,
             ReadId: 10,
@@ -142,13 +131,13 @@ export default Service.extend({
             ReadFunction: 50,
             ReadFunctionArgument: 60,
         };
-        if (this.IsNullOrWhiteSpace(elementScss)) {
-            throw "Invalid scss: " + elementScss;
+        if (this.IsNullOrWhiteSpace(partScss)) {
+            throw "Invalid scss: " + partScss;
         }
         let combinator = '';
-        if ([' ','>','+'].includes(elementScss[0])) {
-            combinator = elementScss[0];
-            elementScss = elementScss.slice(1);
+        if ([' ','>','+'].includes(partScss[0])) {
+            combinator = partScss[0];
+            partScss = partScss.slice(1);
         }
         let tag = '';
         let id = '';
@@ -162,8 +151,8 @@ export default Service.extend({
         let subelementXpaths = [];
         let state = State.ReadTag;
         let conditionOpenBrackets = { Count: 0 }; // количество открытых скобок [ внутри условия
-        for (let i = 0; i < elementScss.length; i++) {
-            let c = elementScss[i];
+        for (let i = 0; i < partScss.length; i++) {
+            let c = partScss[i];
             if (state == State.ReadCondition
                 && !this.IsClosingConditionBracket(conditionOpenBrackets, c)) {
                 // внутри условия могут быть символы . # [ на которые нужно не обращать внимания
@@ -175,20 +164,20 @@ export default Service.extend({
                     switch (state) {
                         case State.ReadClass:
                             if (!className) {
-                                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             }
                             classNames.push(className);
                             className = '';
                             break;
                         case State.ReadId:
                             if (!id)
-                                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             break;
                         case State.ReadTag:
                         case State.Undefined:
                             break; // допустимые состояния
                         default:
-                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             break;
                     }
                     state = State.ReadClass;
@@ -199,7 +188,7 @@ export default Service.extend({
                     switch (state) {
                         case State.ReadClass:
                             if (!className)
-                                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             classNames.push(className);
                             className = '';
                             break;
@@ -207,7 +196,7 @@ export default Service.extend({
                         case State.Undefined:
                             break;
                         default:
-                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             break;
                     }
                     state = State.ReadId;
@@ -216,19 +205,19 @@ export default Service.extend({
                     switch (state) {
                         case State.ReadClass:
                             if (!className)
-                                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             classNames.push(className);
                             className = '';
                             break;
                         case State.ReadId:
                             if (!id)
-                                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             break;
                         case State.ReadTag:
                         case State.Undefined:
                             break; // допустимые состояния
                         default:
-                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             break;
                     }
 
@@ -236,7 +225,7 @@ export default Service.extend({
                     break;
                 case ']':
                     if (state != State.ReadCondition)
-                        throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                        throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                     if (this.IsText(condition)
                         || this.IsNumber(condition)
                         || this.IsFunction(condition)) {
@@ -249,9 +238,8 @@ export default Service.extend({
                         } else {
                             // вложенный селектор
                             try {
-                                let dummyBool = { flag: false};
-                                let xpathPart = this.ScssPartToXpath(condition, dummyBool);
-                                subelementXpaths.push(this.RemoveChildAxis(xpathPart));
+                                let innerXpath = this.parseScss(condition).xpath;
+                                subelementXpaths.push(this.RemoveChildAxis(innerXpath));
                             } catch(e) {
                                 conditions.push(condition);
                             }
@@ -264,7 +252,7 @@ export default Service.extend({
                     switch (state) {
                         case State.ReadFunction:
                         case State.ReadFunctionArgument:
-                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             break;
                         default:
                             state = State.ReadFunction;
@@ -273,12 +261,12 @@ export default Service.extend({
                     break;
                 case '(':
                     if (state != State.ReadFunction)
-                        throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                        throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                     state = State.ReadFunctionArgument;
                     break;
                 case ')':
                     if (state != State.ReadFunctionArgument)
-                        throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                        throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                     state = State.Undefined;
                     break;
                 default:
@@ -302,10 +290,10 @@ export default Service.extend({
                             functionArgument += c;
                             break;
                         case State.Undefined:
-                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             break;
                         default:
-                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                            throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                             break;
                     }
                     break;
@@ -318,22 +306,37 @@ export default Service.extend({
                 break;
             case State.ReadClass:
                 if (!className)
-                    throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                    throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                 classNames.push(className);
                 break;
 //          case State.ReadCondition:
 //              if (!className)
-//                  throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss";
+//                  throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss";
 //              break;
             default:
-                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+elementScss+"}";
+                throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
                 break;
         }
-        isTrueCss.flag = conditions.length == 0
-                    && subelementXpaths.length == 0 &&
-                    attributes.every(a => this.IsCssMatchStyle(a.matchStyle));
-        this.Validate(tag, id, classNames, attributes, func, functionArgument);
-        return this.AggregateToXpath(combinator, tag, id, classNames, attributes, conditions, subelementXpaths, func, functionArgument);
+        this.validate(tag, id, classNames, attributes, func, functionArgument);
+        let isTrueCss = conditions.length == 0 &&
+            subelementXpaths.length == 0 &&
+            attributes.every(a => this.IsCssMatchStyle(a.matchStyle));
+
+        let partXpath = this.aggregateToXpath(combinator, tag, id, classNames, attributes, conditions, subelementXpaths, func, functionArgument);
+        let partCss = isTrueCss?combinator+partScss:undefined;
+
+        return {
+            tag: tag,
+            id: id,
+            classNames: classNames,
+            attributes: attributes,
+            conditions: conditions,
+            subelementXpaths: subelementXpaths,
+            func: func,
+            functionArgument: functionArgument,
+            xpath: partXpath,
+            css: partCss
+        };
     },
     // private
     IsText(stringValue) {
@@ -375,7 +378,7 @@ export default Service.extend({
         }
     },
     // private
-    Validate(tag, id, classNames, attributes, func, functionArgument) {
+    validate(tag, id, classNames, attributes, func, functionArgument) {
         if (tag) {
             this.ValidateIsElementName(tag);
         }
@@ -461,7 +464,7 @@ export default Service.extend({
         return r;
     },
     // private
-    AggregateToXpath(axis, tag, id, classNames,
+    aggregateToXpath(axis, tag, id, classNames,
         attributes, conditions, subelementXpaths, func, functionArgument)
     {
         tag = !tag ? "*" : tag;

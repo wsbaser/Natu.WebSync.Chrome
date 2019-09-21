@@ -35,8 +35,14 @@ export default Ember.Controller.extend({
 		let xpath = "";
 		try {
 			let scss = scssBuilder.create(selector);
-			css = scss.css;
-			xpath = scss.xpath;
+			if(scss.parts){
+	            let isValidCss = scss.parts.every(p=>p.css);
+	            css = isValidCss?scss.parts.map(p=>p.css).join(' '):null;
+	            xpath = scss.parts.map(p=>p.xpath).join('');
+			}
+			else{
+				xpath = scss.xpath;	
+			}
 		} catch (e) {
 			console.log('Unable to convert scss selector "' + selector + '"');
 		}
