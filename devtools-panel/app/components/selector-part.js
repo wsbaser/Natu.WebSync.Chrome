@@ -42,7 +42,7 @@ export default Ember.Component.extend({
 					partElements[0].set('isSelected', true);
 					this.get('selectorInspector').inspect(this.get('part.fullSelectorObj'));
 				}
-				this.set('part.isSelected', true);
+				// this.set('part.isSelected', true);
 				this.get('onPartSelected')(this.get('part'));
 			}
 		},

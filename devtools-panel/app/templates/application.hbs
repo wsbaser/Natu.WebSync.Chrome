@@ -28,7 +28,7 @@
 					{{action "copySelectorEnd" 1 on="mouseUp"}}
 					{{action "copySelectorEnd" 1 on="mouseLeave"}}>Css</label>
 				{{bs-tooltip triggerElement="#targetCssLabel" title="Copy CSS selector" placement="bottom" delayShow=300}}
-				{{css-validator scss=scss status=cssStatus onPartSelected=(action "onPartSelected") }}
+				{{css-validator scss=scss status=cssStatus selectedPartIndex=selectedPart.index onPartSelected=(action "onPartSelected") }}
 			</li>
 			
 			<li id="targetXPath" >
@@ -37,7 +37,7 @@
 					{{action "copySelectorEnd" 2 on="mouseUp"}}
 					{{action "copySelectorEnd" 2 on="mouseLeave"}}>XPath</label>
 				{{bs-tooltip triggerElement="#targetXPathLabel" title="Copy XPath selector" placement="bottom" delayShow=300}}
-				{{xpath-validator scss=scss status=xpathStatus onPartSelected=(action "onPartSelected") }}
+				{{xpath-validator scss=scss status=xpathStatus selectedPartIndex=selectedPart.index onPartSelected=(action "onPartSelected") }}
 			</li>
 		</ul>
 	</div>

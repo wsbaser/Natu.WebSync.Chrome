@@ -53,13 +53,15 @@ export default Ember.Component.extend({
 	// 	});
 	// 	return count;
 	// },
+	onSelectedIndexChanged: Ember.observer('selectedPartIndex', function(){
+	    let parts = this.get('parts');
+	    let selectedPartIndex = this.get('selectedPartIndex');
+	    for (var i = parts.length - 1; i >= 0; i--) {
+	    	parts[i].set('isSelected', i==selectedPartIndex);
+	    }
+	}),
 	actions:{
   		onPartSelected(part){
-	        this.get('parts').forEach(function(p){
-	          if(p != part){
-	            p.set('isSelected', false);
-	          }
-	        });
   			this.get('onPartSelected')(part);
   		}
   	}
