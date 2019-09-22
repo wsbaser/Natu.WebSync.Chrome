@@ -32,12 +32,12 @@ export default Ember.Controller.extend({
 			scss = scssBuilder.create(selector);            
 		} catch (e) {
 			console.log('Unable to convert scss selector "' + selector + '"');
-			scss = {
+		}
+		scss = scss || {
 				parts: [],
 				css: null,
 				xpath: null
 			};
-		}
 		this.set('scss', scss);
 		this.set('selectedPart', null);
 
@@ -74,6 +74,12 @@ export default Ember.Controller.extend({
 		},
 		onPartSelected(part){
 			this.set('selectedPart', part);
+		},
+		onRemovePart(part){
+			let scss = this.get('scss');
+			scss.parts.removeAt(part.get('index'));
+			let modifiedScss =  scss.parts.map(p=>p.scss).join('')
+			this.set('inputValue', modifiedScss);
 		},
 		onRemoveSelector(){
 			this.set('inputValue', '');

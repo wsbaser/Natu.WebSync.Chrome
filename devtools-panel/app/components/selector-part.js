@@ -53,7 +53,7 @@ export default Ember.Component.extend({
 			this.get('selectorHighlighter').removeHighlighting();
 		},
 		onRemovePart(){
-			console.log('remove part: ' + this.get('part.fullSelector'));
+			this.get('onRemovePart')(this.get('part'));
 		}
 	}
 });

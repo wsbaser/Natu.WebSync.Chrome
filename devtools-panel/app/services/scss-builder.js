@@ -36,7 +36,7 @@ export default Service.extend({
             }
         }
         let isValidCss = parts.every(p=>p.css);
-        let css = isValidCss?parts.map(p=>p.css).join(' '):null;
+        let css = isValidCss?parts.map(p=>p.css).join(''):null;
         let xpath = parts.map(p=>p.xpath).join('');
 
         return {
@@ -157,7 +157,7 @@ export default Service.extend({
         if (this.IsNullOrWhiteSpace(partScss)) {
             throw "Invalid scss: " + partScss;
         }
-        let combinator = '';
+        let combinator = ' ';
         if ([' ','>','+'].includes(partScss[0])) {
             combinator = partScss[0];
             partScss = partScss.slice(1);
@@ -358,7 +358,8 @@ export default Service.extend({
             func: func,
             functionArgument: functionArgument,
             xpath: partXpath,
-            css: partCss
+            css: partCss,
+            scss: combinator + partScss
         };
     },
     // private

@@ -63,6 +63,9 @@ export default Ember.Component.extend({
 	actions:{
   		onPartSelected(part){
   			this.get('onPartSelected')(part);
+  		},
+  		onRemovePart(part){
+  			this.get('onRemovePart')(part);
   		}
   	}
 });
