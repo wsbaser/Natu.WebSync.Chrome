@@ -33,10 +33,11 @@ export default Ember.Component.extend({
 				let element = iframeData.elements[j];
 				elements.push(SelectorPartElement.create({
 					part: part,
-					tagName: element.tagName,
-					id: element.id,
+					tagName: Ember.Object.create({text: element.tagName}),
+					id: element.id?Ember.Object.create({text: element.id}):null,
+					attributes: [],
 					className: element.className,
-					innerText: element.innerText,
+					innerText: element.innerText?Ember.Object.create({text: element.innerText}):null,
 					displayed: element.displayed,
 					containsTags: element.containsTags,
 					iframeIndex: i,

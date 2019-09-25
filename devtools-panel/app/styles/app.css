@@ -323,12 +323,12 @@ ul#elementsList{
 }
 
 
-.part-element .attribute>.name{
+.part-element .attribute .name{
 	cursor: pointer;
 	color: rgb(153,69,0);
 }
 
-.part-element .attribute>.value{
+.part-element .attribute .value{
 	cursor: pointer;
 	color: rgb(26, 26, 166);
 }

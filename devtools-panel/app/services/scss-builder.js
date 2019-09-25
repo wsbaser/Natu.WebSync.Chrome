@@ -349,7 +349,7 @@ export default Service.extend({
         let partCss = isTrueCss?combinator+partScss:undefined;
 
         return {
-            tag: tag,
+            tagName: tag,
             id: id,
             classNames: classNames,
             attributes: attributes,

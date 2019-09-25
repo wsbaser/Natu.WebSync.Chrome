@@ -3,26 +3,31 @@
 	{{action "onElementMouseEnter" partElement on="mouseEnter"}}
 	{{action "onMouseLeave" on="mouseLeave"}}>
 	<div class="element-index">
-		<span class="value">
-			{{~partElement.elementIndex~}}
-		</span>.
+		{{~partElement.elementIndex~}}
 	</div>
-	<span class="tag">&lt;<span class="tag-name value">{{partElement.tagName}}</span>
-		{{#if partElement.id ~}}
-			{{~tag-attribute attributeName="id" attributeValue=partElement.id~}}
+	<span class="tag">&lt;{{selectable-value class="tag-name" value=partElement.tagName}}
+		{{~#if partElement.id~}}
+			<span class="attribute"><span class="name"> id</span>="
+				{{~selectable-value value=partElement.id~}}
+			"</span>
 		{{~/if~}}
-		{{#if partElement.name ~}}
-			{{~tag-attribute attributeName="name" attributeValue=partElement.name~}}
+		{{~#if partElement.className~}}
+			<span class="attribute"><span class="name"> class</span>="
+				{{~#each partElement.classNames as |className|~}}
+					{{~selectable-value value=className~}}
+				{{~/each~}}
+			"</span>
 		{{~/if~}}
-		{{#if partElement.className ~}}
-			{{~tag-attribute attributeName="class" attributeValue=partElement.className splitBy=" "~}}
-		{{~/if~}}
+		{{~#each partElement.attributes as |attribute|~}}
+			<span class="attribute"><span class="name"> {{attribute.name}}</span>="
+				{{~selectable-value value=attribute~}}
+			"</span>
+		{{~/each~}}
 		&gt;
 	</span>
-
-	{{#if partElement.innerText ~}}
-		<span class="text value">
-			"{{partElement.innerText}}"
+	{{#if partElement.innerText}}
+		<span class="text">
+			{{~selectable-value value=partElement.innerText~}}
 		</span>
 	{{/if}}
 </div>
