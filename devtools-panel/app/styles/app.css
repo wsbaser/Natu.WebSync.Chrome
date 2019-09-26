@@ -313,7 +313,6 @@ ul#elementsList{
 }
 
 .part-element .tag>.tag-name{
-	cursor: pointer;
 	color: rgb(136, 18, 128);
 	text-transform: lowercase;
 }
@@ -324,17 +323,22 @@ ul#elementsList{
 
 
 .part-element .attribute .name{
-	cursor: pointer;
 	color: rgb(153,69,0);
 }
 
 .part-element .attribute .value{
-	cursor: pointer;
 	color: rgb(26, 26, 166);
 }
 
+.part-element .attribute.class-names .value:after{
+	content: ' ';
+}
+
+.part-element .attribute.class-names span:last-child>.value:after{
+	content: '';
+}
+
 .part-element .text{
-	cursor: pointer;
 	display: inline-block;
 	max-width: 300px;
 	vertical-align: middle;
@@ -349,3 +353,10 @@ ul#elementsList{
 	font-weight: bold;
 }
 
+.part-element .value.selected{
+	color: red;
+}
+
+.part-element.selected .value:hover{
+	cursor: pointer;
+}

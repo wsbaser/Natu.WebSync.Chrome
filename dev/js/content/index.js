@@ -57,7 +57,7 @@ function serializeElements(iframeData){
 				tagName: e.tagName,
 				id: e.id,
 				name: e.name,
-				className: e.className,
+				classNames: Array.from(e.classList),
 				innerText: getFirstLevelText(e),
 				displayed: e.style.display!=='none',
 				containsTags: e.innerHTML.indexOf('<') != -1

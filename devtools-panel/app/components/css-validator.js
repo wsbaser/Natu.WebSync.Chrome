@@ -16,9 +16,12 @@ export default SelectorValidator.extend({
 		return A(scssParts.map(scssPart=>
 			SelectorPart.create({
 					isXPath: false,
+					id: scssPart.id,
+					tagName: scssPart.tagName,
+					classNames: scssPart.classNames,
+					texts: scssPart.texts,
 					selector: scssPart.css,
-					fullSelector: scssPart.fullCss,
-					index: scssPart.index
+					fullSelector: scssPart.fullCss
 				})));
 	}
 });

@@ -3,31 +3,31 @@
 	{{action "onElementMouseEnter" partElement on="mouseEnter"}}
 	{{action "onMouseLeave" on="mouseLeave"}}>
 	<div class="element-index">
-		{{~partElement.elementIndex~}}
+		{{~partElement.elementIndex~}}.
 	</div>
-	<span class="tag">&lt;{{selectable-value class="tag-name" value=partElement.tagName}}
+	<span class="tag">&lt;{{selectable-value class="tag-name" value=partElement.tagName unlocked=partElement.isSelected}}
 		{{~#if partElement.id~}}
 			<span class="attribute"><span class="name"> id</span>="
-				{{~selectable-value value=partElement.id~}}
+				{{~selectable-value value=partElement.id unlocked=partElement.isSelected ~}}
 			"</span>
 		{{~/if~}}
-		{{~#if partElement.className~}}
-			<span class="attribute"><span class="name"> class</span>="
+		{{~#if partElement.classNames.length~}}
+			<span class="attribute class-names"><span class="name"> class</span>="
 				{{~#each partElement.classNames as |className|~}}
-					{{~selectable-value value=className~}}
+					{{~selectable-value value=className unlocked=partElement.isSelected ~}}
 				{{~/each~}}
 			"</span>
 		{{~/if~}}
 		{{~#each partElement.attributes as |attribute|~}}
 			<span class="attribute"><span class="name"> {{attribute.name}}</span>="
-				{{~selectable-value value=attribute~}}
+				{{~selectable-value value=attribute unlocked=partElement.isSelected ~}}
 			"</span>
 		{{~/each~}}
 		&gt;
 	</span>
 	{{#if partElement.innerText}}
 		<span class="text">
-			{{~selectable-value value=partElement.innerText~}}
+			{{~selectable-value value=partElement.innerText unlocked=partElement.isSelected ~}}
 		</span>
 	{{/if}}
 </div>

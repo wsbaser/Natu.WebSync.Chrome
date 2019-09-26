@@ -171,6 +171,7 @@ export default Service.extend({
         let classNames = [];
         let attributes = [];
         let conditions = [];
+        let texts = [];
         let subelementXpaths = [];
         let state = State.ReadTag;
         let conditionOpenBrackets = { Count: 0 }; // количество открытых скобок [ внутри условия
@@ -249,10 +250,12 @@ export default Service.extend({
                 case ']':
                     if (state != State.ReadCondition)
                         throw "incorrect symbol for state: state: "+state+", index: "+i+", scss: "+partScss+"}";
-                    if (this.IsText(condition)
-                        || this.IsNumber(condition)
-                        || this.IsFunction(condition)) {
+                    if (this.IsText(condition)){
                         // текстовое условие
+                        texts.push(condition[0] == '~' ? condition.slice(2,condition.length-1) : condition.slice(1,condition.length-1));
+                        conditions.push(condition);
+                    }else if (this.IsNumber(condition)
+                        || this.IsFunction(condition)) {
                         conditions.push(condition);
                     } else {
                         let attribute = this.ParseAttribute(condition);
@@ -354,6 +357,7 @@ export default Service.extend({
             classNames: classNames,
             attributes: attributes,
             conditions: conditions,
+            texts: texts,
             subelementXpaths: subelementXpaths,
             func: func,
             functionArgument: functionArgument,

@@ -1,1 +1,1 @@
-<span class="value {{if value.selected "selected"}}" onclick={{action "onSelectValue" value}}>{{value.text}}</span>
+<span class="value {{if value.selected "selected"}}" {{action "onSelectValue" on="mouseDown" }}>{{value.text}}</span>

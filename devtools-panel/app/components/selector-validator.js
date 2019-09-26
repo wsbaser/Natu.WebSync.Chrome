@@ -33,11 +33,11 @@ export default Ember.Component.extend({
 				let element = iframeData.elements[j];
 				elements.push(SelectorPartElement.create({
 					part: part,
-					tagName: Ember.Object.create({text: element.tagName}),
-					id: element.id?Ember.Object.create({text: element.id}):null,
+					tagName: this.getSelectableObject(element.tagName, part.tagName, true),
+					id: this.getSelectableObject(element.id, part.id),
 					attributes: [],
-					className: element.className,
-					innerText: element.innerText?Ember.Object.create({text: element.innerText}):null,
+					classNames: this.getSelectableClassNames(element.classNames, part.classNames),
+					innerText: this.getSelectableObject(element.innerText, part.texts),
 					displayed: element.displayed,
 					containsTags: element.containsTags,
 					iframeIndex: i,
@@ -46,6 +46,38 @@ export default Ember.Component.extend({
 			}
 		}
 		return elements;
+	},
+	getSelectableClassNames(elementClasses, selectorClasses){
+		return elementClasses.map(elementClass=>{
+			return this.getSelectableObject(elementClass,selectorClasses);
+		});
+	},
+	getSelectableObject(value, toSelect, ignoreCase){
+		if(value){
+			// it can be undefined, string or array
+			let selectedValues;
+			if(!toSelect){
+				selectedValues = [];
+			}else if(!Array.isArray(toSelect)){
+				selectedValues = [toSelect];
+			}else{
+				selectedValues = toSelect;
+			}
+
+			value = value.trim();
+			selectedValues = selectedValues.map(c=>c.trim());
+			if(ignoreCase){
+				value = value.toLowerCase();
+				selectedValues = selectedValues.map(c=>c.toLowerCase());
+			}
+
+			let selected = selectedValues.indexOf(value)!=-1;
+			return Ember.Object.create({
+				text: value,
+				selected: selected
+			})
+		}
+		return null;
 	},
 	// getElementsCount(iframesDataList){
 	// 	var count=0;
