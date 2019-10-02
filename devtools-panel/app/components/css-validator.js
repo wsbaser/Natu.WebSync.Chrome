@@ -21,7 +21,8 @@ export default SelectorValidator.extend({
 					classNames: scssPart.classNames,
 					texts: scssPart.texts,
 					selector: scssPart.css,
-					fullSelector: scssPart.fullCss
+					fullSelector: scssPart.fullCss,
+					index: scssPart.index
 				})));
 	}
 });

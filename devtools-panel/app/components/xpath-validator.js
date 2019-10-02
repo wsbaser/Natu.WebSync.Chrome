@@ -12,16 +12,17 @@ export default SelectorValidator.extend({
   			this.validateSelectorPart(selectorPart,'evaluateXpath("' + selectorPart.get('fullSelector') + '")');
   		}.bind(this));
   	}),
-	generateSelectorParts(scssParts){ 
+	generateSelectorParts(scssParts){
 		return A(scssParts.map(scssPart=>
 			SelectorPart.create({
 					isXPath: true,
 					id: scssPart.id,
 					tagName: scssPart.tagName,
-					classNames: scssPart.classNames,
+					classNames: A(scssPart.classNames),
 					texts: scssPart.texts,
 					selector: scssPart.xpath,
-					fullSelector: scssPart.fullXpath
+					fullSelector: scssPart.fullXpath,
+					index: scssPart.index
 				})));
 	}
 });

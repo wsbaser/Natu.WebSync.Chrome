@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import SelectorPartElement from '../models/selector-part-element';
+import ElementAttribute from '../models/element-attribute';
+import { isArray } from '@ember/array';
 
 export default Ember.Component.extend({
 	tagName: 'span',
@@ -33,11 +35,11 @@ export default Ember.Component.extend({
 				let element = iframeData.elements[j];
 				elements.push(SelectorPartElement.create({
 					part: part,
-					tagName: this.getSelectableObject(element.tagName, part.tagName, true),
-					id: this.getSelectableObject(element.id, part.id),
+					tagName: this.getElementAttribute(element.tagName, part, "tagName", true),
+					id: this.getElementAttribute(element.id, part, "id"),
 					attributes: [],
-					classNames: this.getSelectableClassNames(element.classNames, part.classNames),
-					innerText: this.getSelectableObject(element.innerText, part.texts),
+					classNames: this.getSelectableClassNames(element.classNames, part, "classNames"),
+					innerText: this.getElementAttribute(element.innerText, part, "texts"),
 					displayed: element.displayed,
 					containsTags: element.containsTags,
 					iframeIndex: i,
@@ -47,35 +49,27 @@ export default Ember.Component.extend({
 		}
 		return elements;
 	},
-	getSelectableClassNames(elementClasses, selectorClasses){
-		return elementClasses.map(elementClass=>{
-			return this.getSelectableObject(elementClass,selectorClasses);
-		});
+	getSelectableClassNames(elementClasses, part, propertyName){
+		for (var i = elementClasses.length - 1; i >= 0; i--) {
+			this.getElementAttribute(elementClasses[i], part, propertyName);
+		};
 	},
-	getSelectableObject(value, toSelect, ignoreCase){
+	getElementAttribute(value, part, partPropertyName, ignoreCase){
 		if(value){
-			// it can be undefined, string or array
-			let selectedValues;
-			if(!toSelect){
-				selectedValues = [];
-			}else if(!Array.isArray(toSelect)){
-				selectedValues = [toSelect];
+			let partAttributeValue = part && partPropertyName?part.get(partPropertyName):null;
+			let valuesToSelect;
+			if(isArray(partAttributeValue)){
+				valuesToSelect = ignoreCase?partAttributeValue.map(c=>c.toLowerCase()):partAttributeValue;
 			}else{
-				selectedValues = toSelect;
+				valuesToSelect = [ignoreCase?partAttributeValue.toLowerCase():partAttributeValue];
 			}
-
-			value = value.trim();
-			selectedValues = selectedValues.map(c=>c.trim());
-			if(ignoreCase){
-				value = value.toLowerCase();
-				selectedValues = selectedValues.map(c=>c.toLowerCase());
-			}
-
-			let selected = selectedValues.indexOf(value)!=-1;
-			return Ember.Object.create({
-				text: value,
-				selected: selected
-			})
+			let isSelected = valuesToSelect.indexOf(value)!=-1;
+			return ElementAttribute.create({
+				value: value,
+				part: part,
+				partPropertyName: partPropertyName,
+				isSelected: isSelected
+			});
 		}
 		return null;
 	},

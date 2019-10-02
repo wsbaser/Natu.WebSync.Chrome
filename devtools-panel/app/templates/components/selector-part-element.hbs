@@ -5,29 +5,29 @@
 	<div class="element-index">
 		{{~partElement.elementIndex~}}.
 	</div>
-	<span class="tag">&lt;{{selectable-value class="tag-name" value=partElement.tagName unlocked=partElement.isSelected}}
+	<span class="tag">&lt;{{element-attribute class="tag-name" attribute=partElement.tagName unlocked=partElement.isSelected}}
 		{{~#if partElement.id~}}
 			<span class="attribute"><span class="name"> id</span>="
-				{{~selectable-value value=partElement.id unlocked=partElement.isSelected ~}}
+				{{~element-attribute attribute=partElement.id unlocked=partElement.isSelected ~}}
 			"</span>
 		{{~/if~}}
 		{{~#if partElement.classNames.length~}}
 			<span class="attribute class-names"><span class="name"> class</span>="
 				{{~#each partElement.classNames as |className|~}}
-					{{~selectable-value value=className unlocked=partElement.isSelected ~}}
+					{{~element-attribute attribute=className unlocked=partElement.isSelected ~}}
 				{{~/each~}}
 			"</span>
 		{{~/if~}}
-		{{~#each partElement.attributes as |attribute|~}}
+		{{~#each partElement.attributes as |attr|~}}
 			<span class="attribute"><span class="name"> {{attribute.name}}</span>="
-				{{~selectable-value value=attribute unlocked=partElement.isSelected ~}}
+				{{~element-attribute attribute=attr unlocked=partElement.isSelected ~}}
 			"</span>
 		{{~/each~}}
 		&gt;
 	</span>
 	{{#if partElement.innerText}}
 		<span class="text">
-			{{~selectable-value value=partElement.innerText unlocked=partElement.isSelected ~}}
+			{{~element-attribute attribute=partElement.innerText unlocked=partElement.isSelected ~}}
 		</span>
 	{{/if}}
 </div>

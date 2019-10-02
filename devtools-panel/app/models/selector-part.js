@@ -15,5 +15,8 @@ export default Ember.Object.extend({
 		return this.get('elements')? 
 			this.get('elements').some(e=>e.get('displayed')):
 			false;
+	}),
+	onAttrubuteChanged: Ember.observer("tagName","id","classNames","texts", function(){
+		console.log('SELECTOR UPDATED');
 	})
 });
