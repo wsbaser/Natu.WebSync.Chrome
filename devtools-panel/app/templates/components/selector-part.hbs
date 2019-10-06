@@ -1,11 +1,11 @@
-<span class="value" onclick={{action "onInspectSelector"}} {{action "onSelectorMouseEnter" on="mouseEnter"}} {{action "onMouseLeave" on="mouseLeave"}}>
+<span class="value" onclick={{action "onInspectSelector"}} {{action "onSelectorMouseEnter" on="mouseEnter"}} {{action "onSelectorMouseLeave" on="mouseLeave"}}>
 	{{~#if isXpath~}}
 		{{part.xpath}}
 	{{~else~}}
 		{{part.css}}
 	{{~/if~}}
 </span>
-<i class="remove-icon" onclick={{action "onRemovePart"}} title="Remove this selector part"/>
+<i class="remove-icon" onclick={{action "onRemove"}} title="Remove this selector part"/>
 {{!-- 
 {{#if isExist}}
 	{{#bs-dropdown tagName="span" classNames="count" as |dd|}}

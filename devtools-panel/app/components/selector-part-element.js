@@ -8,24 +8,47 @@ export default Component.extend({
 		'partElement.displayed::not-displayed'],
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
+	inspectElement(){
+		let selectorInspector = this.get('selectorInspector');
+		let isXpath = this.get('partElement.foundByXpath');
+		if(isXpath){
+			selectorInspector.inspectXpath(
+				this.get('partElement.part.fullXpath'), 
+				this.get('partElement.iframeIndex'), 
+				this.get('partElement.elementIndex'));
+		}else{
+			selectorInspector.inspectCss(
+				this.get('partElement.part.fullCss'), 
+				this.get('partElement.iframeIndex'), 
+				this.get('partElement.elementIndex'));
+		}
+	},
+	highlightElement(){
+		let selectorHighlighter = this.get('selectorHighlighter');
+		let isXpath = this.get('partElement.foundByXpath');
+		if(isXpath){
+			selectorHighlighter.highlightXpath(
+				this.get('partElement.part.fullXpath'), 
+				this.get('partElement.iframeIndex'),
+				this.get('partElement.elementIndex'));
+		}else{
+			selectorHighlighter.highlightCss(
+				this.get('partElement.part.fullCss'),
+				this.get('partElement.iframeIndex'),
+				this.get('partElement.elementIndex'));
+		}
+	},
 	actions:{
 		onInspectElement(element){
-			this.get('selectorInspector').inspect(
-				element.get('part.fullSelectorObj'), 
-				element.get('iframeIndex'), 
-				element.get('elementIndex'));
+			this.inspectElement();
 			element.set('isSelected', true);
-			element.get('part.elements').forEach(function(e){
-	          if(e != element){
-	            e.set('isSelected', false);
-	          }
-	        });
+			let onSelected = this.get('onSelected');
+			if(onSelected){
+				onSelected(element);
+			}
 		},
 		onElementMouseEnter(element){
-			this.get('selectorHighlighter').highlight(
-				element.get('part.fullSelectorObj'), 
-				element.get('iframeIndex'),
-				element.get('elementIndex'));
+			this.highlightElement();
 		},
 		onMouseLeave(){
 			this.get('selectorHighlighter').removeHighlighting();

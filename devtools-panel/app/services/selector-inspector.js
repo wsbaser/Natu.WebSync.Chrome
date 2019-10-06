@@ -6,11 +6,17 @@ export default Ember.Service.extend({
 			return;
 		}
 		if(selector.css){
-			this._callEval('inspectCssSelector("' + selector.css + '",' + iframeIndex + ',' + elementIndex + ')');
+			this.inspectCss(selector.css, iframeIndex, elementIndex);
 		}
 		else{
-			this._callEval('inspectXpathSelector("' + selector.xpath + '",' + iframeIndex + ',' + elementIndex + ')');
+			this.inspectXpath(selector.xpath, iframeIndex, elementIndex);
 		}
+	},
+	inspectCss(css, iframeIndex, elementIndex){
+		this._callEval('inspectCssSelector("' + css + '",' + iframeIndex + ',' + elementIndex + ')');
+	},
+	inspectXpath(xpath, iframeIndex, elementIndex){
+		this._callEval('inspectXpathSelector("' + xpath + '",' + iframeIndex + ',' + elementIndex + ')');
 	},
 	_callEval(script){
 	   	chrome.devtools.inspectedWindow.eval(script, { useContentScriptContext: true });

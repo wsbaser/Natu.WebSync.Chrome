@@ -6,11 +6,17 @@ export default Ember.Service.extend({
 			return;
 		}
 		if(selector.css){
-			this._callEval('highlightSelector("' + selector.css + '", false' + ',' + iframeIndex + ',' + elementIndex +')');
+			this.highlightCss(selector.css, iframeIndex, elementIndex);
 		}
 		else{
-			this._callEval('highlightSelector("' + selector.xpath + '", true' + ',' + iframeIndex + ',' + elementIndex +')');
+			this.highlightXpath(selector.xpath, iframeIndex, elementIndex);
 		}
+	},
+	highlightCss(css, iframeIndex, elementIndex){
+		this._callEval('highlightSelector("' + css + '", false' + ',' + iframeIndex + ',' + elementIndex +')');
+	},
+	highlightXpath(xpath, iframeIndex, elementIndex){
+		this._callEval('highlightSelector("' + xpath + '", true' + ',' + iframeIndex + ',' + elementIndex +')');
 	},
 	highlightAll(selectors){
 		selectors.forEach(s=>this.highlight(s));

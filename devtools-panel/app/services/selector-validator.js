@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import RSVP from 'rsvp';
 
-
 export default Ember.Service.extend({
 	validate(selector){
 		if( !selector || (!selector.css && !selector.xpath)){
@@ -12,13 +11,13 @@ export default Ember.Service.extend({
 			xpath: selector.xpath ? this.validateXpath(selector.xpath) : { isValid:false }
 		});
 	},
-	validateCss(css){
-    	return this._callEval('evaluateCss("' + css + '")');
+	validateCss(css,onValidated){
+    	return this._callEval('evaluateCss("' + css + '")', onValidated);
 	},
-	validateXpath(xpath){
-		return this._callEval('evaluateXpath("' + xpath + '")');
+	validateXpath(xpath,onValidated){
+		return this._callEval('evaluateXpath("' + xpath + '")', onValidated);
 	},
-	_callEval(script){
+	_callEval(script, onValidated){
 		let deferred = Ember.$.Deferred();
 		chrome.devtools.inspectedWindow.eval(
 	      script,
@@ -35,6 +34,9 @@ export default Ember.Service.extend({
 				validationData.displayedCount = this._getNodesCount(result, true);
 			}
 			deferred.resolve(validationData);
+			if(onValidated){
+				onValidated(result, isException);
+			}
 	      }.bind(this));
 		return deferred.promise();
 	},

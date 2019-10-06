@@ -45,6 +45,7 @@ export default Ember.Controller.extend({
 		this.set('scss', scss);
 		this.set('parts', this.generateParts(scss.parts));
 		this.set('selectedPart', null);
+		this.set('elements',[]);
 
 		if(!selector){
 			this.focusInput();
@@ -93,9 +94,6 @@ export default Ember.Controller.extend({
 		copySelectorEnd(selectorType){
 			this.getSelectorRootElement(selectorType).removeClass('selected');
 		},
-		onPartSelected(part){
-			this.set('selectedPart', part);
-		},
 		onRemovePart(part){
 			let scss = this.get('scss');
 			scss.parts.removeAt(part.get('index'));
@@ -122,6 +120,17 @@ export default Ember.Controller.extend({
 			});
 			let scss = parts.map(part=>part.scss).join(' ');
 			this.set('inputValue', scss);
+		},
+		onPartSelected(part, elements){
+			this.set('selectedPart', part);
+			this.set('elements', elements);
+		},
+		onPartElementSelected(element){
+			this.get('elements').forEach(function(e){
+	          if(e != element){
+	        	e.set('isSelected', false);
+	          }
+	        });
 		}
 	}
 });
