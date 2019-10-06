@@ -1,6 +1,10 @@
 import Ember from 'ember';
+import { A } from '@ember/array';
+import { once } from '@ember/runloop';
+import SelectorPart from '../models/selector-part';
 
 export default Ember.Controller.extend({
+	scssParser: Ember.inject.service(),
 	scssBuilder: Ember.inject.service(),
 	inputValue: '',
 	init(){
@@ -25,11 +29,11 @@ export default Ember.Controller.extend({
 	},
 	onSourceSelectorChanged: Ember.observer('inputValue', function(){
 		var selector = this.get('inputValue').trim();
-		var scssBuilder = this.get('scssBuilder');
+		var scssParser = this.get('scssParser');
 
 		let scss;
 		try {
-			scss = scssBuilder.create(selector);            
+			scss = scssParser.parse(selector);            
 		} catch (e) {
 			console.log('Unable to convert scss selector "' + selector + '"');
 		}
@@ -39,12 +43,29 @@ export default Ember.Controller.extend({
 				xpath: null
 			};
 		this.set('scss', scss);
+		this.set('parts', this.generateParts(scss.parts));
 		this.set('selectedPart', null);
 
 		if(!selector){
 			this.focusInput();
 		}
 	}),
+	generateParts(scssParts){
+		return A(scssParts.map(scssPart=>
+			SelectorPart.create({
+					isXPath: true,
+					id: scssPart.id,
+					tagName: scssPart.tagName,
+					classNames: A(scssPart.classNames),
+					texts: scssPart.texts,
+					scss: scssPart.scss,
+					xpath: scssPart.xpath,
+					fullXpath: scssPart.fullXpath,
+					css: scssPart.css,
+					fullCss: scssPart.fullCss,
+					index: scssPart.index
+				})));
+	},
 	getSelectorRootElement(selectorType){
 		switch(selectorType){
 			// case 0:
@@ -87,6 +108,20 @@ export default Ember.Controller.extend({
 		onCopySelector(){
 			this.copyToClipboard(this.get('inputValue'));
 			this.selectInput();
+		},
+		onPartAttributeToggle(){
+			let parts = this.get('parts');
+			let scssBuilder = this.get('scssBuilder');
+			parts.forEach(part=>{
+				part.set('scss', scssBuilder.buildScssPart({
+					id: part.id,
+					tagName: part.tagName,
+					classNames: part.classNames,
+					texts: part.texts
+				}));
+			});
+			let scss = parts.map(part=>part.scss).join(' ');
+			this.set('inputValue', scss);
 		}
 	}
 });

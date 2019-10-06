@@ -8,6 +8,10 @@ export default Component.extend({
 			let unlocked = this.get('unlocked');
 			if(unlocked){
 				attribute.toggle();
+				let onToggle = this.get('onToggle');
+				if(onToggle){
+					onToggle();
+				}
 			}
 		}
 	}

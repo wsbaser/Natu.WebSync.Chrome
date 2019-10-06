@@ -28,7 +28,7 @@
 					{{action "copySelectorEnd" 1 on="mouseUp"}}
 					{{action "copySelectorEnd" 1 on="mouseLeave"}}>Css</label>
 				{{bs-tooltip triggerElement="#targetCssLabel" title="Copy CSS selector" placement="bottom" delayShow=300}}
-				{{css-validator scss=scss status=cssStatus selectedPartIndex=selectedPart.index onPartSelected=(action "onPartSelected") onRemovePart=(action "onRemovePart") }}
+				{{css-validator parts=parts status=cssStatus selectedPartIndex=selectedPart.index onPartSelected=(action "onPartSelected") onRemovePart=(action "onRemovePart") }}
 			</li>
 			
 			<li id="targetXPath" >
@@ -37,14 +37,14 @@
 					{{action "copySelectorEnd" 2 on="mouseUp"}}
 					{{action "copySelectorEnd" 2 on="mouseLeave"}}>XPath</label>
 				{{bs-tooltip triggerElement="#targetXPathLabel" title="Copy XPath selector" placement="bottom" delayShow=300}}
-				{{xpath-validator scss=scss status=xpathStatus selectedPartIndex=selectedPart.index onPartSelected=(action "onPartSelected") onRemovePart=(action "onRemovePart") }}
+				{{xpath-validator parts=parts status=xpathStatus selectedPartIndex=selectedPart.index onPartSelected=(action "onPartSelected") onRemovePart=(action "onRemovePart") }}
 			</li>
 		</ul>
 	</div>
 	<ul id="elementsList">
 		{{#if selectedPart}}
 			{{#each selectedPart.elements as |element|}}
-				{{selector-part-element partElement=element}}
+				{{selector-part-element partElement=element onAttributeToggle=(action "onPartAttributeToggle") }}
 			{{/each}}
 		{{/if}}
 	</ul>

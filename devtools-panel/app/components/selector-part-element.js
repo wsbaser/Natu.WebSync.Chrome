@@ -29,6 +29,12 @@ export default Component.extend({
 		},
 		onMouseLeave(){
 			this.get('selectorHighlighter').removeHighlighting();
+		},
+		onAttributeToggle(){
+			let onAttributeToggle = this.get('onAttributeToggle');
+			if(onAttributeToggle){
+				onAttributeToggle();
+			}
 		}
 	}
 });

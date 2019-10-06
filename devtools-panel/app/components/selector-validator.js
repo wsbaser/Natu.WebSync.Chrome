@@ -2,10 +2,12 @@ import Ember from 'ember';
 import SelectorPartElement from '../models/selector-part-element';
 import ElementAttribute from '../models/element-attribute';
 import { isArray } from '@ember/array';
+import { A } from '@ember/array';
 
 export default Ember.Component.extend({
 	tagName: 'span',
 	classNames: ['validator'],
+	validatedParts: A([]),
 	lastPartObserver: Ember.observer('parts.lastObject.count',function(){
 		this.set('status', this.get('parts.lastObject.count'));
 	}), 
@@ -38,7 +40,7 @@ export default Ember.Component.extend({
 					tagName: this.getElementAttribute(element.tagName, part, "tagName", true),
 					id: this.getElementAttribute(element.id, part, "id"),
 					attributes: [],
-					classNames: this.getSelectableClassNames(element.classNames, part, "classNames"),
+					classNames: this.getElementAttributes(element.classNames, part, "classNames"),
 					innerText: this.getElementAttribute(element.innerText, part, "texts"),
 					displayed: element.displayed,
 					containsTags: element.containsTags,
@@ -49,10 +51,8 @@ export default Ember.Component.extend({
 		}
 		return elements;
 	},
-	getSelectableClassNames(elementClasses, part, propertyName){
-		for (var i = elementClasses.length - 1; i >= 0; i--) {
-			this.getElementAttribute(elementClasses[i], part, propertyName);
-		};
+	getElementAttributes(elementClasses, part, propertyName){
+		return elementClasses.map(elementClass=>this.getElementAttribute(elementClass, part, propertyName));
 	},
 	getElementAttribute(value, part, partPropertyName, ignoreCase){
 		if(value){
@@ -89,10 +89,16 @@ export default Ember.Component.extend({
 	}),
 	actions:{
   		onPartSelected(part){
-  			this.get('onPartSelected')(part);
+  			let onPartSelected = this.get('onPartSelected');
+  			if(onPartSelected){
+				this.get('onPartSelected')(part);
+  			}
   		},
   		onRemovePart(part){
-  			this.get('onRemovePart')(part);
+  			let onRemovePart = this.get('onRemovePart');
+  			if(onRemovePart){
+  				onRemovePart(part);
+  			}
   		}
   	}
 });

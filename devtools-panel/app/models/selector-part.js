@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import ScssBuilder from '../services/scss-builder';
 
 export default Ember.Object.extend({
-	viewableElements: Ember.computed('elements',function(){
+	viewableElements: Ember.computed('elements', function(){
 		var elements = this.get('elements');
 		console.log("Update viewable elements");
 		console.log(elements);
@@ -15,8 +16,5 @@ export default Ember.Object.extend({
 		return this.get('elements')? 
 			this.get('elements').some(e=>e.get('displayed')):
 			false;
-	}),
-	onAttrubuteChanged: Ember.observer("tagName","id","classNames","texts", function(){
-		console.log('SELECTOR UPDATED');
 	})
 });

@@ -1,28 +1,12 @@
 import Ember from 'ember';
 import SelectorValidator from './selector-validator';
-import SelectorPart from '../models/selector-part';
-import {A} from '@ember/array';
 
 export default SelectorValidator.extend({
-	validate: Ember.observer('scss', function() {
-		var scss = this.get('scss');
-		var selectorParts = this.generateSelectorParts(scss.parts);
-		this.set('parts', selectorParts);
-		selectorParts.forEach(function(selectorPart){
-			this.validateSelectorPart(selectorPart,'evaluateCss("' + selectorPart.get('fullSelector') + '")');
+	scssBuilder: Ember.inject.service(),
+	validate: Ember.observer('parts', function() {
+		var parts = this.get('parts');
+		parts.forEach(function(part){
+			this.validateSelectorPart(part,'evaluateCss("' + part.get('fullCss') + '")');
 		}.bind(this));
-  	}),
-  	generateSelectorParts(scssParts){ 
-		return A(scssParts.map(scssPart=>
-			SelectorPart.create({
-					isXPath: false,
-					id: scssPart.id,
-					tagName: scssPart.tagName,
-					classNames: scssPart.classNames,
-					texts: scssPart.texts,
-					selector: scssPart.css,
-					fullSelector: scssPart.fullCss,
-					index: scssPart.index
-				})));
-	}
+  	})
 });
