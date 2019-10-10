@@ -13,14 +13,14 @@ export default Ember.Controller.extend({
       		this.focusInput();
     	});
 	},
-	// isExist: Ember.computed('cssStatus', 'xpathStatus', 'parts.[]', function(){
-	// 	return (this.get('targetCss') && this.get('cssStatus')>0) ||
-	// 		(this.get('targetXPath') && this.get('xpathStatus')>0);
-	// }),
-	// isSeveral: Ember.computed('cssStatus', 'xpathStatus', 'parts.[]', function(){
-	// 	return (this.get('targetCss') && this.get('cssStatus')>1) ||
-	// 	 	(this.get('targetXPath') && this.get('xpathStatus')>1);
-	// }),
+	isExist: Ember.computed('cssStatus', 'xpathStatus', 'parts.[]', function(){
+		return (this.get('scss.css') && this.get('cssStatus')>0) ||
+			(this.get('scss.xpath') && this.get('xpathStatus')>0);
+	}),
+	isSeveral: Ember.computed('cssStatus', 'xpathStatus', 'parts.[]', function(){
+		return (this.get('scss.css') && this.get('cssStatus')>1) ||
+		 	(this.get('scss.xpath') && this.get('xpathStatus')>1);
+	}),
 	focusInput(){
 		document.getElementById('source').focus();
 	},
