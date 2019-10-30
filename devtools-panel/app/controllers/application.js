@@ -12,6 +12,14 @@ export default Ember.Controller.extend({
 		Ember.run.schedule("afterRender", this, function() {
       		this.focusInput();
     	});
+
+    	chrome.devtools.panels.elements.onSelectionChanged.addListener(this.onElementsSelectionChanged.bind(this));
+	},
+	onElementsSelectionChanged(){
+		let blankPart = this.generateBlankPart();
+		this.locateBlankPart(part);
+		//let elements = 
+		//this.selectPart(blankPart, );
 	},
 	isExist: Ember.computed('cssStatus', 'xpathStatus', 'parts.[]', function(){
 		return (this.get('scss.css') && this.get('cssStatus')>0) ||

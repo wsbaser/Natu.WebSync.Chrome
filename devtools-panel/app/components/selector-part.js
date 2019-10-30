@@ -67,13 +67,13 @@ export default Ember.Component.extend({
 		}
 		else{
 			let part = this.get('part');
-			let elements = this.getElements(part, result);
+			let elements = this.generateElements(part, result);
 			this.set('isValid', true);
 			this.set('elements', elements);
 			this.set('count', elements.length);
 		}
 	},
-	getElements(part, iframesDataList){
+	generateElements(part, iframesDataList){
 		let elements = [];
 		for (var i = 0; i < iframesDataList.length; i++) {
 			let iframeData = iframesDataList[i];
