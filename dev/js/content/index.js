@@ -78,6 +78,21 @@ function getFirstLevelText(e){
 	return firstText.trim();
 }
 
+window.getLastInspectedElement = function(){
+	let lastInspectedElement = $0;
+	return serializeElements([{
+		documentNode: getDocumentOf(lastInspectedElement),
+		elements: [lastInspectedElement]
+	}]);
+}
+
+window.getDocumentOf = function(element){
+	if(element.parentNode){
+		return getDocumentOf(element.parentNode);
+	}
+	return element;
+}
+
 window.evaluateXpath = function find(xpath) {
     if(!xpath){
     	return [];

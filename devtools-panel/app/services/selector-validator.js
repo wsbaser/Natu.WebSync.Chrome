@@ -17,6 +17,9 @@ export default Ember.Service.extend({
 	validateXpath(xpath,onValidated){
 		return this._callEval('evaluateXpath("' + xpath + '")', onValidated);
 	},
+	getLastInspectedElement(onValidated){
+		return this._callEval('getLastInspectedElement()', onValidated);
+	},
 	_callEval(script, onValidated){
 		let deferred = Ember.$.Deferred();
 		chrome.devtools.inspectedWindow.eval(

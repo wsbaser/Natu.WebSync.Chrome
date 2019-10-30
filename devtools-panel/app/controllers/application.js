@@ -1,12 +1,14 @@
 import Ember from 'ember';
 import { A } from '@ember/array';
 import { once } from '@ember/runloop';
-import SelectorPart from '../models/selector-part';
 
 export default Ember.Controller.extend({
+	selectorPartFactory: Ember.inject.service(),
 	scssParser: Ember.inject.service(),
 	scssBuilder: Ember.inject.service(),
+	selectorValidator: Ember.inject.service(),
 	inputValue: '',
+	parts: A([]),
 	init(){
 		console.log ("Init ConvertController...");
 		Ember.run.schedule("afterRender", this, function() {
@@ -16,10 +18,16 @@ export default Ember.Controller.extend({
     	chrome.devtools.panels.elements.onSelectionChanged.addListener(this.onElementsSelectionChanged.bind(this));
 	},
 	onElementsSelectionChanged(){
-		let blankPart = this.generateBlankPart();
-		this.locateBlankPart(part);
-		//let elements = 
-		//this.selectPart(blankPart, );
+		let blankPart = this.get('selectorPartFactory').generateBlankPart();
+		this.get('selectorValidator').getLastInspectedElement((result)=>{
+			let elements = this.get('selectorPartFactory').generateElements(blankPart, result);
+			this.locateBlankPart(blankPart);
+			this.set('selectedPart', blankPart);
+			this.set('elements', elements);
+		});
+	},
+	locateBlankPart(blankPart){
+		this.get('parts').pushObject(blankPart);
 	},
 	isExist: Ember.computed('cssStatus', 'xpathStatus', 'parts.[]', function(){
 		return (this.get('scss.css') && this.get('cssStatus')>0) ||
@@ -51,7 +59,7 @@ export default Ember.Controller.extend({
 				xpath: null
 			};
 		this.set('scss', scss);
-		this.set('parts', this.generateParts(scss.parts));
+		this.set('parts', this.get('selectorPartFactory').generateParts(scss.parts));
 		this.set('selectedPart', null);
 		this.set('elements',[]);
 
@@ -59,22 +67,6 @@ export default Ember.Controller.extend({
 			this.focusInput();
 		}
 	}),
-	generateParts(scssParts){
-		return A(scssParts.map(scssPart=>
-			SelectorPart.create({
-					isXPath: true,
-					id: scssPart.id,
-					tagName: scssPart.tagName,
-					classNames: A(scssPart.classNames),
-					texts: scssPart.texts,
-					scss: scssPart.scss,
-					xpath: scssPart.xpath,
-					fullXpath: scssPart.fullXpath,
-					css: scssPart.css,
-					fullCss: scssPart.fullCss,
-					index: scssPart.index
-				})));
-	},
 	getSelectorRootElement(selectorType){
 		switch(selectorType){
 			// case 0:

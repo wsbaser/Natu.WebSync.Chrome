@@ -1,7 +1,4 @@
 import Ember from 'ember';
-import SelectorPartElement from '../models/selector-part-element';
-import ElementAttribute from '../models/element-attribute';
-import { isArray } from '@ember/array';
 
 export default Ember.Component.extend({
 	tagName: 'span',
@@ -12,6 +9,7 @@ export default Ember.Component.extend({
 		'hasHidden:hidden',
 		'displayed::not-displayed',
 		'part.isSelected:selected'],
+	selectorPartFactory: Ember.inject.service(),
 	selectorValidator: Ember.inject.service(),
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
@@ -67,57 +65,11 @@ export default Ember.Component.extend({
 		}
 		else{
 			let part = this.get('part');
-			let elements = this.generateElements(part, result);
+			let elements = this.get('selectorPartFactory').generateElements(part, result);
 			this.set('isValid', true);
 			this.set('elements', elements);
 			this.set('count', elements.length);
 		}
-	},
-	generateElements(part, iframesDataList){
-		let elements = [];
-		for (var i = 0; i < iframesDataList.length; i++) {
-			let iframeData = iframesDataList[i];
-			for (var j = 0; j < iframeData.elements.length; j++) {
-				let element = iframeData.elements[j];
-				elements.push(SelectorPartElement.create({
-					part: part,
-					foundByXpath: this.get('isXpath'),
-					tagName: this.getElementAttribute(element.tagName, part, "tagName", true),
-					id: this.getElementAttribute(element.id, part, "id"),
-					attributes: [],
-					classNames: this.getElementAttributes(element.classNames, part, "classNames"),
-					innerText: this.getElementAttribute(element.innerText, part, "texts"),
-					displayed: element.displayed,
-					containsTags: element.containsTags,
-					iframeIndex: i,
-					elementIndex: j
-				}));
-			}
-		}
-		return elements;
-	},
-	getElementAttributes(elementClasses, part, propertyName){
-		return elementClasses.map(elementClass=>this.getElementAttribute(elementClass, part, propertyName));
-	},
-	getElementAttribute(value, part, partPropertyName, ignoreCase){
-		if(value){
-			value = ignoreCase?value.toLowerCase():value;
-			let partAttributeValue = part && partPropertyName?part.get(partPropertyName):null;
-			let valuesToSelect;
-			if(isArray(partAttributeValue)){
-				valuesToSelect = ignoreCase?partAttributeValue.map(c=>c.toLowerCase()):partAttributeValue;
-			}else{
-				valuesToSelect = [ignoreCase?partAttributeValue.toLowerCase():partAttributeValue];
-			}
-			let isSelected = valuesToSelect.indexOf(value)!=-1;
-			return ElementAttribute.create({
-				value: value,
-				part: part,
-				partPropertyName: partPropertyName,
-				isSelected: isSelected
-			});
-		}
-		return null;
 	},
 	actions:{
 		onInspectSelector(e){
