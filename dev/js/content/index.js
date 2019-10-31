@@ -140,8 +140,10 @@ function inspectElement(iframeDataList, iframeIndex, elementIndex){
 		var arr = [].concat.apply([], iframeDataList.map(function(iframeData){return iframeData.elements;}));
 		let element = arr[0];
 		if(element){
-			element.domElement.scrollIntoViewIfNeeded();
-			inspect(element.domElement);
+			if(element.domElement!=$0){
+				element.domElement.scrollIntoViewIfNeeded();
+				inspect(element.domElement);
+			}
 		}
 		else{
 			console.log('No elements to inspect.');
