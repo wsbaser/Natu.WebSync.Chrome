@@ -83,6 +83,7 @@ export default Ember.Component.extend({
 			else{
 				let elements = this.get('elements');
 				if(elements.length>0){
+					// .select first element
 					for (var i = elements.length - 1; i >= 0; i--) {
 						elements[i].set('isSelected', false);
 					};

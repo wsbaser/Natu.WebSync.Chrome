@@ -18,13 +18,19 @@ export default Ember.Controller.extend({
     	chrome.devtools.panels.elements.onSelectionChanged.addListener(this.onElementsSelectionChanged.bind(this));
 	},
 	onElementsSelectionChanged(){
+		this.removeBlankParts();
 		let blankPart = this.get('selectorPartFactory').generateBlankPart();
 		this.get('selectorValidator').getLastInspectedElement((result)=>{
 			let elements = this.get('selectorPartFactory').generateElements(blankPart, result);
 			this.locateBlankPart(blankPart);
 			this.set('selectedPart', blankPart);
 			this.set('elements', elements);
+			// .select first element
+			elements[0].set('isSelected', true);
 		});
+	},
+	removeBlankParts(){
+		this.get('parts').removeObjects(this.get('parts').rejectBy('isBlank'));
 	},
 	locateBlankPart(blankPart){
 		this.get('parts').pushObject(blankPart);
