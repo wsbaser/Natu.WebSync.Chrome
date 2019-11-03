@@ -30,7 +30,9 @@ export default Ember.Component.extend({
 	}),
 	init(){
 		this._super(...arguments);
-		this.validatePart();
+		if(!this.get('part.isBlank')){
+			this.validatePart();
+		}
 	},
 	validatePart(){
   		let selectorValidator = this.get('selectorValidator');
@@ -80,17 +82,16 @@ export default Ember.Component.extend({
 				// sourceEl.focus()
 				// sourceEl.setSelectionRange(fullSelector.length-partSelector.length, fullSelector.length);
 			}
-			else{
-				let elements = this.get('elements');
-				if(elements.length>0){
-					// .select first element
-					for (var i = elements.length - 1; i >= 0; i--) {
-						elements[i].set('isSelected', false);
-					};
-					elements[0].set('isSelected', true);
+			else if(!this.get('part.isBlank')){
+				if(this.get('elements.length')){
+					// // .select first element
+					// for (var i = elements.length - 1; i >= 0; i--) {
+					// 	elements[i].set('isSelected', false);
+					// };
+					// elements[0].set('isSelected', true);
 					this.inspectPart();
 				}
-				this.set('part.isSelected', true);
+				// this.set('part.isSelected', true);
 				let onSelected = this.get('onSelected');
 				if(onSelected){
 					onSelected(this.get('part'), this.get('elements'));
@@ -98,7 +99,9 @@ export default Ember.Component.extend({
 			}
 		},
 		onSelectorMouseEnter(){
-			this.highlightPart();
+			if(!this.get('part.isBlank')){
+				this.highlightPart();
+			}
 		},
 		onSelectorMouseLeave(){
 			this.get('selectorHighlighter').removeHighlighting();

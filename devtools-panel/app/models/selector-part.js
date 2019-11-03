@@ -13,7 +13,7 @@ export default Ember.Object.extend({
 	// 		xpath: this.get('fullXpath')
 	// 	};
 	// }),
-	isBlank: Ember.computed('', function(){
-		return !!this.get('scss');
+	isBlank: Ember.computed('scss', function(){
+		return !this.get('scss');
 	})
 });

@@ -10,7 +10,7 @@ export default Service.extend({
 					id: '',
 					tagName: '',
 					classNames: A([]),
-					texts: [],
+					texts: A([]),
 					scss: '',
 					xpath: '',
 					fullXpath: '',

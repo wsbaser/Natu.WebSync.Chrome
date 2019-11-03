@@ -111,6 +111,7 @@ export default Service.extend({
         let parts=[];
         let fullCss='';
         let fullXpath=''
+        let encounteredInvalidCss = false;
         for (let i = 0; i < scssParts.length; i++){
             let part = this.parseScssPart(scssParts[i]);
             part.index = i;
@@ -119,12 +120,20 @@ export default Service.extend({
             }else{
                 part.xpath = "/" + this.RemoveChildAxis(part.xpath);
             }
+
+            // .so far we consider part.xpath to be always valid
             fullXpath+=part.xpath;
             part.fullXpath=fullXpath;
-            if(part.css){
+
+            // .when part.css can be invalid because it does not support some functions that xpath does
+            // .we concatenate css only until we encounter invalid css selector
+            if(part.css && !encounteredInvalidCss){
                 fullCss+=part.css;
                 part.fullCss=fullCss;
+            }else{
+                encounteredInvalidCss=true;
             }
+
             parts.push(part);
         }
         

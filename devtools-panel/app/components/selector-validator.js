@@ -24,11 +24,6 @@ export default Ember.Component.extend({
 	// }),
 	actions:{
   		onPartSelected(part, elements){
-			this.get('parts').forEach(function(p){
-	          if(p != part){
-	        	p.set('isSelected', false);
-	          }
-	        });
   			let onPartSelected = this.get('onPartSelected');
   			if(onPartSelected){
 				this.get('onPartSelected')(part, elements);
