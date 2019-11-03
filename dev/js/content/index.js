@@ -78,12 +78,100 @@ function getFirstLevelText(e){
 	return firstText.trim();
 }
 
-window.getLastInspectedElement = function(){
-	let lastInspectedElement = $0;
-	return serializeElements([{
-		documentNode: getDocumentOf(lastInspectedElement),
-		elements: [lastInspectedElement]
-	}]);
+window.locateInspectedElement = function(cssSelectors, xpathSelectors){
+	let partIndex=-1;
+	let partElements;
+	let elementIndex;
+	let blankPartIndex=-1;
+	let blankPartElements;
+	let inspectedElement = $0;
+
+	let maxLength = Math.max(cssSelectors.length, xpathSelectors.length);
+	if(maxLength){
+		// find out if inspected element belongs to any of current selector parts
+		let partsElements = [];
+		for (var i = 0; i < maxLength; i++) {
+			partsElements.push({
+				css: null,
+				xpath: null
+			});
+			if(cssSelectors[i]){
+				partsElements[i].css = evaluateCss(cssSelectors[i]);
+				elementIndex = getElementIndex(partsElements[i].css, inspectedElement);
+				if(elementIndex!=-1){
+					partIndex=i;
+					partElements = partsElements[i].css;
+					break;
+				}
+			}
+			if(xpathSelectors[i]){
+				partsElements[i].xpath = evaluateXpath(xpathSelectors[i]);
+				elementIndex = getElementIndex(partsElements[i].xpath, inspectedElement);
+				if(elementIndex!=-1){
+					partIndex=i;
+					partElements = partsElements[i].xpath;
+					break;
+				}
+			}
+		}
+
+		if(partIndex==-1){
+			// inspected element does not belong to any of the current selector parts
+			// we should find a location for the blank part
+			blankPartIndex = getBlankPartIndex(partsElements, inspectedElement);
+		}
+	}else{
+		// selector has no parts, so blank part will be the first one
+		blankPartIndex=0;
+	}
+
+	// we gonna create a blank part, so will need inspected element data
+	if(blankPartIndex!=-1){
+		blankPartElements = serializeElements([{
+			documentNode: getDocumentOf(inspectedElement),
+			elements: [inspectedElement]
+		}]);
+	}
+
+	return {
+		partIndex: partIndex,
+		elementIndex: elementIndex,
+		partElements: partElements, 
+		blankPartIndex: blankPartIndex,
+		blankPartElements: blankPartElements
+	};
+}
+
+window.getBlankPartIndex = function(partsElements, blankPartElement){
+	return getElementPartIndex(partsElements, blankPartElement.parentNode) + 1;
+}
+
+window.getElementPartIndex = function(partsElements, element){
+	if(!element){
+		return -1;
+	}
+	for (var i = partsElements.length - 1; i >= 0; i--) {
+		if(getElementIndex(partsElements[i].css, element)!=-1){
+			return i;
+		}
+		if(getElementIndex(partsElements[i].xpath, element)!=-1){
+			return i;
+		}
+	}
+	return getElementPartIndex(partsElements, element.parentNode);
+}
+
+window.getElementIndex = function(iframeData, element){
+	let elementIndex=0;
+	for (var i = 0; i<iframeData.length ; i++ ) {
+		for (var j = 0; j < iframeData[i].elements.length; j++) {
+			if(iframeData[i].elements[j].domElement==element){
+				return elementIndex;
+			}
+			elementIndex++;
+		};
+	};
+	return -1;
 }
 
 window.getDocumentOf = function(element){

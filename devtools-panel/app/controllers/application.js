@@ -6,7 +6,7 @@ export default Ember.Controller.extend({
 	selectorPartFactory: Ember.inject.service(),
 	scssParser: Ember.inject.service(),
 	scssBuilder: Ember.inject.service(),
-	selectorValidator: Ember.inject.service(),
+	elementLocator: Ember.inject.service(),
 	inputValue: '',
 	parts: A([]),
 	init(){
@@ -19,21 +19,30 @@ export default Ember.Controller.extend({
 	},
 	onElementsSelectionChanged(){
 		this.removeBlankParts();
-		let blankPart = this.get('selectorPartFactory').generateBlankPart();
-		this.get('selectorValidator').getLastInspectedElement((result)=>{
-			let elements = this.get('selectorPartFactory').generateElements(blankPart, result);
-			this.locateBlankPart(blankPart);
-			this.set('selectedPart', blankPart);
-			this.set('elements', elements);
-			// .select first element
-			elements[0].set('isSelected', true);
+		this.get('elementLocator').locateInspectedElement(this.get('parts'), (result, exception)=>{
+			if(result.partIndex!=-1){
+				this.selectPartAndElement(result.partIndex, result.elementIndex, result.partElements);
+			}else{
+				this.createBlankPart(result.blankPartIndex, result.blankPartElements);
+			}
 		});
 	},
 	removeBlankParts(){
 		this.get('parts').removeObjects(this.get('parts').rejectBy('isBlank'));
 	},
-	locateBlankPart(blankPart){
-		this.get('parts').pushObject(blankPart);
+	selectPartAndElement(partIndex, elementIndex, elements){
+		this.set('selectedPart', part);
+		this.set('elements', elements);
+		elements[elementIndex].set('isSelected', true);
+	},
+	createBlankPart(blankPartIndex, iframeData){
+		let blankPart = this.get('selectorPartFactory').generateBlankPart();
+		let elements = this.get('selectorPartFactory').generateElements(blankPart, iframeData);
+		this.get('parts').insertAt(blankPartIndex, blankPart);
+		this.set('elements', elements);
+		
+		this.set('selectedPart', blankPart);
+		elements[0].set('isSelected', true);
 	},
 	isExist: Ember.computed('cssStatus', 'xpathStatus', 'parts.[]', function(){
 		return (this.get('scss.css') && this.get('cssStatus')>0) ||
