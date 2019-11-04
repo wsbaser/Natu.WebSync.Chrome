@@ -41,13 +41,18 @@ export default Ember.Controller.extend({
 		this.get('parts').insertAt(blankPartIndex, blankPart);
 		this.selectPart(blankPart, elements);
 	},
-	isExist: Ember.computed('cssStatus', 'xpathStatus', 'parts.[]', function(){
-		return (this.get('scss.css') && this.get('cssStatus')>0) ||
-			(this.get('scss.xpath') && this.get('xpathStatus')>0);
+	status: Ember.computed(
+		'parts.lastObject.xpathElements.[]',
+		'parts.lastObject.cssElements.[]', function(){
+		let xpathStatus = this.get('parts.lastObject.xpathElements.length')||0;
+		let cssStatus = this.get('parts.lastObject.cssElements.length')||0;
+		return Math.max(xpathStatus, cssStatus);
 	}),
-	isSeveral: Ember.computed('cssStatus', 'xpathStatus', 'parts.[]', function(){
-		return (this.get('scss.css') && this.get('cssStatus')>1) ||
-		 	(this.get('scss.xpath') && this.get('xpathStatus')>1);
+	isExist: Ember.computed('status', function(){
+		return this.get('status')>0;
+	}),
+	isSeveral: Ember.computed('status', function(){
+		return this.get('status')>1;
 	}),
 	focusInput(){
 		document.getElementById('source').focus();
@@ -126,7 +131,9 @@ export default Ember.Controller.extend({
 				oldParts.removeAt(i);
 			}else{
  				// .this is a changed part, update it
- 				oldPart.copySelectorsFrom(newPart);
+ 				newPart.set('isSelected', oldPart.get('isSelected'));
+ 				oldParts.replace(i, 1, [newPart]);
+ 				//oldPart.copyFrom(newPart);
 			}
 			return true;
 		}

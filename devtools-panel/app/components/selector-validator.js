@@ -5,9 +5,9 @@ export default Ember.Component.extend({
 	tagName: 'span',
 	classNames: ['validator'],
 	validatedParts: A([]),
-	lastPartObserver: Ember.observer('parts.lastObject.count', function(){
-		this.set('status', this.get('parts.lastObject.count'));
-	}),
+	// lastPartObserver: Ember.observer('parts.lastObject.count', function(){
+	// 	this.set('status', this.get('parts.lastObject.count'));
+	// }),
 	// getElementsCount(iframesDataList){
 	// 	var count=0;
 	// 	iframesDataList.forEach(function(iframeData){

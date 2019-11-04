@@ -74,16 +74,24 @@ export default Ember.Component.extend({
 			selectorHighlighter.highlightCss(this.get('part.fullCss'));
 		}
 	},
+	setPartElements(elements){
+		if(this.get('isXpath')){
+			this.set('part.xpathElements', elements);
+		}else{
+			this.set('part.cssElements', elements);
+		}
+		this.set('elements', elements);
+	},
 	onSelectorValidated(result, isException){
 		if(isException){
 			this.set('isValid', false);
-			this.set('elements', []);
+			this.setPartElements([]);
 		}
 		else{
 			let part = this.get('part');
 			let elements = this.get('selectorPartFactory').generateElements(part, result);
 			this.set('isValid', true);
-			this.set('elements', elements);
+			this.setPartElements(elements);
 		}
 	},
 	triggerOnSelected(){

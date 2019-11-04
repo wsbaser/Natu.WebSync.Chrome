@@ -19,14 +19,5 @@ export default Ember.Object.extend({
 	selectorsEqualTo(part){
 		return this.get('xpath')==part.get('xpath') && 
 			this.get('css')==part.get('css');
-	},
-	copySelectorsFrom(part){
-		this.set('fullXpath', part.get('fullXpath'));
-		this.set('fullCss', part.get('fullCss'));
-
-		this.set('css', part.get('css'));
-		this.set('xpath', part.get('xpath'));
-
-		this.set('scss', part.get('scss'));
 	}
 });
