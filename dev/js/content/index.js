@@ -151,10 +151,10 @@ window.getElementPartIndex = function(partsElements, element){
 		return -1;
 	}
 	for (var i = partsElements.length - 1; i >= 0; i--) {
-		if(getElementIndex(partsElements[i].css, element)!=-1){
+		if(partsElements[i].css && getElementIndex(partsElements[i].css, element)!=-1){
 			return i;
 		}
-		if(getElementIndex(partsElements[i].xpath, element)!=-1){
+		if(partsElements[i].xpath && getElementIndex(partsElements[i].xpath, element)!=-1){
 			return i;
 		}
 	}

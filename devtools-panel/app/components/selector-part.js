@@ -28,6 +28,21 @@ export default Ember.Component.extend({
 			this.get('elements').some(e=>e.get('displayed')):
 			false;
 	}),
+	onElementsChanged: Ember.observer('elements.[]', function(){
+		if(this.get('part.isSelected')){
+			this.triggerOnSelected();
+		}
+	}),
+	onXpathChanged: Ember.observer('part.fullXpath', function(){
+		if(this.get('isXpath')){
+			this.validatePart();
+		}
+	}),
+	onCssChanged: Ember.observer('part.fullCss', function(){
+		if(!this.get('isXpath')){
+			this.validatePart();
+		}
+	}),
 	init(){
 		this._super(...arguments);
 		if(!this.get('part.isBlank')){
@@ -73,6 +88,12 @@ export default Ember.Component.extend({
 			this.set('count', elements.length);
 		}
 	},
+	triggerOnSelected(){
+		let onSelected = this.get('onSelected');
+		if(onSelected){
+			onSelected(this.get('part'), this.get('elements'));
+		}
+	},
 	actions:{
 		onInspectSelector(e){
 			if(e.ctrlKey){
@@ -92,10 +113,7 @@ export default Ember.Component.extend({
 					this.inspectPart();
 				}
 				// this.set('part.isSelected', true);
-				let onSelected = this.get('onSelected');
-				if(onSelected){
-					onSelected(this.get('part'), this.get('elements'));
-				}
+				this.triggerOnSelected();
 			}
 		},
 		onSelectorMouseEnter(){

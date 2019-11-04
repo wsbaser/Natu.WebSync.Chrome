@@ -71,15 +71,68 @@ export default Ember.Controller.extend({
 				xpath: null
 			};
 		this.set('scss', scss);
-
-		this.set('parts', this.get('selectorPartFactory').generateParts(scss.parts));
-		// this.set('selectedPart', null);
-		// this.set('elements', A([]));
+		
+		this.updateParts(this.get('selectorPartFactory').generateParts(scss.parts));
 
 		if(!selector){
 			this.focusInput();
 		}
 	}),
+	updateParts(newParts){
+		let oldParts = this.get('parts');
+		if(this.updateSinglePart(oldParts, newParts)){
+			return;
+		}
+
+		// .more then one part was changed, use new parts list and clear selection
+		this.set('parts', newParts);
+		this.set('elements', A());
+	},
+	updateSinglePart(oldParts, newParts){
+		if(Math.abs(newParts.length-oldParts.length)>1){
+			return false;
+		}
+
+		// .possible single part chage
+		// .find new/removed/updated part
+		for(let i=0; i<Math.max(newParts.length, oldParts.length); i++){
+			let newPart = newParts.objectAt(i);
+			let oldPart = oldParts.objectAt(i);
+
+			if(newPart && oldPart && newPart.selectorsEqualTo(oldPart)){
+				// .no changes encountered, continue
+				continue;
+			}
+
+			// .compare tails
+			let newTail = newParts.slice(i).reverse();
+			let oldTail = oldParts.slice(i).reverse();
+			let tailLength = newTail.length==oldTail.length?
+				newTail.length-1:
+				Math.min(newTail.length, oldTail.length);
+			for (var j = 0; j<tailLength; j++) {
+				if(!newTail[j].selectorsEqualTo(oldTail)){
+					// .more then one part changed
+					return false;
+				}
+			};
+
+			// .update parts list
+			if(newTail.length>oldTail.length){
+				// .this is an added part, insert it to the parts list
+				oldParts.insertAt(i, newPart);
+			}else if(oldTail.length>newTail.length){
+				// .a part was removed, remove it from the parts list
+				oldParts.removeAt(i);
+			}else{
+ 				// .this is a changed part, update it
+ 				oldPart.copySelectorsFrom(newPart);
+			}
+			return true;
+		}
+
+		return true;
+	},
 	getSelectorRootElement(selectorType){
 		switch(selectorType){
 			// case 0:
