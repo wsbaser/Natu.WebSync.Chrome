@@ -71,7 +71,7 @@ export default Ember.Controller.extend({
 				xpath: null
 			};
 		this.set('scss', scss);
-		
+
 		this.updateParts(this.get('selectorPartFactory').generateParts(scss.parts));
 
 		if(!selector){
@@ -176,9 +176,11 @@ export default Ember.Controller.extend({
 			this.getSelectorRootElement(selectorType).removeClass('selected');
 		},
 		onRemovePart(part){
-			let scss = this.get('scss');
-			scss.parts.removeAt(part.get('index'));
-			let modifiedScss =  scss.parts.map(p=>p.scss).join('');
+			if(part.get('isSelected')){
+				this.set('elements', A([]));
+			}
+			this.get('parts').removeObject(part);
+			let modifiedScss =  this.get('parts').map(p=>p.scss).join('');
 			this.set('inputValue', modifiedScss);
 		},
 		onRemoveSelector(){

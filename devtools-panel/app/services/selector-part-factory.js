@@ -66,8 +66,10 @@ export default Service.extend({
 			let valuesToSelect;
 			if(isArray(partAttributeValue)){
 				valuesToSelect = ignoreCase?partAttributeValue.map(c=>c.toLowerCase()):partAttributeValue;
-			}else{
+			}else if(partAttributeValue){
 				valuesToSelect = [ignoreCase?partAttributeValue.toLowerCase():partAttributeValue];
+			}else{
+				valuesToSelect = [];
 			}
 			let isSelected = valuesToSelect.indexOf(value)!=-1;
 			return ElementAttribute.create({

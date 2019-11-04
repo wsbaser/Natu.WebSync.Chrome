@@ -14,11 +14,11 @@ export default Ember.Component.extend({
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
 	isXPath: false,
-	isSeveral: Ember.computed('count', function(){
-		return this.get('count')>1;
+	isSeveral: Ember.computed('elements.length', function(){
+		return this.get('elements.length')>1;
 	}),
-	isExist: Ember.computed('count', function(){
-		return this.get('count')>0;
+	isExist: Ember.computed('elements.length', function(){
+		return this.get('elements.length')>0;
 	}),
 	// hasHidden: Ember.computed('displayedCount', 'part.count', function(){
 	// 	return this.get('part.count')>this.get('part.displayedCount');
@@ -78,14 +78,12 @@ export default Ember.Component.extend({
 		if(isException){
 			this.set('isValid', false);
 			this.set('elements', []);
-			this.set('count', 0);
 		}
 		else{
 			let part = this.get('part');
 			let elements = this.get('selectorPartFactory').generateElements(part, result);
 			this.set('isValid', true);
 			this.set('elements', elements);
-			this.set('count', elements.length);
 		}
 	},
 	triggerOnSelected(){
