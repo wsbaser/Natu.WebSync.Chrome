@@ -85,23 +85,11 @@ export default Ember.Controller.extend({
 	}),
 	updateParts(newParts){
 		let oldParts = this.get('parts');
-		if(this.updateSinglePart(oldParts, newParts)){
-			return;
-		}
-
-		// .more then one part was changed, use new parts list and clear selection
-		this.set('parts', newParts);
-		this.set('elements', A());
-	},
-	updateSinglePart(oldParts, newParts){
-		if(Math.abs(newParts.length-oldParts.length)>1){
-			return false;
-		}
 
 		let partsMatch = true;
-		for(let i=0,j=0; i<newParts.length || j<oldParts.length;i++,j++){
+		for(let i=0; i<newParts.length || i<oldParts.length;i++){
 			let newPart = newParts.objectAt(i);
-			let oldPart = oldParts.objectAt(j);
+			let oldPart = oldParts.objectAt(i);
 			let curPartsMatch = newPart && oldPart && newPart.selectorsEqualTo(oldPart);
 			partsMatch &= curPartsMatch;
 			if(partsMatch){
@@ -115,24 +103,38 @@ export default Ember.Controller.extend({
 			}else{
 				if(!newPart){
 					// .remove old part
-					oldParts.removeAt(j);
+					oldParts.removeAt(i);
 				}else if(!oldPart){
 					// .add new part
 					oldParts.pushObject(newPart);
 				}else{
 					let nextNewPart = newParts.objectAt(i+1);
-					let nextOldPart = newParts.objectAt(j+1);
-					if(nextOldPart && newPart.selectorsEqualTo(oldPart)){
+					let nextOldPart = newParts.objectAt(i+1);
+					if(!nextNewPart && !nextOldPart ||
+						(nextNewPart && nextOldPart && nextNewPart.selectorsEqualTo(nextOldPart))){
+						newPart.set('isSelected', oldPart.get('isSelected'));
+ 						oldParts.replace(i, 1, [newPart]);
+					}else if(nextOldPart && newPart.selectorsEqualTo(nextOldPart)){
 						// .part was removed
-						oldParts.removeAt(j);
+						oldParts.removeAt(i);
 					}else if(nextNewPart && nextNewPart.selectorsEqualTo(oldPart)){
 						// .part was added
 						oldParts.insertAt(i, newPart);
 					}else{
-		 				oldParts.replace(i, 1, [newPart]);
+						oldParts.replace(i, 1, [newPart]);
 					}
 				}
 			}
+		}
+
+		// .if selected part was changed - clear elements list
+		if(!oldParts.some(p=>p.get('isSelected'))){
+			this.set('elements', A());
+		}
+	},
+	updateSinglePart(oldParts, newParts){
+		if(Math.abs(newParts.length-oldParts.length)>1){
+			return false;
 		}
 
 		// .possible single part chage
