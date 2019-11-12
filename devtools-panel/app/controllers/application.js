@@ -98,6 +98,43 @@ export default Ember.Controller.extend({
 			return false;
 		}
 
+		let partsMatch = true;
+		for(let i=0,j=0; i<newParts.length || j<oldParts.length;i++,j++){
+			let newPart = newParts.objectAt(i);
+			let oldPart = oldParts.objectAt(j);
+			let curPartsMatch = newPart && oldPart && newPart.selectorsEqualTo(oldPart);
+			partsMatch &= curPartsMatch;
+			if(partsMatch){
+				// .no changes encountered, continue
+				continue;
+			}
+			if(curPartsMatch){
+				// .current parts match, but some prevous are different - update 
+				newPart.set('isSelected', oldPart.get('isSelected'));
+ 				oldParts.replace(i, 1, [newPart]);
+			}else{
+				if(!newPart){
+					// .remove old part
+					oldParts.removeAt(j);
+				}else if(!oldPart){
+					// .add new part
+					oldParts.pushObject(newPart);
+				}else{
+					let nextNewPart = newParts.objectAt(i+1);
+					let nextOldPart = newParts.objectAt(j+1);
+					if(nextOldPart && newPart.selectorsEqualTo(oldPart)){
+						// .part was removed
+						oldParts.removeAt(j);
+					}else if(nextNewPart && nextNewPart.selectorsEqualTo(oldPart)){
+						// .part was added
+						oldParts.insertAt(i, newPart);
+					}else{
+		 				oldParts.replace(i, 1, [newPart]);
+					}
+				}
+			}
+		}
+
 		// .possible single part chage
 		// .find new/removed/updated part
 		for(let i=0; i<Math.max(newParts.length, oldParts.length); i++){
