@@ -33,7 +33,7 @@ export default Service.extend({
 					index: scssPart.index
 				})));
 	},
-	generateElements(part, iframesDataList){
+	generateElements(part, iframesDataList, isXpath){
 		let elements = [];
 		for (var i = 0; i < iframesDataList.length; i++) {
 			let iframeData = iframesDataList[i];
@@ -41,7 +41,7 @@ export default Service.extend({
 				let element = iframeData.elements[j];
 				elements.push(SelectorPartElement.create({
 					part: part,
-					foundByXpath: this.get('isXpath'),
+					foundByXpath: isXpath,
 					tagName: this.getElementAttribute(element.tagName, part, "tagName", true),
 					id: this.getElementAttribute(element.id, part, "id"),
 					attributes: [],

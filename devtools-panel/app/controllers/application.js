@@ -103,20 +103,20 @@ export default Ember.Controller.extend({
 			}else{
 				if(!newPart){
 					// .remove old part
-					oldParts.removeAt(i);
+					oldParts.removeAt(i--);
 				}else if(!oldPart){
 					// .add new part
 					oldParts.pushObject(newPart);
 				}else{
 					let nextNewPart = newParts.objectAt(i+1);
-					let nextOldPart = newParts.objectAt(i+1);
+					let nextOldPart = oldParts.objectAt(i+1);
 					if(!nextNewPart && !nextOldPart ||
 						(nextNewPart && nextOldPart && nextNewPart.selectorsEqualTo(nextOldPart))){
 						newPart.set('isSelected', oldPart.get('isSelected'));
  						oldParts.replace(i, 1, [newPart]);
 					}else if(nextOldPart && newPart.selectorsEqualTo(nextOldPart)){
 						// .part was removed
-						oldParts.removeAt(i);
+						oldParts.removeAt(i--);
 					}else if(nextNewPart && nextNewPart.selectorsEqualTo(oldPart)){
 						// .part was added
 						oldParts.insertAt(i, newPart);
@@ -239,15 +239,13 @@ export default Ember.Controller.extend({
 		onPartAttributeToggle(){
 			let parts = this.get('parts');
 			let scssBuilder = this.get('scssBuilder');
-			parts.forEach(part=>{
-				part.set('scss', scssBuilder.buildScssPart({
+			let scss = parts.map(part=>
+				scssBuilder.buildScssPart({
 					id: part.id,
 					tagName: part.tagName,
 					classNames: part.classNames,
 					texts: part.texts
-				}));
-			});
-			let scss = parts.map(part=>part.scss).join(' ');
+				})).join(' ');
 			this.set('inputValue', scss);
 		},
 		onPartSelected(part, elements){

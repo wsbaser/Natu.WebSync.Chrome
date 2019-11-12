@@ -89,7 +89,7 @@ export default Ember.Component.extend({
 		}
 		else{
 			let part = this.get('part');
-			let elements = this.get('selectorPartFactory').generateElements(part, result);
+			let elements = this.get('selectorPartFactory').generateElements(part, result, this.get('isXpath'));
 			this.set('isValid', true);
 			this.setPartElements(elements);
 		}
