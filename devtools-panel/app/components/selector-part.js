@@ -29,7 +29,7 @@ export default Ember.Component.extend({
 			this.get('elements').some(e=>e.get('displayed')):
 			false;
 	}),
-	onElementsChanged: Ember.observer('elements.[]', function(){
+	onElementsChanged: Ember.observer('elements.[]', 'part.isSelected', function(){
 		if(this.get('part.isSelected')){
 			this.triggerOnSelected();
 		}
