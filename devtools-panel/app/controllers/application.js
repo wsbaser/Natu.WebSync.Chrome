@@ -222,11 +222,13 @@ export default Ember.Controller.extend({
 			this.getSelectorRootElement(selectorType).removeClass('selected');
 		},
 		onRemovePart(part){
-			if(part.get('isSelected')){
-				this.set('elements', A([]));
-			}
-			this.get('parts').removeObject(part);
-			let modifiedScss =  this.get('parts').map(p=>p.scss).join('');
+			// if(part.get('isSelected')){
+			// 	this.set('elements', A([]));
+			// }
+			let toRemoveIndex = this.get('parts').indexOf(part);
+			let scssList = this.get('parts').map(p=>p.scss);
+			scssList.splice(toRemoveIndex,1);
+			let modifiedScss =  scssList.join('');
 			this.set('inputValue', modifiedScss);
 		},
 		onRemoveSelector(){
