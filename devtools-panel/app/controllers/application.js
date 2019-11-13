@@ -184,17 +184,9 @@ export default Ember.Controller.extend({
 
 		return true;
 	},
-	getSelectorRootElement(selectorType){
-		switch(selectorType){
-			// case 0:
-				// return $('#targetScss');
-			case 1:
-				return $('#targetCss');
-			case 2:
-				return $('#targetXPath');
-			default:
-				throw new Error("Invalid selector type.");
-		}
+	getSelectorRootElement(isXpath){
+		// TODO: get rid of this shit
+		return isXpath?$('#targetXPath'):$('#targetCss');
 	},
 	copyToClipboard(text) {
 	    var $temp = $("<input>");
@@ -219,12 +211,16 @@ export default Ember.Controller.extend({
 		};
 	},
 	actions:{
-		copySelectorStart(selectorType, value){
-			this.getSelectorRootElement(selectorType).addClass('selected');
-			this.copyToClipboard(value);
+		copySelectorStart(isXpath){
+			this.getSelectorRootElement(isXpath).addClass('selected');
+			let lastPart = this.get('parts.lastObject');
+			if(lastPart){
+				let selector = isXpath?lastPart.get('fullXpath'):lastPart.get('fullCss');
+				this.copyToClipboard(selector);
+			}
 		},
-		copySelectorEnd(selectorType){
-			this.getSelectorRootElement(selectorType).removeClass('selected');
+		copySelectorEnd(isXpath){
+			this.getSelectorRootElement(isXpath).removeClass('selected');
 		},
 		onRemovePart(part){
 			// if(part.get('isSelected')){

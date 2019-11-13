@@ -15,7 +15,7 @@
 		<ul id="target">
 			{{!-- <li id="targetScss">
 				<label id="targetScssLabel"
-					{{action "copySelectorStart" 0 targetScss  on="mouseDown"}} 
+					{{action "copySelectorStart" 0 on="mouseDown"}} 
 					{{action "copySelectorEnd" 0 on="mouseUp"}} 
 					{{action "copySelectorEnd" 0 on="mouseLeave"}}>Scss: </label>
 				{{bs-tooltip triggerElement="#targetScssLabel" title="Copy SCSS selector" placement="bottom" delayShow=300}}
@@ -24,18 +24,18 @@
 			--}}
 			<li id="targetCss" >
 				<label id="targetCssLabel"
-					{{action "copySelectorStart" 1 targetCss on="mouseDown"}}
-					{{action "copySelectorEnd" 1 on="mouseUp"}}
-					{{action "copySelectorEnd" 1 on="mouseLeave"}}>Css</label>
+					{{action "copySelectorStart" false on="mouseDown"}}
+					{{action "copySelectorEnd" false on="mouseUp"}}
+					{{action "copySelectorEnd" false on="mouseLeave"}}>Css</label>
 				{{bs-tooltip triggerElement="#targetCssLabel" title="Copy CSS selector" placement="bottom" delayShow=300}}
 				{{selector-validator parts=parts onPartSelected=(action "onPartSelected") onRemovePart=(action "onRemovePart") }}
 			</li>
 			
 			<li id="targetXPath" >
 				<label id="targetXPathLabel"
-					{{action "copySelectorStart" 2 targetXPath on="mouseDown"}}
-					{{action "copySelectorEnd" 2 on="mouseUp"}}
-					{{action "copySelectorEnd" 2 on="mouseLeave"}}>XPath</label>
+					{{action "copySelectorStart" true on="mouseDown"}}
+					{{action "copySelectorEnd" true on="mouseUp"}}
+					{{action "copySelectorEnd" true on="mouseLeave"}}>XPath</label>
 				{{bs-tooltip triggerElement="#targetXPathLabel" title="Copy XPath selector" placement="bottom" delayShow=300}}
 				{{selector-validator isXpath=true parts=parts onPartSelected=(action "onPartSelected") onRemovePart=(action "onRemovePart") }}
 			</li>
