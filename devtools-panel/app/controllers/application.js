@@ -13,6 +13,7 @@ export default Ember.Controller.extend({
 		console.log ("Init ConvertController...");
 		Ember.run.schedule("afterRender", this, function() {
       		this.focusInput();
+      		this.onElementsSelectionChanged();
     	});
 
     	chrome.devtools.panels.elements.onSelectionChanged.addListener(this.onElementsSelectionChanged.bind(this));
