@@ -129,10 +129,11 @@ export default Ember.Controller.extend({
 
 		// .if selected part was changed - clear elements list
 		if(!oldParts.some(p=>p.get('isSelected'))){
-			this.set('elements', A());
-			if(oldParts.length){
-				oldParts.objectAt(0).set('isSelected',true);
-			}
+			// this.set('elements', A());
+			this.onElementsSelectionChanged();
+			// if(oldParts.length){
+			// 	oldParts.objectAt(0).set('isSelected',true);
+			// }
 		}
 	},
 	updateSinglePart(oldParts, newParts){
