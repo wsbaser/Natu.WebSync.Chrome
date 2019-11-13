@@ -213,7 +213,8 @@ export default Ember.Controller.extend({
 	actions:{
 		copySelectorStart(isXpath){
 			this.getSelectorRootElement(isXpath).addClass('selected');
-			let lastPart = this.get('parts.lastObject');
+			let noBlank = this.get('parts').rejectBy('isBlank');
+			let lastPart = noBlank.length?noBlank[noBlank.length-1]:null;
 			if(lastPart){
 				let selector = isXpath?lastPart.get('fullXpath'):lastPart.get('fullCss');
 				this.copyToClipboard(selector);
