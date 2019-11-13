@@ -137,6 +137,7 @@ input#source:focus{
 	color: darkslategrey;
 	display: inline-block;
 	vertical-align: bottom;
+	height: 18px;
 }
 
 #target .validator .part.exist>.value{
@@ -153,7 +154,6 @@ input#source:focus{
 
 #target .validator .part.blank .value{
 	width: 12px;
-	height: 19px;
 	background-color: white;
 }
 
@@ -182,6 +182,10 @@ input#source:focus{
 	width: 7px;
 	height: 7px;
 	opacity: 1;
+}
+
+#target .validator .part.blank.selected>.remove-icon{
+	display: none;
 }
 
 #target>li>label{
