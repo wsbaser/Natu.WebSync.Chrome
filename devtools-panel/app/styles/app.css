@@ -131,10 +131,12 @@ input#source:focus{
 #target .validator .part>.value{
 	background: gainsboro;
 	cursor: pointer;
-	padding: 1px 2px;
+	padding: 0px 2px;
 	border-radius: 2px;
 	border: 1px dotted #ccc;
 	color: darkslategrey;
+	display: inline-block;
+	vertical-align: bottom;
 }
 
 #target .validator .part.exist>.value{
@@ -147,6 +149,12 @@ input#source:focus{
 
 #target li.selected .value{
 	background: #ACCEF7 !important;
+}
+
+#target .validator .part.blank .value{
+	width: 12px;
+	height: 19px;
+	background-color: white;
 }
 
 #target .validator .part.exist.hidden>.value{
