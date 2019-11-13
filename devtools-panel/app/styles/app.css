@@ -137,7 +137,7 @@ input#source:focus{
 	color: darkslategrey;
 	display: inline-block;
 	vertical-align: bottom;
-	height: 18px;
+	height: 17px;
 }
 
 #target .validator .part.exist>.value{
@@ -155,6 +155,7 @@ input#source:focus{
 #target .validator .part.blank .value{
 	width: 12px;
 	background-color: white;
+	cursor: default;
 }
 
 #target .validator .part.exist.hidden>.value{
@@ -317,7 +318,6 @@ ul#elementsList{
     font-size: 9px;
     text-align: right;
     color: rgb(48, 57, 66);
-    cursor: pointer;
 }
 
 .part-element .tag{
