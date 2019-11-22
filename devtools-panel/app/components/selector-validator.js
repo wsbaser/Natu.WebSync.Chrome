@@ -23,17 +23,17 @@ export default Ember.Component.extend({
 	//     }
 	// }),
 	actions:{
-  		onPartSelected(part, elements){
-  			let onPartSelected = this.get('onPartSelected');
-  			if(onPartSelected){
+		onPartSelected(part, elements){
+			let onPartSelected = this.get('onPartSelected');
+			if(onPartSelected){
 				this.get('onPartSelected')(part, elements);
-  			}
-  		},
-  		onRemovePart(part){
-  			let onRemovePart = this.get('onRemovePart');
-  			if(onRemovePart){
-  				onRemovePart(part);
-  			}
-  		}
-  	}
+			}
+		},
+			onRemovePart(part){
+			let onRemovePart = this.get('onRemovePart');
+			if(onRemovePart){
+				onRemovePart(part);
+			}
+		}
+	}
 });

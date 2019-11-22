@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import Ember from '@ember';
 
 export default Component.extend({
 	tagName: 'li',
@@ -47,7 +48,7 @@ export default Component.extend({
 				onSelected(element);
 			}
 		},
-		onElementMouseEnter(element){
+		onElementMouseEnter(){
 			this.highlightElement();
 		},
 		onMouseLeave(){

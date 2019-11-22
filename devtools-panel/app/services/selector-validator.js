@@ -12,7 +12,7 @@ export default Ember.Service.extend({
 		});
 	},
 	validateCss(css,onValidated){
-    	return this._callEval('evaluateCss("' + css + '")', onValidated);
+		return this._callEval('evaluateCss("' + css + '")', onValidated);
 	},
 	validateXpath(xpath,onValidated){
 		return this._callEval('evaluateXpath("' + xpath + '")', onValidated);
@@ -20,24 +20,24 @@ export default Ember.Service.extend({
 	_callEval(script, onValidated){
 		let deferred = Ember.$.Deferred();
 		chrome.devtools.inspectedWindow.eval(
-	      script,
-	      { useContentScriptContext: true },
-	      function(result, isException) {
-	      	let validationData = {};
-			if(isException){
-				validationData.isValid = false;
-				validationData.count = 0;
-			}
-			else{
-				validationData.isValid = true;
-				validationData.count = this._getNodesCount(result);
-				validationData.displayedCount = this._getNodesCount(result, true);
-			}
-			deferred.resolve(validationData);
-			if(onValidated){
-				onValidated(result, isException);
-			}
-	      }.bind(this));
+			script,
+			{ useContentScriptContext: true },
+			function(result, isException) {
+				let validationData = {};
+				if(isException){
+					validationData.isValid = false;
+					validationData.count = 0;
+				}
+				else{
+					validationData.isValid = true;
+					validationData.count = this._getNodesCount(result);
+					validationData.displayedCount = this._getNodesCount(result, true);
+				}
+				deferred.resolve(validationData);
+				if(onValidated){
+					onValidated(result, isException);
+				}
+			}.bind(this));
 		return deferred.promise();
 	},
 	_getNodesCount(iframesDataList, displayedOnly){

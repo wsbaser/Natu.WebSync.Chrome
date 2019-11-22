@@ -51,12 +51,12 @@ export default Ember.Component.extend({
 		}
 	},
 	validatePart(){
-  		let selectorValidator = this.get('selectorValidator');
-  		if(this.get('isXpath')){
+		let selectorValidator = this.get('selectorValidator');
+		if(this.get('isXpath')){
 			selectorValidator.validateXpath(this.get('part.fullXpath'), this.onSelectorValidated.bind(this));
-  		}else{
+		}else{
 			selectorValidator.validateCss(this.get('part.fullCss'), this.onSelectorValidated.bind(this));
-  		}
+		}
 	},
 	inspectPart(){
 		let selectorInspector = this.get('selectorInspector');
