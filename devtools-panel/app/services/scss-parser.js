@@ -23,18 +23,9 @@ export default Service.extend({
             } catch (e) {
                 throw "Invalid scss: " + scssSelector + ". " + e.description;
             }
-            let xpathParts = this.splitScssToParts(scssSelector, ' ');
-            parts=[];
-            let fullXpath='';
-            for (var i = 0; i < xpathParts.length; i++) {
-                fullXpath+=xpathParts[i];
-                parts.push({
-                    index: i,
-                    xpath: xpathParts[i],
-                    fullXpath: fullXpath
-                });
-            }
+            parts = this.parseXpath(scssSelector);
         }
+
         let isValidCss = parts.every(p=>p.css);
         let css = isValidCss?parts.map(p=>p.css).join(''):null;
         let xpath = parts.map(p=>p.xpath).join('');
@@ -46,6 +37,27 @@ export default Service.extend({
             xpath: xpath,
             parts: parts
         };
+    },
+    parseXpath(xpathSelector){
+        let hasRoot;
+        if(xpathSelector.startsWith("//")){
+            xpathSelector = this.cutLeadingString(xpathSelector,"//");
+            hasRoot=true;
+        }
+        let xpathParts = this.splitScssToParts(xpathSelector, '/');
+        let parts=[];
+        let fullXpath='';
+        for (var i = 0; i < xpathParts.length; i++) {
+            let xpath = i==0 && hasRoot? "//"+xpathParts[i]: xpathParts[i]; 
+            fullXpath+=xpath;
+            parts.push({
+                index: i,
+                scss: xpath,
+                xpath: xpath,
+                fullXpath: fullXpath
+            });
+        }
+        return parts;
     },
     // private
     IsNullOrWhiteSpace(input) {

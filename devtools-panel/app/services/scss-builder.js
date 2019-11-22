@@ -12,6 +12,6 @@ export default Service.extend({
 		part.texts.forEach(text=>{
 			scss+="['"+text+"']";
 		})
-		return scss;
+		return ' '+scss;
 	}
 });

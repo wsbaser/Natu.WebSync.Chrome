@@ -240,17 +240,20 @@ export default Ember.Controller.extend({
 			this.copyToClipboard(this.get('inputValue'));
 			this.selectInput();
 		},
-		onPartAttributeToggle(){
+		onPartAttributeToggle(part){
 			let parts = this.get('parts');
 			let scssBuilder = this.get('scssBuilder');
-			let scss = parts.map(part=>
-				scssBuilder.buildScssPart({
-					id: part.id,
-					tagName: part.tagName,
-					classNames: part.classNames,
-					texts: part.texts
-				})).join(' ');
-			this.set('inputValue', scss);
+			let scss = parts.map(p=>{
+				return p==part?
+					scssBuilder.buildScssPart({
+						id: part.id,
+						tagName: part.tagName,
+						classNames: part.classNames,
+						texts: part.texts
+					}):
+					p.get('scss');
+			}).join('');
+			this.set('inputValue', scss.trim());
 		},
 		onPartSelected(part, elements){
 			this.selectPart(part, elements);

@@ -43,7 +43,7 @@
 	</div>
 	<ul id="elementsList">
 		{{#each elements as |element|}}
-			{{selector-part-element partElement=element onAttributeToggle=(action "onPartAttributeToggle") onSelected=(action "onPartElementSelected")}}
+			{{selector-part-element partElement=element onAttributeToggle=(action "onPartAttributeToggle" element.part) onSelected=(action "onPartElementSelected")}}
 		{{/each}}
 	</ul>
 
