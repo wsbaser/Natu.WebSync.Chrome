@@ -100,7 +100,7 @@ input#source:focus{
 	margin: 0; 
 	padding: 5px 0 0 0;
 	list-style-type: none;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 #target{
@@ -137,7 +137,7 @@ input#source:focus{
 	color: darkslategrey;
 	display: inline-block;
 	vertical-align: bottom;
-	height: 17px;
+	height: 19px;
 }
 
 #target .validator .part.exist>.value{
@@ -287,7 +287,7 @@ ul#elementsList{
 .part-element{
 	position: relative;
 	width: 100%;
-	font-size: 10px;
+	font-size: 12px;
 	font-family: Menlo, monospace;
 	cursor: default;
 }
