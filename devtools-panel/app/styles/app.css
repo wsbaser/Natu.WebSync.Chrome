@@ -12,6 +12,9 @@
 	padding: 5px; 
 	background: ghostwhite;
 	border-bottom: 1px solid #1880004f;
+	position: fixed;
+	width: 100%;
+	z-index: 10;
 }
 
 .loading{
@@ -280,14 +283,21 @@ input#source:focus{
 }
 
 ul#elementsList{
-	padding: 5px 0 0 0;
+	position: absolute;
+	top: 90px;
+	bottom: 0;
+	margin: 0;
+	width: 100%;
+	padding: 2px 0 0 0;
 	list-style-type: none;
+	overflow: auto;
+	background: #f3f3f3;
 }
 
 .part-element{
 	position: relative;
 	width: 100%;
-	font-size: 12px;
+	font-size: 11px;
 	font-family: Menlo, monospace;
 	cursor: default;
 }
