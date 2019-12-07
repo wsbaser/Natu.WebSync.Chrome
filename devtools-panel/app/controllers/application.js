@@ -10,13 +10,17 @@ export default Ember.Controller.extend({
 	inputValue: '',
 	parts: A([]),
 	init(){
-		console.log ("Init ConvertController...");
+		console.log("Init ConvertController...");
 		Ember.run.schedule("afterRender", this, function() {
       		this.focusInput();
       		this.onElementsSelectionChanged();
+      		resizeHandlerFrame.onresize = this.adjustLayout.bind(this);
     	});
 
     	chrome.devtools.panels.elements.onSelectionChanged.addListener(this.onElementsSelectionChanged.bind(this));
+	},
+	adjustLayout(){
+		$(elementsList).css('top', resizeHandlerFrame.innerHeight+'px');
 	},
 	onElementsSelectionChanged(){
 		this.removeBlankParts();

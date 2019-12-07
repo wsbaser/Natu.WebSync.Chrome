@@ -9,19 +9,19 @@ export default Ember.Route.extend({
 	// 	this.render('content', { outlet: 'content' });
 	// },
 	model(){
-		this.get('backgroundConnection').connect();
-		var vsclient = this.get('vsclient');
-		return vsclient.connect()
-			.then(()=>vsclient.requestSessionWeb())
-			.then(()=>this.store.peekAll('service'))
-			.catch(()=>this.store.peekAll('service'));
+		// this.get('backgroundConnection').connect();
+		// var vsclient = this.get('vsclient');
+		// return vsclient.connect()
+		// 	.then(()=>vsclient.requestSessionWeb())
+		// 	.then(()=>this.store.peekAll('service'))
+		// 	.catch(()=>this.store.peekAll('service'));
 	},
-	redirect(model, transition){
-		if(localStorage.currentService){
-			this.transitionTo('service', model.findBy('id', localStorage.currentService));
-		}
-		else{
-			this.transitionTo('service', 'fake_service_id');
-		}
-	}
+	// redirect(model, transition){
+	// 	if(localStorage.currentService){
+	// 		this.transitionTo('service', model.findBy('id', localStorage.currentService));
+	// 	}
+	// 	else{
+	// 		this.transitionTo('service', 'fake_service_id');
+	// 	}
+	// }
 });

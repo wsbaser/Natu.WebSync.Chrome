@@ -9,7 +9,7 @@
 }
 
 #selectorsConverter{
-	margin: 5px;
+	padding: 5px;
 	background: ghostwhite;
 	border-bottom: 1px solid #1880004f;
 	position: fixed;
@@ -284,7 +284,6 @@ input#source:focus{
 
 ul#elementsList{
 	position: absolute;
-	top: 90px;
 	bottom: 0;
 	margin: 0;
 	width: 100%;
