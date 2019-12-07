@@ -137,53 +137,6 @@ export default Ember.Controller.extend({
 			// }
 		}
 	},
-	updateSinglePart(oldParts, newParts){
-		if(Math.abs(newParts.length-oldParts.length)>1){
-			return false;
-		}
-
-		// .possible single part chage
-		// .find new/removed/updated part
-		for(let i=0; i<Math.max(newParts.length, oldParts.length); i++){
-			let newPart = newParts.objectAt(i);
-			let oldPart = oldParts.objectAt(i);
-
-			if(newPart && oldPart && newPart.selectorsEqualTo(oldPart)){
-				// .no changes encountered, continue
-				continue;
-			}
-
-			// .compare tails
-			let newTail = newParts.slice(i).reverse();
-			let oldTail = oldParts.slice(i).reverse();
-			let tailLength = newTail.length==oldTail.length?
-				newTail.length-1:
-				Math.min(newTail.length, oldTail.length);
-			for (var j = 0; j<tailLength; j++) {
-				if(!newTail[j].selectorsEqualTo(oldTail)){
-					// .more then one part changed
-					return false;
-				}
-			};
-
-			// .update parts list
-			if(newTail.length>oldTail.length){
-				// .this is an added part, insert it to the parts list
-				oldParts.insertAt(i, newPart);
-			}else if(oldTail.length>newTail.length){
-				// .a part was removed, remove it from the parts list
-				oldParts.removeAt(i);
-			}else{
- 				// .this is a changed part, update it
- 				newPart.set('isSelected', oldPart.get('isSelected'));
- 				oldParts.replace(i, 1, [newPart]);
- 				//oldPart.copyFrom(newPart);
-			}
-			return true;
-		}
-
-		return true;
-	},
 	getSelectorRootElement(isXpath){
 		// TODO: get rid of this shit
 		return isXpath?$('#targetXPath'):$('#targetCss');
@@ -206,6 +159,9 @@ export default Ember.Controller.extend({
 		});
 
 		// .update selected element state
+		if(!elements){
+			debugger;
+		}
 		for (var i = elements.length - 1; i >= 0; i--) {
 			elements[i].set('isSelected', i==elementIndex);
 		};
