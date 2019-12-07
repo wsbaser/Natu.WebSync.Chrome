@@ -19,19 +19,34 @@ export default Service.extend({
 				});
 	},
 	generateParts(scssParts){
-		return A(scssParts.map(scssPart=>
-			SelectorPart.create({
-					id: scssPart.id,
-					tagName: scssPart.tagName,
-					classNames: A(scssPart.classNames),
-					texts: A(scssPart.texts),
-					scss: scssPart.scss,
-					xpath: scssPart.xpath,
-					fullXpath: scssPart.fullXpath,
-					css: scssPart.css,
-					fullCss: scssPart.fullCss,
-					index: scssPart.index
-				})));
+		return A(scssParts.map(scssPart=>{			
+				var notEditable = scssPart.attributes && scssPart.attributes.length ||
+					scssPart.conditions && scssPart.conditions.length ||
+					scssPart.subelementXpaths && scssPart.subelementXpaths.length ||
+					scssPart.func ||
+					scssPart.functionArgument && scssPart.functionArgument.length;
+
+				return SelectorPart.create({
+						id: scssPart.id,
+						tagName: scssPart.tagName,
+						classNames: A(scssPart.classNames),
+						texts: A(scssPart.texts),
+						scss: scssPart.scss,
+						xpath: scssPart.xpath,
+						fullXpath: scssPart.fullXpath,
+						css: scssPart.css,
+						fullCss: scssPart.fullCss,
+						index: scssPart.index,
+						isEditable: !notEditable
+					});
+			}));
+
+            // attributes: attributes,
+            // conditions: conditions,
+            // subelementXpaths: subelementXpaths,
+            // func: func,
+            // functionArgument: functionArgument
+
 	},
 	generateElements(part, iframesDataList, isXpath){
 		let elements = [];

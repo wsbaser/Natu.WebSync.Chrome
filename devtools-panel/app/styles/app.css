@@ -298,6 +298,10 @@ ul#elementsList{
 	background: #f3f3f3;
 }
 
+ul#elementsList.editable{
+	background: #fff;
+}
+
 .part-element{
 	position: relative;
 	width: 100%;

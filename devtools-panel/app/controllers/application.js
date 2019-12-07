@@ -32,6 +32,24 @@ export default Ember.Controller.extend({
 			}
 		});
 	},
+	isEditable: Ember.computed('selectedPart', function(){
+		let selectedPart = this.get('selectedPart');
+		return selectedPart &&
+			(selectedPart.get('isBlank') || selectedPart.get('isEditable'));
+	}),
+	status: Ember.computed(
+		'parts.lastObject.xpathElements.[]',
+		'parts.lastObject.cssElements.[]', function(){
+		let xpathStatus = this.get('parts.lastObject.xpathElements.length')||0;
+		let cssStatus = this.get('parts.lastObject.cssElements.length')||0;
+		return Math.max(xpathStatus, cssStatus);
+	}),
+	isExist: Ember.computed('status', function(){
+		return this.get('status')>0;
+	}),
+	isSeveral: Ember.computed('status', function(){
+		return this.get('status')>1;
+	}),
 	removeBlankParts(){
 		this.get('parts').removeObjects(this.get('parts').filterBy('isBlank'));
 	},
@@ -46,19 +64,6 @@ export default Ember.Controller.extend({
 		this.get('parts').insertAt(blankPartIndex, blankPart);
 		this.selectPart(blankPart, elements);
 	},
-	status: Ember.computed(
-		'parts.lastObject.xpathElements.[]',
-		'parts.lastObject.cssElements.[]', function(){
-		let xpathStatus = this.get('parts.lastObject.xpathElements.length')||0;
-		let cssStatus = this.get('parts.lastObject.cssElements.length')||0;
-		return Math.max(xpathStatus, cssStatus);
-	}),
-	isExist: Ember.computed('status', function(){
-		return this.get('status')>0;
-	}),
-	isSeveral: Ember.computed('status', function(){
-		return this.get('status')>1;
-	}),
 	focusInput(){
 		document.getElementById('source').focus();
 	},
@@ -154,7 +159,7 @@ export default Ember.Controller.extend({
 	},
 	selectPart(part,elements,elementIndex){
 		elementIndex = elementIndex||0;
-		// this.set('selectedPart', part);
+		this.set('selectedPart', part);
 		this.set('elements', elements);
 
 		// .update selected part state
