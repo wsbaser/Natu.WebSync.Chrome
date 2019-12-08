@@ -54,7 +54,7 @@ export default Ember.Controller.extend({
 	},
 	selectPartAndElement(partIndex, elementIndex, partElements, isXpathElements){
 		let part = this.get('parts').objectAt(partIndex);
-		let elements = this.get('selectorPartFactory').generateElements(part, partElements,isXpathElements);
+		let elements = this.get('selectorPartFactory').generateElements(part, partElements, isXpathElements);
 		this.selectPart(part, elements, elementIndex);
 	},
 	createBlankPart(blankPartIndex, blankPartElements){

@@ -51,6 +51,7 @@ export default Service.extend({
             let xpath = i==0 && hasRoot? "//"+xpathParts[i]: xpathParts[i]; 
             fullXpath+=xpath;
             parts.push({
+                isXpath: true,
                 index: i,
                 scss: xpath,
                 xpath: xpath,

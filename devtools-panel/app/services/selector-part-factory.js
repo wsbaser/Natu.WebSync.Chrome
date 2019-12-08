@@ -21,7 +21,9 @@ export default Service.extend({
 	},
 	generateParts(scssParts){
 		return A(scssParts.map(scssPart=>{			
-				var notEditable = scssPart.attributes && scssPart.attributes.length ||
+				var notEditable = 
+					scssPart.isXpath ||
+					scssPart.attributes && scssPart.attributes.length ||
 					scssPart.conditions && scssPart.conditions.length ||
 					scssPart.subelementXpaths && scssPart.subelementXpaths.length ||
 					scssPart.func ||
