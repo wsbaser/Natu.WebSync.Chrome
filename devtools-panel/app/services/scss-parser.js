@@ -17,13 +17,17 @@ export default Service.extend({
         try {
             parts = this.parseScss(scssSelector);
         } catch (e) {
-            // Это не scss, возможно это xpath
-            try {
-                document.evaluate(scssSelector, document, null, XPathResult.ANY_TYPE, null);
-            } catch (e) {
-                throw "Invalid scss: " + scssSelector + ". " + e.description;
-            }
+            // .consider selector is xpath
             parts = this.parseXpath(scssSelector);
+            let hasInvalidParts = false;
+            for (var i = 0; i<parts.length;  i++) {
+                let partXpathIsValid = this.xpathIsValid(parts[i].fullXpath);
+                hasInvalidParts &= partXpathIsValid;
+                if(hasInvalidParts){
+                    parts[i].xpath='';
+                    parts[i].fullXpath='';
+                }
+            };
         }
 
         let isValidCss = parts.every(p=>p.css);
@@ -48,7 +52,7 @@ export default Service.extend({
         let parts=[];
         let fullXpath='';
         for (var i = 0; i < xpathParts.length; i++) {
-            let xpath = i==0 && hasRoot? "//"+xpathParts[i]: xpathParts[i]; 
+            let xpath = i==0 && hasRoot? "//"+xpathParts[i]: xpathParts[i];
             fullXpath+=xpath;
             parts.push({
                 isXpath: true,
@@ -59,6 +63,14 @@ export default Service.extend({
             });
         }
         return parts;
+    },
+    xpathIsValid(selector){
+        try{
+            document.evaluate(selector, document, null, XPathResult.ANY_TYPE, null);
+            return true;
+        }catch(e){
+            return false;
+        }
     },
     // private
     IsNullOrWhiteSpace(input) {
