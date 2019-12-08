@@ -76,6 +76,15 @@ export default Service.extend({
 	},
 	getElementAttribute(value, part, partPropertyName, ignoreCase){
 		if(value){
+			if(!part.get('isEditable')){
+				return ElementAttribute.create({
+					value: value,
+					part: part,
+					partPropertyName: partPropertyName,
+					isSelected: false
+				});
+			}
+
 			value = ignoreCase?value.toLowerCase():value;
 			let partAttributeValue = part && partPropertyName?part.get(partPropertyName):null;
 			let valuesToSelect;

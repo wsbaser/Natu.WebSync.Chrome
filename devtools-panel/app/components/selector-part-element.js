@@ -55,9 +55,11 @@ export default Component.extend({
 			this.get('selectorHighlighter').removeHighlighting();
 		},
 		onAttributeToggle(){
-			let onAttributeToggle = this.get('onAttributeToggle');
-			if(onAttributeToggle){
-				onAttributeToggle();
+			if(this.get('partElement.part.isEditable') || this.get('partElement.part.isBlank')){
+				let onAttributeToggle = this.get('onAttributeToggle');
+				if(onAttributeToggle){
+					onAttributeToggle();
+				}
 			}
 		}
 	}

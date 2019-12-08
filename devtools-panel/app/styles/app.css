@@ -296,6 +296,7 @@ ul#elementsList{
 	list-style-type: none;
 	overflow: auto;
 	background: #f3f3f3;
+	transition: all 100ms;
 }
 
 ul#elementsList.editable{
