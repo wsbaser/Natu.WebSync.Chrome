@@ -379,15 +379,12 @@ ul#elementsList.editable{
     color: rgb(48, 57, 66);
 }
 
-.part-element.selected .value:hover,
-.part-element .value.selected{
+#elementsList.editable .part-element .value.selected{
 	font-weight: bold;
-}
-
-.part-element .value.selected{
 	color: red;
 }
 
-.part-element.selected .value:hover{
+#elementsList.editable .part-element.selected .value:hover{
 	cursor: pointer;
+	font-weight: bold;
 }

@@ -15,7 +15,8 @@ export default Service.extend({
 					xpath: '',
 					fullXpath: '',
 					css: '',
-					fullCss: ''
+					fullCss: '',
+					isEditable: true
 				});
 	},
 	generateParts(scssParts){

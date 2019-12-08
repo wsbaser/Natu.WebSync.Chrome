@@ -13,20 +13,20 @@ export default Ember.Controller.extend({
 		console.log("Init ConvertController...");
 		Ember.run.schedule("afterRender", this, function() {
       		this.focusInput();
-      		this.onElementsSelectionChanged();
+      		this.onElementsPanelSelectionChanged();
       		resizeHandlerFrame.onresize = this.adjustLayout.bind(this);
     	});
 
-    	chrome.devtools.panels.elements.onSelectionChanged.addListener(this.onElementsSelectionChanged.bind(this));
+    	chrome.devtools.panels.elements.onSelectionChanged.addListener(this.onElementsPanelSelectionChanged.bind(this));
 	},
 	adjustLayout(){
 		$(elementsList).css('top', resizeHandlerFrame.innerHeight+'px');
 	},
-	onElementsSelectionChanged(){
+	onElementsPanelSelectionChanged(){
 		this.removeBlankParts();
 		this.get('elementLocator').locateInspectedElement(this.get('parts'), (result, exception)=>{
 			if(result.partIndex!=-1){
-				this.selectPartAndElement(result.partIndex, result.elementIndex, result.partElements);
+				this.selectPartAndElement(result.partIndex, result.elementIndex, result.partElements, result.isXpathElements);
 			}else{
 				this.createBlankPart(result.blankPartIndex, result.blankPartElements);
 			}
@@ -34,8 +34,7 @@ export default Ember.Controller.extend({
 	},
 	isEditable: Ember.computed('selectedPart', function(){
 		let selectedPart = this.get('selectedPart');
-		return selectedPart &&
-			(selectedPart.get('isBlank') || selectedPart.get('isEditable'));
+		return selectedPart && selectedPart.get('isEditable');
 	}),
 	status: Ember.computed(
 		'parts.lastObject.xpathElements.[]',
@@ -53,9 +52,9 @@ export default Ember.Controller.extend({
 	removeBlankParts(){
 		this.get('parts').removeObjects(this.get('parts').filterBy('isBlank'));
 	},
-	selectPartAndElement(partIndex, elementIndex, partElements){
+	selectPartAndElement(partIndex, elementIndex, partElements, isXpathElements){
 		let part = this.get('parts').objectAt(partIndex);
-		let elements = this.get('selectorPartFactory').generateElements(part, partElements);
+		let elements = this.get('selectorPartFactory').generateElements(part, partElements,isXpathElements);
 		this.selectPart(part, elements, elementIndex);
 	},
 	createBlankPart(blankPartIndex, blankPartElements){
@@ -140,7 +139,7 @@ export default Ember.Controller.extend({
 		// .if selected part was changed - clear elements list
 		if(!oldParts.some(p=>p.get('isSelected'))){
 			// this.set('elements', A());
-			this.onElementsSelectionChanged();
+			this.onElementsPanelSelectionChanged();
 			// if(oldParts.length){
 			// 	oldParts.objectAt(0).set('isSelected',true);
 			// }

@@ -81,6 +81,7 @@ function getFirstLevelText(e){
 window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 	let partIndex=-1;
 	let partElements;
+	let isXpathELements;
 	let elementIndex;
 	let blankPartIndex=-1;
 	let blankPartElements;
@@ -101,6 +102,7 @@ window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 				if(elementIndex!=-1){
 					partIndex=i;
 					partElements = partsElements[i].css;
+					isXpathELements = false;
 					break;
 				}
 			}
@@ -110,6 +112,7 @@ window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 				if(elementIndex!=-1){
 					partIndex=i;
 					partElements = partsElements[i].xpath;
+					isXpathELements = true;
 					break;
 				}
 			}
@@ -136,7 +139,8 @@ window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 	return {
 		partIndex: partIndex,
 		elementIndex: elementIndex,
-		partElements: partElements, 
+		partElements: partElements,
+		isXpathELements: isXpathELements,
 		blankPartIndex: blankPartIndex,
 		blankPartElements: blankPartElements
 	};
