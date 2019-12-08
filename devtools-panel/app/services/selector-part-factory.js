@@ -5,7 +5,7 @@ import ElementAttribute from '../models/element-attribute';
 import { A, isArray } from '@ember/array';
 
 export default Service.extend({
-	generateBlankPart(){
+	generateBlankPart(isCssStyle){
 		return SelectorPart.create({
 					id: '',
 					tagName: '',
@@ -16,7 +16,8 @@ export default Service.extend({
 					fullXpath: '',
 					css: '',
 					fullCss: '',
-					isEditable: true
+					isEditable: true,
+					isCssStyle: isCssStyle
 				});
 	},
 	generateParts(scssParts){
@@ -40,7 +41,8 @@ export default Service.extend({
 						css: scssPart.css,
 						fullCss: scssPart.fullCss,
 						index: scssPart.index,
-						isEditable: !notEditable
+						isEditable: !notEditable,
+						isCssStyle: scssPart.isCssStyle
 					});
 			}));
 

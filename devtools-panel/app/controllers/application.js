@@ -34,7 +34,8 @@ export default Ember.Controller.extend({
 	},
 	isEditable: Ember.computed('selectedPart', function(){
 		let selectedPart = this.get('selectedPart');
-		return selectedPart && selectedPart.get('isEditable');
+		let scss = this.get('scss');
+		return selectedPart && selectedPart.get('isEditable') && (!scss || scss.isCssStyle);
 	}),
 	status: Ember.computed(
 		'parts.lastObject.xpathElements.[]',
@@ -58,7 +59,8 @@ export default Ember.Controller.extend({
 		this.selectPart(part, elements, elementIndex);
 	},
 	createBlankPart(blankPartIndex, blankPartElements){
-		let blankPart = this.get('selectorPartFactory').generateBlankPart();
+		let scss = this.get('scss');
+		let blankPart = this.get('selectorPartFactory').generateBlankPart(!scss || scss.isCssStyle);
 		let elements = this.get('selectorPartFactory').generateElements(blankPart, blankPartElements);
 		this.get('parts').insertAt(blankPartIndex, blankPart);
 		this.selectPart(blankPart, elements);
@@ -82,7 +84,8 @@ export default Ember.Controller.extend({
 		scss = scss || {
 				parts: [],
 				css: null,
-				xpath: null
+				xpath: null,
+				isCssStyle: true
 			};
 		this.set('scss', scss);
 

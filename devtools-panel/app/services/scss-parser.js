@@ -14,9 +14,11 @@ export default Service.extend({
         }
 
         let parts;
+        let isCssStyle = true;
         try {
             parts = this.parseScss(scssSelector);
         } catch (e) {
+            isCssStyle = false;
             // .consider selector is xpath
             parts = this.parseXpath(scssSelector);
             let hasInvalidParts = false;
@@ -39,7 +41,8 @@ export default Service.extend({
             scss: scssSelector,
             css: css,
             xpath: xpath,
-            parts: parts
+            parts: parts,
+            isCssStyle: isCssStyle
         };
     },
     parseXpath(xpathSelector){
@@ -59,7 +62,8 @@ export default Service.extend({
                 index: i,
                 scss: xpath,
                 xpath: xpath,
-                fullXpath: fullXpath
+                fullXpath: fullXpath,
+                isCssStyle: false
             });
         }
         return parts;
@@ -414,7 +418,8 @@ export default Service.extend({
             functionArgument: functionArgument,
             xpath: partXpath,
             css: partCss,
-            scss: combinator + partScss
+            scss: combinator + partScss,
+            isCssStyle: true
         };
     },
     // private
