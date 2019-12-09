@@ -10,6 +10,8 @@
 			{{input id="source" value=inputValue type="text" placeholder="Type selector here..."}}
 			<i class="copy-icon"
 				onclick={{action "onCopySelector"}}
+				{{action "onCopyButtonEnter" element on="mouseEnter"}}
+				{{action "onCopyButtonLeave" on="mouseLeave"}}
 				title="Copy selector"/>
 			<span class="selector-status {{if isExist "exist"}} {{if isSeveral "several"}}"/>
 		</div>

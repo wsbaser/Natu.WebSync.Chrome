@@ -7,6 +7,7 @@ export default Ember.Controller.extend({
 	scssParser: Ember.inject.service(),
 	scssBuilder: Ember.inject.service(),
 	elementLocator: Ember.inject.service(),
+	selectorHighlighter: Ember.inject.service(),
 	inputValue: '',
 	parts: A([]),
 	init(){
@@ -231,6 +232,18 @@ export default Ember.Controller.extend({
 	        	e.set('isSelected', false);
 	          }
 	        });
+		},
+		onCopyButtonEnter(){
+			let lastPart = this.get('parts.lastObject');
+			if(lastPart && !lastPart.get('isBlank')){
+				this.get('selectorHighlighter').highlight({
+					css: lastPart.get('fullCss'),
+					xpath: lastPart.get('fullXpath')
+				});
+			}
+		},
+		onCopyButtonLeave(){
+			this.get('selectorHighlighter').removeHighlighting();
 		}
 	}
 });
