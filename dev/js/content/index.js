@@ -7,18 +7,18 @@ console.log('WebSync content script injected');
 // 	});
 // });
 
-window.onload = window.onUrlChanged;
-window.onhashchange = window.onUrlChanged;
+// window.onload = window.onUrlChanged;
+// window.onhashchange = window.onUrlChanged;
 
-function onUrlChanged(){
-	chrome.runtime.sendMessage({
-		type: "urlchanged",
-		data: {
-			url: window.location.href
-		}
-	});
-	console.log("Sent urlchanged message to Backround Page.");
-}
+// function onUrlChanged(){
+// 	chrome.runtime.sendMessage({
+// 		type: "urlchanged",
+// 		data: {
+// 			url: window.location.href
+// 		}
+// 	});
+// 	console.log("Sent urlchanged message to Backround Page.");
+// }
 
 window.getCurrentUrl = function(){
 	return window.location;
@@ -267,6 +267,13 @@ window.createHighlighterElement = function(documentNode,clientRect){
 	bodyElement.appendChild(highlighterElement);
 };
 
+window.higlightElement = function(documentNode, element){
+	let clientRects = Array.from(element.getClientRects());
+	clientRects.forEach((clientRect)=>{
+		createHighlighterElement(documentNode, clientRect);
+	});
+}
+
 window.hightlightElementsInIframe = function(iframeNode, iframeElements){
 	if(iframeElements[0]){
 		// .scroll to first
@@ -277,11 +284,12 @@ window.hightlightElementsInIframe = function(iframeNode, iframeElements){
 		// });
 	}
 	iframeElements.forEach((iframeElement)=>{
-		let clientRects = Array.from(iframeElement.domElement.getClientRects());
-		clientRects.forEach((clientRect)=>{
-			createHighlighterElement(iframeNode, clientRect);
-		});
+		higlightElement(iframeNode, iframeElement.domElement);
 	});
+};
+
+window.highlightInspectedElement = function(){
+	higlightElement(document, $0);
 };
 
 window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex){

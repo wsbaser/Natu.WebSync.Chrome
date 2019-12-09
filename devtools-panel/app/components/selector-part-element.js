@@ -26,17 +26,21 @@ export default Component.extend({
 	},
 	highlightElement(){
 		let selectorHighlighter = this.get('selectorHighlighter');
-		let isXpath = this.get('partElement.foundByXpath');
-		if(isXpath){
-			selectorHighlighter.highlightXpath(
-				this.get('partElement.part.fullXpath'), 
-				this.get('partElement.iframeIndex'),
-				this.get('partElement.elementIndex'));
+		if(this.get('partElement.part.isBlank')){
+			selectorHighlighter.highlightInspectedElement();
 		}else{
-			selectorHighlighter.highlightCss(
-				this.get('partElement.part.fullCss'),
-				this.get('partElement.iframeIndex'),
-				this.get('partElement.elementIndex'));
+			let isXpath = this.get('partElement.foundByXpath');
+			if(isXpath){
+				selectorHighlighter.highlightXpath(
+					this.get('partElement.part.fullXpath'), 
+					this.get('partElement.iframeIndex'),
+					this.get('partElement.elementIndex'));
+			}else{
+				selectorHighlighter.highlightCss(
+					this.get('partElement.part.fullCss'),
+					this.get('partElement.iframeIndex'),
+					this.get('partElement.elementIndex'));
+			}
 		}
 	},
 	actions:{
