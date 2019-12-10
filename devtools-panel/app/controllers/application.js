@@ -11,6 +11,7 @@ export default Ember.Controller.extend({
 	inputValue: '',
 	parts: A([]),
 	init(){
+		this._super(...arguments);
 		console.log("Init ConvertController...");
 		Ember.run.schedule("afterRender", this, function() {
       		this.focusInput();
@@ -226,6 +227,7 @@ export default Ember.Controller.extend({
 			this.set('inputValue', scss.trim());
 		},
 		onPartSelected(part, elements){
+			this.removeBlankParts();
 			this.selectPart(part, elements);
 		},
 		onPartElementSelected(element){

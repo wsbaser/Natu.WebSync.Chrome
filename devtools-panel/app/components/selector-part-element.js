@@ -9,6 +9,20 @@ export default Component.extend({
 		'partElement.displayed::not-displayed'],
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
+	init(){
+		this._super(...arguments);
+		Ember.run.schedule("afterRender", this, function() {
+			this.scrollToIfSelected();
+    	});
+	},
+	scrollToIfSelected(){
+		if(this.get('partElement.isSelected')){
+			this.$()[0].scrollIntoViewIfNeeded(true);
+		}
+	},
+	onSelected: Ember.observer('partElement.isSelected', function(){
+		this.scrollToIfSelected();
+	}),
 	inspectElement(){
 		let selectorInspector = this.get('selectorInspector');
 		let isXpath = this.get('partElement.foundByXpath');

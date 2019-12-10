@@ -15,6 +15,12 @@ export default Ember.Component.extend({
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
 	isXPath: false,
+	init(){
+		this._super(...arguments);
+		if(!this.get('part.isBlank')){
+			this.validatePart();
+		}
+	},
 	isSeveral: Ember.computed('elements.length', function(){
 		return this.get('elements.length')>1;
 	}),
@@ -29,28 +35,21 @@ export default Ember.Component.extend({
 			this.get('elements').some(e=>e.get('displayed')):
 			false;
 	}),
-	onElementsChanged: Ember.observer('elements.[]', 'part.isSelected', function(){
-		// TODO: why should we trigger this when part is selected???
-		if(this.get('part.isSelected') && this.get('elements.length')){
+	onElementsChanged: Ember.observer('elements.[]',  function(){
+		if(this.get('part.isSelected')){
 			this.triggerOnSelected();
 		}
 	}),
-	onXpathChanged: Ember.observer('part.fullXpath', function(){
-		if(this.get('isXpath')){
-			this.validatePart();
-		}
-	}),
-	onCssChanged: Ember.observer('part.fullCss', function(){
-		if(!this.get('isXpath')){
-			this.validatePart();
-		}
-	}),
-	init(){
-		this._super(...arguments);
-		if(!this.get('part.isBlank')){
-			this.validatePart();
-		}
-	},
+	// onXpathChanged: Ember.observer('part.fullXpath', function(){
+	// 	if(this.get('isXpath')){
+	// 		this.validatePart();
+	// 	}
+	// }),
+	// onCssChanged: Ember.observer('part.fullCss', function(){
+	// 	if(!this.get('isXpath')){
+	// 		this.validatePart();
+	// 	}
+	// }),
 	validatePart(){
 		let selectorValidator = this.get('selectorValidator');
 		if(this.get('isXpath')){
