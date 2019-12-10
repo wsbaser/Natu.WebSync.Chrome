@@ -29,8 +29,9 @@
 				<label id="targetCssLabel"
 					{{action "copySelectorStart" false on="mouseDown"}}
 					{{action "copySelectorEnd" false on="mouseUp"}}
-					{{action "copySelectorEnd" false on="mouseLeave"}}>Css</label>
-				{{bs-tooltip triggerElement="#targetCssLabel" title="Copy CSS selector" placement="bottom" delayShow=300}}
+					{{action "copySelectorEnd" false on="mouseLeave"}}
+					title="Copy Css selector">Css</label>
+				{{!-- {{bs-tooltip triggerElement="#targetCssLabel" title="Copy CSS selector" placement="bottom" delayShow=300}} --}}
 				{{selector-validator parts=parts onPartSelected=(action "onPartSelected") onRemovePart=(action "onRemovePart") }}
 			</li>
 			
@@ -38,8 +39,9 @@
 				<label id="targetXPathLabel"
 					{{action "copySelectorStart" true on="mouseDown"}}
 					{{action "copySelectorEnd" true on="mouseUp"}}
-					{{action "copySelectorEnd" true on="mouseLeave"}}>XPath</label>
-				{{bs-tooltip triggerElement="#targetXPathLabel" title="Copy XPath selector" placement="bottom" delayShow=300}}
+					{{action "copySelectorEnd" true on="mouseLeave"}}
+					title="Copy XPath selector">XPath</label>
+				{{!-- {{bs-tooltip triggerElement="#targetXPathLabel" title="Copy XPath selector" placement="bottom" delayShow=300}} --}}
 				{{selector-validator isXpath=true parts=parts onPartSelected=(action "onPartSelected") onRemovePart=(action "onRemovePart") }}
 			</li>
 		</ul>

@@ -30,6 +30,7 @@ export default Ember.Component.extend({
 			false;
 	}),
 	onElementsChanged: Ember.observer('elements.[]', 'part.isSelected', function(){
+		// TODO: why should we trigger this when part is selected???
 		if(this.get('part.isSelected') && this.get('elements.length')){
 			this.triggerOnSelected();
 		}
