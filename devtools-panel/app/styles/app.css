@@ -112,6 +112,7 @@ input#source:focus{
 
 #target>li{
 	padding: 2px 0 2px 37px;
+	min-height: 25px;
 }
 
 #target>li>label{
