@@ -14,20 +14,20 @@ export default Ember.Controller.extend({
 		console.log("Init ConvertController...");
 		Ember.run.schedule("afterRender", this, function() {
       		this.focusInput();
-      		this.onElementsPanelSelectionChanged();
+      		this.locateInspectedElement();
       		resizeHandlerFrame.onresize = this.adjustLayout.bind(this);
     	});
 
-    	chrome.devtools.panels.elements.onSelectionChanged.addListener(this.onElementsPanelSelectionChanged.bind(this));
+    	chrome.devtools.panels.elements.onSelectionChanged.addListener(this.locateInspectedElement.bind(this));
 	},
 	adjustLayout(){
 		$(elementsList).css('top', resizeHandlerFrame.innerHeight+'px');
 	},
-	onElementsPanelSelectionChanged(){
+	locateInspectedElement(){
 		this.removeBlankParts();
 		this.get('elementLocator').locateInspectedElement(this.get('parts'), (result, exception)=>{
 			if(result.partIndex!=-1){
-				this.selectPartAndElement(result.partIndex, result.elementIndex, result.partElements, result.isXpathElements);
+				this.selectPartAndElement(result.partIndex, result.partElements, result.isXpathElements);
 			}else{
 				this.createBlankPart(result.blankPartIndex, result.blankPartElements);
 			}
@@ -54,10 +54,10 @@ export default Ember.Controller.extend({
 	removeBlankParts(){
 		this.get('parts').removeObjects(this.get('parts').filterBy('isBlank'));
 	},
-	selectPartAndElement(partIndex, elementIndex, partElements, isXpathElements){
+	selectPartAndElement(partIndex, partElements, isXpathElements){
 		let part = this.get('parts').objectAt(partIndex);
 		let elements = this.get('selectorPartFactory').generateElements(part, partElements, isXpathElements);
-		this.selectPart(part, elements, elementIndex);
+		this.selectPart(part, elements);
 	},
 	createBlankPart(blankPartIndex, blankPartElements){
 		let scss = this.get('scss');
@@ -143,7 +143,7 @@ export default Ember.Controller.extend({
 		// .if selected part was changed - clear elements list
 		if(!oldParts.some(p=>p.get('isSelected'))){
 			// this.set('elements', A());
-			this.onElementsPanelSelectionChanged();
+			this.locateInspectedElement();
 			// if(oldParts.length){
 			// 	oldParts.objectAt(0).set('isSelected',true);
 			// }
@@ -160,8 +160,7 @@ export default Ember.Controller.extend({
 	    document.execCommand("copy");
 	    $temp.remove();
 	},
-	selectPart(part,elements,elementIndex){
-		elementIndex = elementIndex||0;
+	selectPart(part,elements){
 		this.set('selectedPart', part);
 		this.set('elements', elements);
 
@@ -170,13 +169,14 @@ export default Ember.Controller.extend({
 			p.set('isSelected', p == part);
 		});
 
-		// .update selected element state
 		if(!elements){
 			debugger;
 		}
-		for (var i = elements.length - 1; i >= 0; i--) {
-			elements[i].set('isSelected', i==elementIndex);
-		};
+
+		// .select first if no element is selected
+		if(elements.length && elements.every(e=>!e.get('isSelected'))){
+			elements.objectAt(0).set('isSelected', true);
+		}
 	},
 	actions:{
 		copySelectorStart(isXpath){
@@ -197,7 +197,7 @@ export default Ember.Controller.extend({
 			// }
 			let toRemoveIndex = this.get('parts').indexOf(part);
 			let scssList = this.get('parts').map(p=>p.scss);
-			scssList.splice(toRemoveIndex,1);
+			scssList.splice(toRemoveIndex, 1);
 			let modifiedScss =  scssList.join('');
 			this.set('inputValue', modifiedScss);
 		},
@@ -209,6 +209,7 @@ export default Ember.Controller.extend({
 			this.selectInput();
 		},
 		onPartAttributeToggle(part){
+			// .rebuild selector
 			let parts = this.get('parts');
 			let scssBuilder = this.get('scssBuilder');
 			let scss = parts.map(p=>{
@@ -221,6 +222,7 @@ export default Ember.Controller.extend({
 					}):
 					p.get('scss');
 			}).join('');
+			// .and set new selector to input
 			this.set('inputValue', scss.trim());
 		},
 		onPartSelected(part, elements){

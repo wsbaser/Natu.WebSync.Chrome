@@ -291,6 +291,7 @@ ul#elementsList{
 	position: absolute;
 	margin: 0;
 	bottom: 0;
+	top: 93px;
 	min-height: 50px;
 	width: 100%;
 	padding: 2px 0 0 0;

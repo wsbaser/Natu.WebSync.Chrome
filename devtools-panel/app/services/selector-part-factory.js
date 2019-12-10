@@ -70,7 +70,8 @@ export default Service.extend({
 					displayed: element.displayed,
 					containsTags: element.containsTags,
 					iframeIndex: i,
-					elementIndex: j
+					elementIndex: j,
+					isSelected: element.isInspected
 				}));
 			}
 		}

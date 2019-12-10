@@ -54,6 +54,7 @@ function serializeElements(iframeData){
 		iframeData[i].elements = iframeData[i].elements.map(e=>{
 			return {
 				domElement: e,
+				isInspected: e===$0,
 				tagName: e.tagName,
 				id: e.id,
 				name: e.name,
@@ -82,7 +83,6 @@ window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 	let partIndex=-1;
 	let partElements;
 	let isXpathElements;
-	let elementIndex;
 	let blankPartIndex=-1;
 	let blankPartElements;
 	let inspectedElement = $0;
@@ -98,8 +98,7 @@ window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 			});
 			if(cssSelectors[i]){
 				partsElements[i].css = evaluateCss(cssSelectors[i]);
-				elementIndex = getElementIndex(partsElements[i].css, inspectedElement);
-				if(elementIndex!=-1){
+				if(getElementIndex(partsElements[i].css, inspectedElement)!=-1){
 					partIndex=i;
 					partElements = partsElements[i].css;
 					isXpathElements = false;
@@ -108,8 +107,7 @@ window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 			}
 			if(xpathSelectors[i]){
 				partsElements[i].xpath = evaluateXpath(xpathSelectors[i]);
-				elementIndex = getElementIndex(partsElements[i].xpath, inspectedElement);
-				if(elementIndex!=-1){
+				if(getElementIndex(partsElements[i].xpath, inspectedElement)!=-1){
 					partIndex=i;
 					partElements = partsElements[i].xpath;
 					isXpathElements = true;
@@ -138,7 +136,6 @@ window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 
 	return {
 		partIndex: partIndex,
-		elementIndex: elementIndex,
 		partElements: partElements,
 		isXpathElements: isXpathElements,
 		blankPartIndex: blankPartIndex,
