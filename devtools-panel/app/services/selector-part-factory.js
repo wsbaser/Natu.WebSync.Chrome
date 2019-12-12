@@ -42,7 +42,8 @@ export default Service.extend({
 						fullCss: scssPart.fullCss,
 						index: scssPart.index,
 						isEditable: !notEditable,
-						isCssStyle: scssPart.isCssStyle
+						isCssStyle: scssPart.isCssStyle,
+						startIndex: scssPart.startIndex
 					});
 			}));
 

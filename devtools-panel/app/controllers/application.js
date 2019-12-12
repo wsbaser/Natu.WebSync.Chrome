@@ -68,10 +68,20 @@ export default Ember.Controller.extend({
 		this.selectPart(blankPart, elements);
 	},
 	focusInput(){
-		document.getElementById('source').focus();
+		this.getInputElement().focus();
 	},
 	selectInput(){
-		document.getElementById('source').select();
+		this.getInputElement().select();
+	},
+	selectPartInInput(part){
+		let selectionStart = part.get('startIndex');
+		let selectionEnd = selectionStart + part.get('scss').length;
+		let inputElement = this.getInputElement();
+		inputElement.setSelectionRange(selectionStart, selectionEnd);
+		inputElement.focus();
+	},
+	getInputElement(){
+		return document.getElementById('source');
 	},
 	onSourceSelectorChanged: Ember.observer('inputValue', function(){
 		var selector = this.get('inputValue').trim();
@@ -177,6 +187,10 @@ export default Ember.Controller.extend({
 		// .select first if no element is selected
 		if(elements.length && elements.every(e=>!e.get('isSelected'))){
 			elements.objectAt(0).set('isSelected', true);
+		}
+
+		if(!part.get('isBlank')){
+			this.selectPartInInput(part);
 		}
 	},
 	actions:{

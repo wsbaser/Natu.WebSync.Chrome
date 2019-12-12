@@ -54,6 +54,7 @@ export default Service.extend({
         let xpathParts = this.splitScssToParts(xpathSelector, '/','//');
         let parts=[];
         let fullXpath='';
+        let startIndex=0;
         for (var i = 0; i < xpathParts.length; i++) {
             let xpath = i==0 && hasRoot? "//"+xpathParts[i]: xpathParts[i];
             fullXpath+=xpath;
@@ -63,8 +64,10 @@ export default Service.extend({
                 scss: xpath,
                 xpath: xpath,
                 fullXpath: fullXpath,
-                isCssStyle: false
+                isCssStyle: false,
+                startIndex: startIndex
             });
+            startIndex += xpath.length;
         }
         return parts;
     },
@@ -182,6 +185,7 @@ export default Service.extend({
         let fullCss='';
         let fullXpath=''
         let encounteredInvalidCss = false;
+        let startIndex=0;
         for (let i = 0; i < scssParts.length; i++){
             let part = this.parseScssPart(scssParts[i]);
             part.index = i;
@@ -211,6 +215,8 @@ export default Service.extend({
                 encounteredInvalidCss=true;
             }
 
+            part.startIndex = startIndex;
+            startIndex+=scssParts[i].length;
             parts.push(part);
         }
         
