@@ -28,7 +28,7 @@ export default Ember.Controller.extend({
 		this.removeBlankParts();
 		this.get('elementLocator').locateInspectedElement(this.get('parts'), (result, exception)=>{
 			if(result.partIndex!=-1){
-				this.selectPartAndElement(result.partIndex, result.partElements, result.isXpathElements);
+				this.selectLocatedPart(result.partIndex, result.partElements, result.isXpathElements);
 			}else{
 				this.createBlankPart(result.blankPartIndex, result.blankPartElements);
 			}
@@ -55,10 +55,11 @@ export default Ember.Controller.extend({
 	removeBlankParts(){
 		this.get('parts').removeObjects(this.get('parts').filterBy('isBlank'));
 	},
-	selectPartAndElement(partIndex, partElements, isXpathElements){
+	selectLocatedPart(partIndex, partElements, isXpathElements){
 		let part = this.get('parts').objectAt(partIndex);
 		let elements = this.get('selectorPartFactory').generateElements(part, partElements, isXpathElements);
 		this.selectPart(part, elements);
+		this.selectPartInInput(part);
 	},
 	createBlankPart(blankPartIndex, blankPartElements){
 		let scss = this.get('scss');
@@ -74,11 +75,13 @@ export default Ember.Controller.extend({
 		this.getInputElement().select();
 	},
 	selectPartInInput(part){
-		let selectionStart = part.get('startIndex');
-		let selectionEnd = selectionStart + part.get('scss').length;
 		let inputElement = this.getInputElement();
-		inputElement.setSelectionRange(selectionStart, selectionEnd);
-		inputElement.focus();
+		if(window.document.activeElement!==inputElement){
+			let selectionStart = part.get('startIndex');
+			let selectionEnd = selectionStart + part.get('scss').length;
+			inputElement.setSelectionRange(selectionStart, selectionEnd);
+			inputElement.focus();
+		}
 	},
 	getInputElement(){
 		return document.getElementById('source');
@@ -187,10 +190,6 @@ export default Ember.Controller.extend({
 		// .select first if no element is selected
 		if(elements.length && elements.every(e=>!e.get('isSelected'))){
 			elements.objectAt(0).set('isSelected', true);
-		}
-
-		if(!part.get('isBlank')){
-			this.selectPartInInput(part);
 		}
 	},
 	actions:{
