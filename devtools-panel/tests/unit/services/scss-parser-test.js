@@ -129,3 +129,23 @@ cases([
   let scssSelector = scssBuilder.parse(params.scssSelector);
   assert.equal(scssSelector.css, params.result);
 });
+
+cases([
+  {scssSelector:"div>span", result: ["div",">span"]},
+  {scssSelector:"div span", result: ["div"," span"]},
+  {scssSelector:"div+span", result: ["div","+span"]}
+]).test('Split CSS style selector to parts ignoring conditions', function(params, assert){
+  let scssBuilder = this.subject();
+  let parts = scssBuilder.splitScssToParts(params.scssSelector, " ", ">", "+");
+  assert.deepEqual(params.result, parts);
+});
+
+cases([
+  {scssSelector:"div/span", result: ["div","/span"]},
+  {scssSelector:"div//span", result: ["div","//span"]}
+]).test('Split XPATH style selector to parts ignoring conditions', function(params, assert){
+  let scssBuilder = this.subject();
+  let parts = scssBuilder.splitScssToParts(params.scssSelector, "/", "//");
+  assert.deepEqual(params.result, parts);
+});
+

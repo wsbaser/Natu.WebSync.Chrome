@@ -51,7 +51,7 @@ export default Service.extend({
             xpathSelector = this.cutLeadingString(xpathSelector,"//");
             hasRoot=true;
         }
-        let xpathParts = this.splitScssToParts(xpathSelector, '/');
+        let xpathParts = this.splitScssToParts(xpathSelector, '/','//');
         let parts=[];
         let fullXpath='';
         for (var i = 0; i < xpathParts.length; i++) {
@@ -89,8 +89,11 @@ export default Service.extend({
         let readFunctionArgument = false;
         let conditionOpenBrackets =  { Count: 0 };
         scssSelector = scssSelector || '';
-        for (let i = 0; i < scssSelector.length; i++) {
-            let c = scssSelector[i];
+
+        delimiters.sort((a,b)=>{return a.length<b.length?1:a.length>b.length?-1:0});
+
+        while(scssSelector.length){
+            let c = scssSelector[0];
             if (readCondition) {
                 if (this.IsClosingConditionBracket(conditionOpenBrackets, c)) {
                     readCondition = false;
@@ -101,19 +104,23 @@ export default Service.extend({
                     readFunctionArgument = false;
                 }
             }
-            else if (delimiters.includes(c)) {
-                if (!this.IsNullOrWhiteSpace(value)) {
-                    parts.push(value);
+            else{
+                let delimiter = delimiters.find(d=>scssSelector.startsWith(d));
+                if(delimiter){
+                    if (!this.IsNullOrWhiteSpace(value)) {
+                        parts.push(value);
+                    }
+                    value='';
+                    c = delimiter;
+                }else if (c == '[') {
+                    readCondition = true;
                 }
-                value = '';
-            }
-            else if (c == '[') {
-                readCondition = true;
-            }
-            else if (c == '(') {
-                readFunctionArgument = true;
+                else if (c == '(') {
+                    readFunctionArgument = true;
+                }
             }
             value += c;
+            scssSelector = scssSelector.slice(c.length);
         }
         if (!value
             || readCondition
@@ -121,6 +128,40 @@ export default Service.extend({
             throw "splitScssToParts: unexpected end of line";
         }
         parts.push(value);
+
+
+        // for (let i = 0; i < scssSelector.length; i++) {
+        //     let c = scssSelector[i];
+        //     if (readCondition) {
+        //         if (this.IsClosingConditionBracket(conditionOpenBrackets, c)) {
+        //             readCondition = false;
+        //         }
+        //     }
+        //     else if (readFunctionArgument) {
+        //         if (c == ')') {
+        //             readFunctionArgument = false;
+        //         }
+        //     }
+        //     else if (delimiters.includes(c)) {
+        //         if (!this.IsNullOrWhiteSpace(value)) {
+        //             parts.push(value);
+        //         }
+        //         value = '';
+        //     }
+        //     else if (c == '[') {
+        //         readCondition = true;
+        //     }
+        //     else if (c == '(') {
+        //         readFunctionArgument = true;
+        //     }
+        //     value += c;
+        // }
+        // if (!value
+        //     || readCondition
+        //     || readFunctionArgument) {
+        //     throw "splitScssToParts: unexpected end of line";
+        // }
+        // parts.push(value);
         return parts;
     },
     // private
