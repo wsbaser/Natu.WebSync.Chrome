@@ -4,6 +4,7 @@
 		<iframe name="resizeHandlerFrame" width=100% height=100% style="position:absolute;z-index:-1;border:0"></iframe>
 		{{!-- <div class="status {{if vsclient.isConnected 'connected'}}"></div> --}}
 		<div class="source-wrap {{if inputValue "active"}}">
+			<div id="partHighlighter"></div>
 			<i class="trash-icon"
 				onclick={{action "onRemoveSelector"}} 
 				title="Remove selector"/>

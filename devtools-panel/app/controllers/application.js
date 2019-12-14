@@ -59,7 +59,6 @@ export default Ember.Controller.extend({
 		let part = this.get('parts').objectAt(partIndex);
 		let elements = this.get('selectorPartFactory').generateElements(part, partElements, isXpathElements);
 		this.selectPart(part, elements);
-		this.selectPartInInput(part);
 	},
 	createBlankPart(blankPartIndex, blankPartElements){
 		let scss = this.get('scss');
@@ -75,13 +74,44 @@ export default Ember.Controller.extend({
 		this.getInputElement().select();
 	},
 	selectPartInInput(part){
-		let inputElement = this.getInputElement();
-		if(window.document.activeElement!==inputElement){
-			let selectionStart = part.get('startIndex');
-			let selectionEnd = selectionStart + part.get('scss').length;
-			inputElement.setSelectionRange(selectionStart, selectionEnd);
-			inputElement.focus();
+		// let inputElement = this.getInputElement();
+		// if(window.document.activeElement!==inputElement){
+		// 	let selectionStart = part.get('startIndex');
+		// 	let selectionEnd = selectionStart + part.get('scss').length;
+		// 	inputElement.setSelectionRange(selectionStart, selectionEnd);
+		// 	inputElement.focus();
+		// }
+
+		// .calculate highlighter position
+		
+		let prevPartScss = '';
+		let parts = this.get('parts');
+		for (var i = 0; i<parts.length; i++) {
+			if(parts[i]==part){
+				break;
+			}
+			prevPartScss+= parts[i].get('scss');
 		}
+		let partScss = part.get('scss');
+
+		let inputStyle = window.getComputedStyle(this.getInputElement());
+		let inputFont =  inputStyle.fontSize +' '+ inputStyle.fontFamily;
+
+		let left = this.getTextWidth(prevPartScss, inputFont);
+		let width = this.getTextWidth(partScss, inputFont); 
+
+		let $partHighlighter = $('#partHighlighter');
+		$partHighlighter.css('left', left+'px');
+		$partHighlighter.css('width', width+'px');
+	},
+	getTextWidth(text, font) {
+	    // if given, use cached canvas for better performance
+	    // else, create new canvas
+	    var canvas = this.getTextWidth.canvas || (this.getTextWidth.canvas = document.createElement("canvas"));
+	    var context = canvas.getContext("2d");
+	    context.font = font;
+	    var metrics = context.measureText(text);
+	    return metrics.width;
 	},
 	getInputElement(){
 		return document.getElementById('source');
@@ -174,7 +204,7 @@ export default Ember.Controller.extend({
 	    document.execCommand("copy");
 	    $temp.remove();
 	},
-	selectPart(part,elements){
+	selectPart(part, elements){
 		this.set('selectedPart', part);
 		this.set('elements', elements);
 
@@ -191,6 +221,8 @@ export default Ember.Controller.extend({
 		if(elements.length && elements.every(e=>!e.get('isSelected'))){
 			elements.objectAt(0).set('isSelected', true);
 		}
+
+		this.selectPartInInput(part);
 	},
 	actions:{
 		copySelectorStart(isXpath){
