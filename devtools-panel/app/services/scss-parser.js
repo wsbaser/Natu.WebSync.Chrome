@@ -18,18 +18,17 @@ export default Service.extend({
         try {
             parts = this.parseScss(scssSelector);
         } catch (e) {
-            isCssStyle = false;
-            // .consider selector is xpath
-            parts = this.parseXpath(scssSelector);
-            let hasInvalidParts = false;
-            for (var i = 0; i<parts.length;  i++) {
-                let partXpathIsValid = this.xpathIsValid(parts[i].fullXpath);
-                hasInvalidParts &= partXpathIsValid;
-                if(hasInvalidParts){
-                    parts[i].xpath='';
-                    parts[i].fullXpath='';
-                }
-            };
+            // .hmm, not a valid scss, may be it is a regular css?
+            if(this.isValidCss(scssSelector)){
+                isCssStyle = true;
+                parts=this.parseCss(scssSelector);
+                this.validatePartsCssStyle(parts);
+            }else{
+                // .not a valid scss and not a valid css, consider selector is xpath
+                isCssStyle = false;
+                parts = this.parseXpath(scssSelector);
+                this.validatePartsXpathStyle(parts);
+            }
         }
 
         let isValidCss = parts.every(p=>p.css);
@@ -43,6 +42,47 @@ export default Service.extend({
             xpath: xpath,
             parts: parts,
             isCssStyle: isCssStyle
+        };
+    },
+    parseCss(cssSelector){
+        let cssParts = this.splitScssToParts(cssSelector, ' ', '>', '+');
+        let parts=[];
+        let fullCss='';
+        let startIndex=0;
+        for (var i = 0; i < cssParts.length; i++) {
+            let css = cssParts[i];
+            fullCss+=css;
+            parts.push({
+                isXpath: false,
+                index: i,
+                scss: css,
+                css: css,
+                fullCss: fullCss,
+                isCssStyle: true,
+                startIndex: startIndex
+            });
+            startIndex += css.length;
+        }
+        return parts;
+    },
+    validatePartsCssStyle(parts){
+        let hasInvalidParts = false;
+        for (var i = 0; i<parts.length;  i++) {
+            hasInvalidParts &= this.isValidCss(parts[i].fullCss);
+            if(hasInvalidParts){
+                parts[i].css='';
+                parts[i].fullCss='';
+            }
+        };        
+    },
+    validatePartsXpathStyle(parts){
+        let hasInvalidParts = false;
+        for (var i = 0; i<parts.length;  i++) {
+            hasInvalidParts &= this.isValidXpath(parts[i].fullXpath);
+            if(hasInvalidParts){
+                parts[i].xpath='';
+                parts[i].fullXpath='';
+            }
         };
     },
     parseXpath(xpathSelector){
@@ -71,9 +111,17 @@ export default Service.extend({
         }
         return parts;
     },
-    xpathIsValid(selector){
+    isValidXpath(selector){
         try{
             document.evaluate(selector, document, null, XPathResult.ANY_TYPE, null);
+            return true;
+        }catch(e){
+            return false;
+        }
+    },
+    isValidCss(selector){
+        try{
+            document.querySelector(selector);
             return true;
         }catch(e){
             return false;
