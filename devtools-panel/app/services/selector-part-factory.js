@@ -7,6 +7,7 @@ import { A, isArray } from '@ember/array';
 export default Service.extend({
 	generateBlankPart(isCssStyle){
 		return SelectorPart.create({
+					combinator: '',
 					id: '',
 					tagName: '',
 					classNames: A([]),
@@ -31,6 +32,7 @@ export default Service.extend({
 					scssPart.functionArgument && scssPart.functionArgument.length;
 
 				return SelectorPart.create({
+						combinator: scssPart.combinator,
 						id: scssPart.id,
 						tagName: scssPart.tagName,
 						classNames: A(scssPart.classNames),

@@ -243,6 +243,10 @@ export default Service.extend({
                 }else{
                     part.xpath = "//" + this.RemoveDescendantAxis(part.xpath);
                 }
+                // .css selector can not start with leading > or +
+                if(part.combinator.trim()){
+                    encounteredInvalidCss=true;
+                }
             }else{
                 part.xpath = "/" + this.RemoveChildAxis(part.xpath);
             }
@@ -254,9 +258,6 @@ export default Service.extend({
             // .when part.css can be invalid because it does not support some functions that xpath does
             // .we concatenate css only until we encounter invalid css selector
             if(part.css && !encounteredInvalidCss){
-                if(i==0){
-                    part.css = part.css.trim();
-                }
                 fullCss+=part.css;
                 part.fullCss=fullCss;
             }else{
@@ -297,9 +298,10 @@ export default Service.extend({
         if (this.IsNullOrWhiteSpace(partScss)) {
             throw "Invalid scss: " + partScss;
         }
-        partScss = partScss.trim();
-        let combinator = ' ';
-        if (['>','+'].includes(partScss[0])) {
+        //partScss = partScss.trim();
+        let combinator='';
+        // TODO: implement more sophisticated combinator analysis
+        if (['>', '+', ' '].includes(partScss[0])) {
             combinator = partScss[0];
             partScss = partScss.slice(1);
         }
@@ -502,6 +504,7 @@ export default Service.extend({
         let partCss = isTrueCss?combinator+partScss:undefined;
 
         return {
+            combinator: combinator,
             tagName: tag,
             id: id,
             classNames: classNames,

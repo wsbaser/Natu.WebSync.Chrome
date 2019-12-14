@@ -226,18 +226,24 @@ export default Ember.Controller.extend({
 			// .rebuild selector
 			let parts = this.get('parts');
 			let scssBuilder = this.get('scssBuilder');
-			let scss = parts.map(p=>{
+			
+			let scssParts = parts.map(p=>{
 				return p==part?
 					scssBuilder.buildScssPart({
+						combinator: part.combinator,
 						id: part.id,
 						tagName: part.tagName,
 						classNames: part.classNames,
 						texts: part.texts
 					}):
 					p.get('scss');
-			}).join('');
+			});
+
+			// .remove leading space for the first selector
+			scssParts[0] = scssParts[0].trim();
+
 			// .and set new selector to input
-			this.set('inputValue', scss.trim());
+			this.set('inputValue', scssParts.join(''));
 		},
 		onPartSelected(part, elements){
 			this.removeBlankParts();

@@ -2,7 +2,10 @@ import Service from '@ember/service';
 
 export default Service.extend({
 	buildScssPart(part){
-		let scss = part.tagName||'';
+		let scss = part.combinator||' ';
+		if(part.tagName){
+			scss+=part.tagName;
+		}
 		if(part.id){
 			scss+='#'+part.id;
 		}
@@ -12,6 +15,6 @@ export default Service.extend({
 		part.texts.forEach(text=>{
 			scss+="['"+text+"']";
 		})
-		return ' '+scss;
+		return scss;
 	}
 });
