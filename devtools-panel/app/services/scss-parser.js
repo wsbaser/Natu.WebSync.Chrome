@@ -141,6 +141,8 @@ export default Service.extend({
         let conditionOpenBrackets =  { Count: 0 };
         scssSelector = scssSelector || '';
 
+        let spaceIsDelimiter = delimiters.includes(' ');
+
         delimiters.sort((a,b)=>{return a.length<b.length?1:a.length>b.length?-1:0});
 
         while(scssSelector.length){
@@ -156,13 +158,13 @@ export default Service.extend({
                 }
             }
             else{
-                let delimiter = delimiters.find(d=>scssSelector.startsWith(d));
-                if(delimiter){
-                    if (!this.IsNullOrWhiteSpace(value)) {
+                let delimiterWithSpaces = this.findDelimiter(scssSelector, delimiters, spaceIsDelimiter);
+                if(delimiterWithSpaces){
+                    c = delimiterWithSpaces;
+                    if(value){
                         parts.push(value);
+                        value='';
                     }
-                    value='';
-                    c = delimiter;
                 }else if (c == '[') {
                     readCondition = true;
                 }
@@ -180,40 +182,23 @@ export default Service.extend({
         }
         parts.push(value);
 
-
-        // for (let i = 0; i < scssSelector.length; i++) {
-        //     let c = scssSelector[i];
-        //     if (readCondition) {
-        //         if (this.IsClosingConditionBracket(conditionOpenBrackets, c)) {
-        //             readCondition = false;
-        //         }
-        //     }
-        //     else if (readFunctionArgument) {
-        //         if (c == ')') {
-        //             readFunctionArgument = false;
-        //         }
-        //     }
-        //     else if (delimiters.includes(c)) {
-        //         if (!this.IsNullOrWhiteSpace(value)) {
-        //             parts.push(value);
-        //         }
-        //         value = '';
-        //     }
-        //     else if (c == '[') {
-        //         readCondition = true;
-        //     }
-        //     else if (c == '(') {
-        //         readFunctionArgument = true;
-        //     }
-        //     value += c;
-        // }
-        // if (!value
-        //     || readCondition
-        //     || readFunctionArgument) {
-        //     throw "splitScssToParts: unexpected end of line";
-        // }
-        // parts.push(value);
         return parts;
+    },
+    findDelimiter(selector, delimiters, spaceIsDelimiter){
+        let delimiterWithSpaces='';
+        let trimmedSelector = selector.trimStart();
+        let spacesBefore = selector.substring(0, selector.length - trimmedSelector.length);
+        let delimiter = delimiters.find(d=>trimmedSelector.startsWith(d));
+        if(delimiter){
+            delimiterWithSpaces = spacesBefore + delimiter;
+            let withoutDelimiter = selector.slice(delimiterWithSpaces.length);
+            trimmedSelector = withoutDelimiter.trimStart();
+            let spacesAfter = withoutDelimiter.substring(0, withoutDelimiter.length-trimmedSelector.length);
+            delimiterWithSpaces+=spacesAfter;
+        }else if(spaceIsDelimiter){
+            delimiterWithSpaces = spacesBefore;
+        }
+        return delimiterWithSpaces;
     },
     // private
     IsClosingConditionBracket(conditionOpenBrackets, c) {
@@ -244,7 +229,7 @@ export default Service.extend({
                     part.xpath = "//" + this.RemoveDescendantAxis(part.xpath);
                 }
                 // .css selector can not start with leading > or +
-                if(part.combinator.trim()){
+                if(!isInner && part.combinator.trim()){
                     encounteredInvalidCss=true;
                 }
             }else{
@@ -297,14 +282,12 @@ export default Service.extend({
         };
         if (this.IsNullOrWhiteSpace(partScss)) {
             throw "Invalid scss: " + partScss;
+        }        
+        let combinator = this.findDelimiter(partScss, ['>', '+'], true);
+        if (combinator) {
+            partScss = partScss.slice(combinator.length);
         }
-        //partScss = partScss.trim();
-        let combinator='';
-        // TODO: implement more sophisticated combinator analysis
-        if (['>', '+', ' '].includes(partScss[0])) {
-            combinator = partScss[0];
-            partScss = partScss.slice(1);
-        }
+
         let tag = '';
         let id = '';
         let className = '';
@@ -500,11 +483,12 @@ export default Service.extend({
             subelementXpaths.length == 0 &&
             attributes.every(a => this.IsCssMatchStyle(a.matchStyle));
 
-        let partXpath = this.aggregateToXpath(combinator, tag, id, classNames, attributes, conditions, subelementXpaths, func, functionArgument);
+        let normalizedCombinator = combinator.trim();
+        let partXpath = this.aggregateToXpath(normalizedCombinator, tag, id, classNames, attributes, conditions, subelementXpaths, func, functionArgument);
         let partCss = isTrueCss?combinator+partScss:undefined;
 
         return {
-            combinator: combinator,
+            combinator: normalizedCombinator,
             tagName: tag,
             id: id,
             classNames: classNames,

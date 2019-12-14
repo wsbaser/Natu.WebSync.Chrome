@@ -108,7 +108,6 @@ cases([
   {scssSelector:"div.classname1 div.classname2", result: "div.classname1 div.classname2"},
   {scssSelector:"div[src='1.png']", result: "div[src='1.png']"},
   {scssSelector:"div[src=\"1.png\"]", result: "div[src=\"1.png\"]"},
-  {scssSelector:">.search-bar", result: ">.search-bar"},
   {scssSelector:".nav-section>.search-bar", result: ".nav-section>.search-bar"},
   {scssSelector:".nav-section>.search-bar ul", result: ".nav-section>.search-bar ul"},
   {scssSelector:"#js-documentContentArea>div>p:nth-child(1)", result: "#js-documentContentArea>div>p:nth-child(1)"},
@@ -133,16 +132,26 @@ cases([
 cases([
   {scssSelector:"div>span", result: ["div",">span"]},
   {scssSelector:"div span", result: ["div"," span"]},
-  {scssSelector:"div+span", result: ["div","+span"]}
+  {scssSelector:"div+span", result: ["div","+span"]},
+  {scssSelector:"div  span", result: ["div","  span"]},
+  {scssSelector:"div  +span", result: ["div","  +span"]},
+  {scssSelector:"div  >span", result: ["div","  >span"]},
+  {scssSelector:"div +  span", result: ["div"," +  span"]},
+  {scssSelector:"div >  span", result: ["div"," >  span"]},
+  {scssSelector:">h5>strong", result: [">h5",">strong"]},
 ]).test('Split CSS style selector to parts ignoring conditions', function(params, assert){
   let scssBuilder = this.subject();
   let parts = scssBuilder.splitScssToParts(params.scssSelector, " ", ">", "+");
-  assert.deepEqual(params.result, parts);
+  assert.deepEqual(parts, params.result);
 });
 
 cases([
   {scssSelector:"div/span", result: ["div","/span"]},
-  {scssSelector:"div//span", result: ["div","//span"]}
+  {scssSelector:"div//span", result: ["div","//span"]},
+  {scssSelector:"div  /span", result: ["div","  /span"]},
+  {scssSelector:"div  //span", result: ["div","  //span"]},
+  {scssSelector:"div /  span", result: ["div"," /  span"]},
+  {scssSelector:"div //  span", result: ["div"," //  span"]}
 ]).test('Split XPATH style selector to parts ignoring conditions', function(params, assert){
   let scssBuilder = this.subject();
   let parts = scssBuilder.splitScssToParts(params.scssSelector, "/", "//");
