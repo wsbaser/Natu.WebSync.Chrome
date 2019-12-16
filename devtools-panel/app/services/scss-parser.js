@@ -384,8 +384,8 @@ export default Service.extend({
                     }
                     if (this.IsText(condition)){
                         // текстовое условие
-                        texts.push(condition[0] == '~' ? condition.slice(2,condition.length-1) : condition.slice(1,condition.length-1));
-                        conditions.push(condition);
+                        texts.push(condition);
+                        // conditions.push(condition);
                     }else if (this.IsNumber(condition)
                         || this.IsFunction(condition)) {
                         conditions.push(condition);
@@ -479,13 +479,17 @@ export default Service.extend({
                 break;
         }
         this.validate(tag, id, classNames, attributes, func, functionArgument);
-        let isTrueCss = conditions.length == 0 &&
+        let isTrueCss = 
+            texts.length==0 &&
+            conditions.length == 0 &&
             subelementXpaths.length == 0 &&
             attributes.every(a => this.IsCssMatchStyle(a.matchStyle));
 
         let normalizedCombinator = combinator.trim();
-        let partXpath = this.aggregateToXpath(normalizedCombinator, tag, id, classNames, attributes, conditions, subelementXpaths, func, functionArgument);
+        let partXpath = this.aggregateToXpath(normalizedCombinator, tag, id, classNames, attributes, texts, conditions, subelementXpaths, func, functionArgument);
         let partCss = isTrueCss?combinator+partScss:undefined;
+
+        texts = texts.map(t=>t[0] == '~' ? t.slice(2,t.length-1) : t.slice(1,t.length-1));
 
         return {
             combinator: combinator,
@@ -631,7 +635,7 @@ export default Service.extend({
     },
     // private
     aggregateToXpath(axis, tag, id, classNames,
-        attributes, conditions, subelementXpaths, func, functionArgument)
+        attributes, texts, conditions, subelementXpaths, func, functionArgument)
     {
         tag = !tag ? "*" : tag;
         let xpath = this.XpathAxis(axis) + tag;
@@ -644,13 +648,13 @@ export default Service.extend({
         for (let i=0; i<attributes.length; i++) {
             xpath += this.XpathAttributeCondition(attributes[i].name, attributes[i].value, attributes[i].matchStyle);
         }
+        for (let i=0; i<texts.length; i++)
+        {
+            xpath += this.XpathTextCondition(texts[i]);
+        }
         for (let i=0; i<conditions.length; i++)
         {
-            if (this.IsText(conditions[i])) {
-                xpath += this.XpathTextCondition(conditions[i]);
-            } else {
-                xpath += this.XpathCondition(conditions[i]);
-            }
+            xpath += this.XpathCondition(conditions[i]);
         }
         for (let i=0; i<subelementXpaths.length; i++) {
             xpath += this.XpathCondition(subelementXpaths[i]);
