@@ -488,7 +488,7 @@ export default Service.extend({
         let partCss = isTrueCss?combinator+partScss:undefined;
 
         return {
-            combinator: normalizedCombinator,
+            combinator: combinator,
             tagName: tag,
             id: id,
             classNames: classNames,

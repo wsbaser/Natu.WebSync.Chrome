@@ -262,6 +262,7 @@ export default Ember.Controller.extend({
 	setInputValue(value){
 		this.set('inputValue', value);
 		this.set('updateCaretPosition', true);
+		// .old highlighter is not valid anymore
 		this.setHighlighter(0,0);
 	},
 	actions:{
@@ -284,7 +285,11 @@ export default Ember.Controller.extend({
 			let toRemoveIndex = this.get('parts').indexOf(part);
 			let scssList = this.get('parts').map(p=>p.scss);
 			scssList.splice(toRemoveIndex, 1);
-			let modifiedScss =  scssList.join('');
+			let modifiedScss = scssList.join('');
+			if(toRemoveIndex==0){
+				// if next part starts with space - trim it
+				modifiedScss = modifiedScss.trimStart();
+			}
 			this.setInputValue(modifiedScss);
 		},
 		onRemoveSelector(){
@@ -299,20 +304,35 @@ export default Ember.Controller.extend({
 			let parts = this.get('parts');
 			let scssBuilder = this.get('scssBuilder');
 			
-			let scssParts = parts.map(p=>{
-				return p==part?
-					scssBuilder.buildScssPart({
+			let partScss = scssBuilder.buildScssPart({
 						combinator: part.combinator,
 						id: part.id,
 						tagName: part.tagName,
 						classNames: part.classNames,
 						texts: part.texts
-					}):
-					p.get('scss');
-			});
+					});
 
-			// .remove leading space for the first selector
-			scssParts[0] = scssParts[0].trim();
+			let scssParts = parts.map(p=>p==part?partScss:p.get('scss'));
+
+			// .if first part attribute was toggled
+			if(part==parts.objectAt(0)){
+				// .remove leading space for the first part selector
+				scssParts[0] = scssParts[0].trim();
+
+				let secondPart = parts.objectAt(1);
+				if(secondPart){
+					if(scssParts[0]){
+						// .part added or updated
+						if(secondPart.get('combinator').length==0){
+							// . no combinator - add space
+							scssParts[1] = ' ' + scssParts[1];
+						}
+					}else{
+						// . part removed - trim leading space
+						scssParts[1] = scssParts[1].trimStart();
+					}
+				}
+			}	
 
 			// .and set new selector to input
 			this.setInputValue(scssParts.join(''));
