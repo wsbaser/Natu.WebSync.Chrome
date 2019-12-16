@@ -122,19 +122,22 @@ export default Ember.Controller.extend({
 		let left = this.getTextWidth(prevPartScss, inputFont);
 		let width = this.getTextWidth(partScss, inputFont); 
 
-		let $partHighlighter = $('#partHighlighter');
-		$partHighlighter.css('left', left+'px');
-		$partHighlighter.css('width', width+'px');
-
+		this.setHighlighter(left, width);
 
 		// .set caret position
-		if(window.document.activeElement!==inputElement && !part.get('isBlank')){
+		if(!part.get('isBlank') && (this.get('updateCaretPosition') || window.document.activeElement!==inputElement)){
 			let caretPosition = part.get('endIndex');
 			inputElement.setSelectionRange(caretPosition, caretPosition);
 			this.set('caretPosition', caretPosition);
 			console.log('caret position changed 2: '+caretPosition);
 			inputElement.focus();
+			this.set('updateCaretPosition', false);
 		}
+	},
+	setHighlighter(left, width){
+		let $partHighlighter = $('#partHighlighter');
+		$partHighlighter.css('left', left+'px');
+		$partHighlighter.css('width', width+'px');
 	},
 	getTextWidth(text, font) {
 	    // if given, use cached canvas for better performance
@@ -256,6 +259,11 @@ export default Ember.Controller.extend({
 
 		this.selectPartInInput(part);
 	},
+	setInputValue(value){
+		this.set('inputValue', value);
+		this.set('updateCaretPosition', true);
+		this.setHighlighter(0,0);
+	},
 	actions:{
 		copySelectorStart(isXpath){
 			this.getSelectorRootElement(isXpath).addClass('selected');
@@ -277,10 +285,10 @@ export default Ember.Controller.extend({
 			let scssList = this.get('parts').map(p=>p.scss);
 			scssList.splice(toRemoveIndex, 1);
 			let modifiedScss =  scssList.join('');
-			this.set('inputValue', modifiedScss);
+			this.setInputValue(modifiedScss);
 		},
 		onRemoveSelector(){
-			this.set('inputValue', '');
+			this.setInputValue('');
 		},
 		onCopySelector(){
 			this.copyToClipboard(this.get('inputValue'));
@@ -307,7 +315,7 @@ export default Ember.Controller.extend({
 			scssParts[0] = scssParts[0].trim();
 
 			// .and set new selector to input
-			this.set('inputValue', scssParts.join(''));
+			this.setInputValue(scssParts.join(''));
 		},
 		onPartSelected(part, elements){
 			this.removeBlankParts();
