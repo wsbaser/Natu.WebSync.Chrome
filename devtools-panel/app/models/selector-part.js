@@ -18,5 +18,8 @@ export default Ember.Object.extend({
 	}),
 	selectorsEqualTo(part){
 		return (this.get('scss')||'').trim()==(part.get('scss')||'').trim();
-	}
+	},
+	endIndex: Ember.computed('startIndex','scss', function(){
+		return this.get('startIndex') + this.get('scss').length;
+	}) 
 });

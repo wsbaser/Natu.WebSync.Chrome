@@ -17,9 +17,39 @@ export default Ember.Controller.extend({
       		this.focusInput();
       		this.locateInspectedElement();
       		resizeHandlerFrame.onresize = this.adjustLayout.bind(this);
+      		this.bindSourceInputEvents();
     	});
 
     	chrome.devtools.panels.elements.onSelectionChanged.addListener(this.locateInspectedElement.bind(this));
+	},
+	bindSourceInputEvents(){
+		let element = this.getInputElement();
+		element.addEventListener('keyup', this.onCaretPositionChange.bind(this));
+		element.addEventListener('click', this.onCaretPositionChange.bind(this));
+	},
+	onCaretPositionChange(){		
+		let previousPosition = this.get('caretPosition');
+		let position = this.getInputElement().selectionEnd;
+		if(previousPosition!=position){
+			let partUnderCaret = this.getPartForCaretPosition(position);
+			if(partUnderCaret){
+				let xpathElements = partUnderCaret.get('xpathElements');
+				let cssElements = partUnderCaret.get('cssElements');
+				let elements = cssElements && cssElements.length? cssElements:xpathElements;
+				this.selectPart(partUnderCaret, elements);
+				this.set('caretPosition', position);
+				console.log('caret position changed: '+position);
+			}
+		}
+	},
+	getPartForCaretPosition(position){
+		let parts = this.get('parts');
+		for (var i = 0; i<parts.length; i ++) {
+			if(position<=parts[i].get('endIndex')){
+				return parts[i];
+			}
+		};
+		return null;
 	},
 	adjustLayout(){
 		$(elementsList).css('top', resizeHandlerFrame.innerHeight+'px');
@@ -74,16 +104,7 @@ export default Ember.Controller.extend({
 		this.getInputElement().select();
 	},
 	selectPartInInput(part){
-		// let inputElement = this.getInputElement();
-		// if(window.document.activeElement!==inputElement){
-		// 	let selectionStart = part.get('startIndex');
-		// 	let selectionEnd = selectionStart + part.get('scss').length;
-		// 	inputElement.setSelectionRange(selectionStart, selectionEnd);
-		// 	inputElement.focus();
-		// }
-
 		// .calculate highlighter position
-		
 		let prevPartScss = '';
 		let parts = this.get('parts');
 		for (var i = 0; i<parts.length; i++) {
@@ -94,7 +115,8 @@ export default Ember.Controller.extend({
 		}
 		let partScss = part.get('scss');
 
-		let inputStyle = window.getComputedStyle(this.getInputElement());
+		let inputElement = this.getInputElement()
+		let inputStyle = window.getComputedStyle(inputElement);
 		let inputFont =  inputStyle.fontSize +' '+ inputStyle.fontFamily;
 
 		let left = this.getTextWidth(prevPartScss, inputFont);
@@ -103,6 +125,16 @@ export default Ember.Controller.extend({
 		let $partHighlighter = $('#partHighlighter');
 		$partHighlighter.css('left', left+'px');
 		$partHighlighter.css('width', width+'px');
+
+
+		// .set caret position
+		if(window.document.activeElement!==inputElement && !part.get('isBlank')){
+			let caretPosition = part.get('endIndex');
+			inputElement.setSelectionRange(caretPosition, caretPosition);
+			this.set('caretPosition', caretPosition);
+			console.log('caret position changed 2: '+caretPosition);
+			inputElement.focus();
+		}
 	},
 	getTextWidth(text, font) {
 	    // if given, use cached canvas for better performance
