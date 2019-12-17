@@ -76,12 +76,12 @@ export default Ember.Controller.extend({
 		let cssStatus = this.get('parts.lastObject.cssElements.length')||0;
 		return Math.max(xpathStatus, cssStatus);
 	}),
-	isExist: Ember.computed('status', function(){
-		return this.get('status')>0;
-	}),
-	isSeveral: Ember.computed('status', function(){
-		return this.get('status')>1;
-	}),
+	// isExist: Ember.computed('status', function(){
+	// 	return this.get('status')>0;
+	// }),
+	// isSeveral: Ember.computed('status', function(){
+	// 	return this.get('status')>1;
+	// }),
 	removeBlankParts(){
 		this.get('parts').removeObjects(this.get('parts').filterBy('isBlank'));
 	},

@@ -248,7 +248,7 @@ window.inspectCssSelector = function(css, iframeIndex, elementIndex){
 	inspectElement(evaluateCss(css), iframeIndex, elementIndex);
 };
 
-window.createHighlighterElement = function(documentNode,clientRect){
+window.createHighlighterElement = function(documentNode, clientRect, highlightColor){
 	var highlighterElement = documentNode.createElement('div');
 	highlighterElement.classList.add('websync-highlighter');
 	highlighterElement.style.left = (documentNode.scrollingElement.scrollLeft + clientRect.left) + 'px';
@@ -256,7 +256,7 @@ window.createHighlighterElement = function(documentNode,clientRect){
 	highlighterElement.style.width = clientRect.width+'px';
 	highlighterElement.style.height = clientRect.height+'px';
 	highlighterElement.style.position = 'absolute';
-	highlighterElement.style.backgroundColor = 'yellow';
+	highlighterElement.style.backgroundColor = highlightColor;
 	highlighterElement.style.border = '1px solid red';
 	highlighterElement.style.opacity = 0.5;
 	highlighterElement.style.zIndex = '999999999999999999999999999999999999999999999999999999999999999';
@@ -264,14 +264,14 @@ window.createHighlighterElement = function(documentNode,clientRect){
 	bodyElement.appendChild(highlighterElement);
 };
 
-window.higlightElement = function(documentNode, element){
+window.higlightElement = function(documentNode, element, highlightColor){
 	let clientRects = Array.from(element.getClientRects());
 	clientRects.forEach((clientRect)=>{
-		createHighlighterElement(documentNode, clientRect);
+		createHighlighterElement(documentNode, clientRect, highlightColor);
 	});
 }
 
-window.hightlightElementsInIframe = function(iframeNode, iframeElements){
+window.hightlightElementsInIframe = function(iframeNode, iframeElements, highlightColor){
 	if(iframeElements[0]){
 		// .scroll to first
 		iframeElements[0].domElement.scrollIntoViewIfNeeded();
@@ -281,21 +281,35 @@ window.hightlightElementsInIframe = function(iframeNode, iframeElements){
 		// });
 	}
 	iframeElements.forEach((iframeElement)=>{
-		higlightElement(iframeNode, iframeElement.domElement);
+		higlightElement(iframeNode, iframeElement.domElement, highlightColor);
 	});
 };
 
+window.HL_GREEN = "rgb(50, 205, 50,0.7)";
+window.HL_YELLOW = "yellow";
+
 window.highlightInspectedElement = function(){
-	higlightElement(document, $0);
+	removeHighlighting();
+	higlightElement(document, $0, window.HL_GREEN);
 };
 
 window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex){
+	removeHighlighting();
+
 	var iframeDataList = evaluateSelector(selector, isXpath);
+
+	let elementsCount = iframeDataList.reduce(function(prev, id) {return prev + id.elements.length;}, 0);
+	if(!elementsCount){
+		return;
+	}
+
+	let highlightColor = elementsCount==1?HL_GREEN:HL_YELLOW;
+
 	if(iframeIndex !=undefined && elementIndex!=undefined){
 		if(iframeDataList[iframeIndex]){
 			var iframeData = iframeDataList[iframeIndex];
 			if(iframeData){
-				hightlightElementsInIframe(iframeData.documentNode, [iframeData.elements[elementIndex]]);
+				hightlightElementsInIframe(iframeData.documentNode, [iframeData.elements[elementIndex]], highlightColor);
 			}
 		}
 		else{
@@ -304,7 +318,7 @@ window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex
 	}
 	else{
 		iframeDataList.forEach((iframeData)=>{
-			hightlightElementsInIframe(iframeData.documentNode, iframeData.elements);
+			hightlightElementsInIframe(iframeData.documentNode, iframeData.elements, highlightColor);
 		});
 	}
 };
