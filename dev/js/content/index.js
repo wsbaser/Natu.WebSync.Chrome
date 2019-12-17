@@ -257,7 +257,7 @@ window.createHighlighterElement = function(documentNode, clientRect, highlightCo
 	highlighterElement.style.height = clientRect.height+'px';
 	highlighterElement.style.position = 'absolute';
 	highlighterElement.style.backgroundColor = highlightColor;
-	highlighterElement.style.border = '1px solid red';
+	highlighterElement.style.border = '2px solid firebrick';
 	highlighterElement.style.opacity = 0.5;
 	highlighterElement.style.zIndex = '999999999999999999999999999999999999999999999999999999999999999';
 	let bodyElement = documentNode.documentElement.querySelector('body');
@@ -285,8 +285,8 @@ window.hightlightElementsInIframe = function(iframeNode, iframeElements, highlig
 	});
 };
 
-window.HL_GREEN = "rgb(50, 205, 50,0.7)";
-window.HL_YELLOW = "yellow";
+window.HL_GREEN = "rgb(207, 232, 252)";
+window.HL_YELLOW = "rgb(207, 232, 252)";
 
 window.highlightInspectedElement = function(){
 	removeHighlighting();
