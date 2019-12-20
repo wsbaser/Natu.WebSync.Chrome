@@ -21,16 +21,23 @@ export default Ember.Component.extend({
 			this.validatePart();
 		}
 	},
-	isSeveral: Ember.computed('elements.length', function(){
+	tooltipText: Ember.computed('elements.[]',function(){
+		let count = this.get('elements.length');
+		if(!count){
+			return '0 elements on the page';
+		}else if(count==1){
+			return '1 element on the page';
+		}else{
+			return count + ' elements on the page';
+		}
+	}),
+	isSeveral: Ember.computed('elements.[]', function(){
 		return this.get('elements.length')>1;
 	}),
-	isExist: Ember.computed('elements.length', function(){
+	isExist: Ember.computed('elements.[]', function(){
 		return this.get('elements.length')>0;
 	}),
-	// hasHidden: Ember.computed('displayedCount', 'part.count', function(){
-	// 	return this.get('part.count')>this.get('part.displayedCount');
-	// }),
-	displayed: Ember.computed('elements', function(){
+	displayed: Ember.computed('elements.[]', function(){
 		return this.get('elements')? 
 			this.get('elements').some(e=>e.get('displayed')):
 			false;
@@ -40,16 +47,6 @@ export default Ember.Component.extend({
 			this.triggerOnSelected();
 		}
 	}),
-	// onXpathChanged: Ember.observer('part.fullXpath', function(){
-	// 	if(this.get('isXpath')){
-	// 		this.validatePart();
-	// 	}
-	// }),
-	// onCssChanged: Ember.observer('part.fullCss', function(){
-	// 	if(!this.get('isXpath')){
-	// 		this.validatePart();
-	// 	}
-	// }),
 	validatePart(){
 		let selectorValidator = this.get('selectorValidator');
 		if(this.get('isXpath')){

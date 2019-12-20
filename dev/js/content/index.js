@@ -259,6 +259,7 @@ window.createHighlighterElement = function(documentNode, clientRect, highlightCo
 	highlighterElement.style.backgroundColor = highlightColor;
 	highlighterElement.style.border = '2px solid firebrick';
 	highlighterElement.style.opacity = 0.5;
+	highlighterElement.style.boxSizing = 'border-box';
 	highlighterElement.style.zIndex = '999999999999999999999999999999999999999999999999999999999999999';
 	let bodyElement = documentNode.documentElement.querySelector('body');
 	bodyElement.appendChild(highlighterElement);

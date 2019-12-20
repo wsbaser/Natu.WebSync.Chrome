@@ -1,4 +1,5 @@
-<span class="value" onclick={{action "onInspectSelector"}} {{action "onSelectorMouseEnter" on="mouseEnter"}} {{action "onSelectorMouseLeave" on="mouseLeave"}}>
+<span class="value" onclick={{action "onInspectSelector"}} {{action "onSelectorMouseEnter" on="mouseEnter"}} {{action "onSelectorMouseLeave" on="mouseLeave"}}
+	title={{tooltipText}}>
 	{{~#if isXpath~}}
 		{{part.xpath}}
 	{{~else~}}
