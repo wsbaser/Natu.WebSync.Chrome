@@ -71,6 +71,7 @@ export default Service.extend({
 					classNames: this.getElementAttributes(element.classNames, part, "classNames"),
 					innerText: this.getElementAttribute(element.innerText, part, "texts"),
 					displayed: element.displayed,
+					hasChildren: element.hasChildren,
 					containsTags: element.containsTags,
 					iframeIndex: i,
 					elementIndex: j,

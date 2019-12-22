@@ -61,7 +61,8 @@ function serializeElements(iframeData){
 				classNames: Array.from(e.classList),
 				innerText: getFirstLevelText(e),
 				displayed: e.style.display!=='none',
-				containsTags: e.innerHTML.indexOf('<') != -1
+				containsTags: e.innerHTML.indexOf('<') != -1,
+				hasChildren: !!e.children.length
 			};
 		});
 	};

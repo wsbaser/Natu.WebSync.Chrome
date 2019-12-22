@@ -1,10 +1,20 @@
-<div class=""
-	{{action "onInspectElement" partElement allowedKeys="ctrl"}}
-	{{action "onElementMouseEnter" partElement on="mouseEnter"}}
-	{{action "onMouseLeave" on="mouseLeave"}}>
+{{#unless isChild}}
 	<div class="element-index">
 		{{~partElement.elementIndex~}}.
 	</div>
+{{/unless}}
+
+{{!-- {{#if partElement.hasChildren}} --}}
+	
+{{!-- {{/if}} --}}
+
+<div class="wrapper"
+	{{action "onInspectElement" partElement allowedKeys="ctrl"}}
+	{{action "onElementMouseEnter" partElement on="mouseEnter"}}
+	{{action "onMouseLeave" on="mouseLeave"}}>
+
+	<div class="expand-icon" {{action "expand"}}></div>
+
 	<span class="tag">&lt;{{element-attribute class="tag-name" attribute=partElement.tagName unlocked=partElement.isUnlocked onToggle=(action "onAttributeToggle") }}
 		{{~#if partElement.id~}}
 			<span class="attribute"><span class="name"> id</span>="

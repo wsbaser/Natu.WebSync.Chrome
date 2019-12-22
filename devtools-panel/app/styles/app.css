@@ -313,17 +313,24 @@ ul#elementsList.editable{
 	background: #fff;
 }
 
+ul#elementsList>.part-element{
+	margin-left: 43px;
+}
+
 .part-element{
+	padding: 0 0 0 14px;
 	position: relative;
-	width: 100%;
 	font-size: 11px;
 	font-family: Menlo, monospace;
 	cursor: default;
 }
 
-.part-element>div{
-	position: relative;
-	margin-left: 43px;
+.part-element.parent .wrapper{
+	margin-left: -13px;
+}
+
+.part-element.parent .expand-icon{
+	display: inline-block;
 }
 
 .part-element:hover{
@@ -338,15 +345,30 @@ ul#elementsList.editable{
 	opacity: 0.5;
 }
 
-.part-element .element-index{
+.part-element>.element-index{
 	position: absolute;
 	padding-right: 5px;
     width: 43px;
     left: -43px;
-    padding-top: 1px;
+    line-height: 16px;
     font-size: 11px;
     text-align: right;
     color: rgb(48, 57, 66);
+}
+
+.part-element .expand-icon{
+	display: none;
+    user-select: none;
+    -webkit-mask-image: url(treeoutlineTriangles.svg);
+    -webkit-mask-position: 0 0;
+    -webkit-mask-size: 32px 24px;
+    height: 10px;
+    width: 8px;
+    color: transparent;
+    text-shadow: none;
+    box-sizing: border-box;
+    background-color: #727272;
+    cursor: pointer;
 }
 
 .part-element .tag{

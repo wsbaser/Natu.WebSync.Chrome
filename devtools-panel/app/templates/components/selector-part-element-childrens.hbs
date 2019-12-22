@@ -1,0 +1,4 @@
+{{#each childrens as |childElement|}}
+	{{selector-part-element isChild=true partElement=childElement onAttributeToggle=(action "onPartAttributeToggle" childElement.part) onSelected=(action "onPartElementSelected")}}
+	{{selector-part-element-childrens partElement=childElement}}
+{{/each}}

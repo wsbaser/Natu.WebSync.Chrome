@@ -6,7 +6,8 @@ export default Component.extend({
 	classNames: ['clearfix', 'part-element'],
 	classNameBindings:[
 		'partElement.isSelected:selected',
-		'partElement.displayed::not-displayed'],
+		'partElement.displayed::not-displayed',
+		'partElement.hasChildren:parent'],
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
 	init(){
@@ -15,12 +16,20 @@ export default Component.extend({
 			this.scrollToIfSelected();
     	});
 	},
+	click(){
+		this.inspectElement();
+		this.set('partElement.isSelected', true);
+		let onSelected = this.get('onSelected');
+		if(onSelected){
+			onSelected(this.get('partElement'));
+		}
+	},
 	scrollToIfSelected(){
 		if(this.get('partElement.isSelected')){
 			this.$()[0].scrollIntoViewIfNeeded(true);
 		}
 	},
-	onSelected: Ember.observer('partElement.isSelected', function(){
+	selectedChanged: Ember.observer('partElement.isSelected', function(){
 		this.scrollToIfSelected();
 	}),
 	inspectElement(){
@@ -59,12 +68,12 @@ export default Component.extend({
 	},
 	actions:{
 		onInspectElement(element){
-			this.inspectElement();
-			element.set('isSelected', true);
-			let onSelected = this.get('onSelected');
-			if(onSelected){
-				onSelected(element);
-			}
+			// this.inspectElement();
+			// element.set('isSelected', true);
+			// let onSelected = this.get('onSelected');
+			// if(onSelected){
+			// 	onSelected(element);
+			// }
 		},
 		onElementMouseEnter(){
 			this.highlightElement();
