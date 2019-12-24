@@ -17,6 +17,8 @@ export default Component.extend({
 		this._super(...arguments);
 		Ember.run.schedule("afterRender", this, function() {
 			this.scrollToIfSelected();
+			let level = this.get('partElement.level')||0;
+			this.$('.selection').css('marginLeft', '-'+(43+12*level)+'px');
     	});
 	},
 	click(){

@@ -4,6 +4,14 @@
   clear: both;
 }
 
+.fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
 #root{
 	padding: 0;
 }
@@ -310,13 +318,16 @@ input#source:focus{
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
+	position: relative;
+	z-index: 0;
+	background: transparent;
 }
 
-#elementsList>ul{
+#elementsList{
 	background: #f3f3f3;
 }
 
-#elementsList>ul.editable{
+#elementsList.editable{
 	background: #fff;
 }
 
@@ -336,6 +347,10 @@ input#source:focus{
 	cursor: default;
 }
 
+.part-element>.selection{
+	z-index: -1;
+}
+
 .part-element.parent .wrapper{
 	margin-left: -13px;
 }
@@ -348,15 +363,15 @@ input#source:focus{
 	-webkit-mask-position: 16px 0;
 }
 
-.part-element:hover{
+.part-element:hover>.selection{
 	background-color: #e9f0fb;
 }
 
-.part-element.selected{
+.part-element.selected>.selection{
 	background: rgb(207, 232, 252);	
 }
 
-.part-element.not-displayed{
+.part-element.not-displayed>.wrapper{
 	opacity: 0.5;
 }
 
