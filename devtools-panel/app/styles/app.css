@@ -336,7 +336,23 @@ input#source:focus{
 }
 
 #elementsList ul.children{
-	margin-left: 12px;
+	padding-inline-start: 12px;
+}
+
+.part-element.hovered + ul.children, 
+.part-element.selected + ul.children {
+    margin-left: 5px !important;
+    padding-inline-start: 6px !important;
+    border-width: 1px;
+    border-left-style: solid;
+}
+
+.part-element.selected + ul.children {
+    border-color: hsla(216,68%,80%,1) !important;
+}
+
+.part-element.hovered + ul.children {
+    border-color: hsla(0,0%,0%,0.1) !important;
 }
 
 .part-element{
