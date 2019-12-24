@@ -295,26 +295,37 @@ input#source:focus{
 	margin-right: 10px;
 }
 
-ul#elementsList{
+#elementsList{
 	position: absolute;
-	margin: 0;
 	bottom: 0;
 	top: 93px;
 	min-height: 50px;
 	width: 100%;
 	padding: 2px 0 0 0;
-	list-style-type: none;
 	overflow: auto;
-	background: #f3f3f3;
 	transition: all 100ms;
 }
 
-ul#elementsList.editable{
+#elementsList ul{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+#elementsList>ul{
+	background: #f3f3f3;
+}
+
+#elementsList>ul.editable{
 	background: #fff;
 }
 
-ul#elementsList>.part-element{
+#elementsList>ul{
 	margin-left: 43px;
+}
+
+#elementsList ul.children{
+	margin-left: 12px;
 }
 
 .part-element{
@@ -368,6 +379,7 @@ ul#elementsList>.part-element{
     -webkit-mask-size: 32px 24px;
     height: 10px;
     width: 8px;
+    margin-right: -4px;
     color: transparent;
     text-shadow: none;
     box-sizing: border-box;

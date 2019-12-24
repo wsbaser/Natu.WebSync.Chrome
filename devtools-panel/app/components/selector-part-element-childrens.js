@@ -3,7 +3,9 @@ import Component from '@ember/component';
 export default Component.extend({
 	tagName: 'ul',
 	classNames: ['clearfix', 'children'],
-	classNameBindings:['partElement.isExpanded:expanded'],
+	classNameBindings:[
+		'partElement.isExpanded:expanded'
+	],
 	actions:{
 		onAttributeToggle(){
 			let onAttributeToggle = this.get('onAttributeToggle');
