@@ -44,7 +44,7 @@ window.getIframes = function(){
 function evaluteSelectorInAllIframes(selector, evaluateFunc){
 	var result = [];
 	result.push({
-		documentNode:document,
+		documentNode: document,
 		elements: evaluateFunc(document, selector)
 	});
 	getIframes().forEach(function(iframeNode){
@@ -56,35 +56,31 @@ function evaluteSelectorInAllIframes(selector, evaluateFunc){
 	return result;
 }
 
-function serializeElements(iframeData){
+function serializeElements(elements){
+	return elements.map(e=>{
+		return {
+			domElement: e,
+			isInspected: e===$0,
+			tagName: e.tagName,
+			id: e.id,
+			name: e.name,
+			classNames: Array.from(e.classList),
+			innerText: getFirstLevelText(e),
+			displayed: getIsDisplayed(e),
+			containsTags: e.innerHTML.indexOf('<') != -1,
+			hasChildren: !!e.children.length
+		};
+	});
+}
+
+function serializeiFrames(iframeData){
 	for (var i = iframeData.length - 1; i >= 0; i--) {
-		iframeData[i].elements = iframeData[i].elements.map(e=>{
-			return {
-				domElement: e,
-				isInspected: e===$0,
-				tagName: e.tagName,
-				id: e.id,
-				name: e.name,
-				classNames: Array.from(e.classList),
-				innerText: getFirstLevelText(e),
-				displayed: getIsDisplayed(e),
-				containsTags: e.innerHTML.indexOf('<') != -1,
-				hasChildren: !!e.children.length
-			};
-		});
+		iframeData[i].elements = serializeElements(iframeData[i].elements);
 	};
 	return iframeData;
 }
 
 function getIsDisplayed(element){
-	// if(element.style.display=='none'){
-	// 	return false;
-	// }
-	// if(element.parentElement){
-	// 	return getIsDisplayed(element.parentElement);
-	// }
-	// return true;
-
 	return !!( element.offsetWidth || element.offsetHeight || element.getClientRects().length );
 }
 
@@ -150,7 +146,7 @@ window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 
 	// we gonna create a blank part, so will need inspected element data
 	if(blankPartIndex!=-1){
-		blankPartElements = serializeElements([{
+		blankPartElements = serializeiFrames([{
 			documentNode: getDocumentOf(inspectedElement),
 			elements: [inspectedElement]
 		}]);
@@ -209,7 +205,7 @@ window.evaluateXpath = function find(xpath) {
     	return [];
     }
     var start = performance.now();
-	var result = serializeElements(evaluteSelectorInAllIframes(xpath, function(rootElement, selector){
+	var result = serializeiFrames(evaluteSelectorInAllIframes(xpath, function(rootElement, selector){
 	    var result = [];
 	    var nodes = document.evaluate(selector, rootElement, null, XPathResult.ANY_TYPE, null);
 	    var currentNode = nodes.iterateNext();
@@ -228,7 +224,7 @@ window.evaluateCss = function find(css) {
 		return {};
 	}
 	var start = performance.now();
-	var result = serializeElements(evaluteSelectorInAllIframes(css, function(rootElement,selector){
+	var result = serializeiFrames(evaluteSelectorInAllIframes(css, function(rootElement,selector){
 		return Array.from(rootElement.querySelectorAll(selector));
 	}));
 
@@ -238,6 +234,31 @@ window.evaluateCss = function find(css) {
 
 window.evaluateSelector = function(selector, isXpath){
 	return isXpath?evaluateXpath(selector):evaluateCss(selector);
+};
+
+window.loadChildren = function(selector, isXpath, iframeIndex, elementIndex){
+	var iframeDataList = evaluateSelector(selector, isXpath);
+
+	var iframeData = iframeDataList[iframeIndex];
+	if(iframeData){
+		let element = iframeData.elements[elementIndex]
+		if(element){
+			return loadChildrenForElement(element.domElement);
+		}else{
+			console.log('No element for specified elementIndex: ' + elementIndex);
+		}
+	}
+	else{
+		console.log('No element for specified iframeIndex: ' + iframeIndex);
+	}
+};
+
+window.loadChildrenForElement = function(element){
+	var result = serializeElements(Array.from(element.children));
+	for (var i = element.children.length - 1; i >= 0; i--) {
+		result[i].children = loadChildrenForElement(element.children[i]);
+	};
+	return result;
 };
 
 function inspectElement(iframeDataList, iframeIndex, elementIndex){

@@ -9,6 +9,7 @@ export default Component.extend({
 		'partElement.displayed::not-displayed',
 		'partElement.hasChildren:parent',
 		'partElement.isExpanded:expanded'],
+	selectorPartFactory: Ember.inject.service(),
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
 	selectorValidator: Ember.inject.service(),
@@ -58,16 +59,24 @@ export default Component.extend({
 		}
 	},
 	loadChildren(){
-		//this.get('selectorValidator').loadChildren();
+		this.get('selectorHighlighter').loadChildren(
+			this.getFoundBySelector(),			
+			this.get('partElement.iframeIndex'), 
+			this.get('partElement.elementIndex'),
+			this.onChildrenLoaded.bind(this));
+	},
+	onChildrenLoaded(result, exception){
+		let children = this.get('selectorPartFactory').generateChildElements(result);
+		this.set('partElement.children', children);
 	},
 	actions:{
 		onInspectElement(element){
-			// this.inspectElement();
-			// element.set('isSelected', true);
-			// let onSelected = this.get('onSelected');
-			// if(onSelected){
-			// 	onSelected(element);
-			// }
+			this.inspectElement();
+			element.set('isSelected', true);
+			let onSelected = this.get('onSelected');
+			if(onSelected){
+				onSelected(element);
+			}
 		},
 		onElementMouseEnter(){
 			this.highlightElement();
@@ -85,7 +94,7 @@ export default Component.extend({
 		},
 		expand(){
 			this.toggleProperty('partElement.isExpanded');
-			if(this.get('partElement.isExpanded') && this.get('partElement.children')){
+			if(this.get('partElement.isExpanded') && !this.get('partElement.children')){
 				this.loadChildren();
 			}
 		}

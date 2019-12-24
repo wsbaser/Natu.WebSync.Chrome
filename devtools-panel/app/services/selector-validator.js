@@ -17,9 +17,6 @@ export default Ember.Service.extend({
 	validateXpath(xpath,onValidated){
 		return this._callEval('evaluateXpath("' + xpath + '")', onValidated);
 	},
-	validateXpath(xpath,onValidated){
-		return this._callEval('evaluateXpath("' + xpath + '")', onValidated);
-	},
 	_callEval(script, onValidated){
 		let deferred = Ember.$.Deferred();
 		chrome.devtools.inspectedWindow.eval(

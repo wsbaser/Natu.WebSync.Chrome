@@ -12,11 +12,22 @@ export default Ember.Service.extend({
 			this.highlightXpath(selector.xpath, iframeIndex, elementIndex);
 		}
 	},
+	loadChildren(selector, iframeIndex, elementIndex, onLoaded){
+		if(!selector){
+			return;
+		}
+		if(selector.css){
+			this._callEval('loadChildren("' + selector.css + '", false' + ',' + iframeIndex + ',' + elementIndex +')', onLoaded);
+		}
+		else{
+			this._callEval('loadChildren("' + selector.xpath + '", true' + ',' + iframeIndex + ',' + elementIndex +')', onLoaded);
+		}
+	},
 	highlightInspectedElement(){
 		this._callEval('highlightInspectedElement()');
 	},
 	highlightCss(css, iframeIndex, elementIndex){
-		this._callEval('highlightSelector("' + css + '", false' + ',' + iframeIndex + ',' + elementIndex +')',this.onHighlighted);
+		this._callEval('highlightSelector("' + css + '", false' + ',' + iframeIndex + ',' + elementIndex +')', this.onHighlighted);
 	},
 	highlightXpath(xpath, iframeIndex, elementIndex){
 		this._callEval('highlightSelector("' + xpath + '", true' + ',' + iframeIndex + ',' + elementIndex +')', this.onHighlighted);
@@ -32,7 +43,7 @@ export default Ember.Service.extend({
 	removeHighlighting(){
 		this._callEval('removeHighlighting()');
 	},
-	_callEval(script){
-	   	chrome.devtools.inspectedWindow.eval(script, { useContentScriptContext: true });
+	_callEval(script, callback){
+	   	chrome.devtools.inspectedWindow.eval(script, { useContentScriptContext: true }, callback);
 	}
 });

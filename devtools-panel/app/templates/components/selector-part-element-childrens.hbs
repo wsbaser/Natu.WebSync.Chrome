@@ -1,6 +1,6 @@
 {{#if partElement.isExpanded}}
-	{{#each childrens as |childElement|}}
-		{{selector-part-element isChild=true partElement=childElement onAttributeToggle=(action "onPartAttributeToggle" childElement.part) onSelected=(action "onPartElementSelected")}}
-		{{selector-part-element-childrens partElement=childElement}}
+	{{#each partElement.children as |childElement|}}
+		{{selector-part-element isChild=true partElement=childElement onAttributeToggle=(action "onAttributeToggle" childElement.part) onSelected=(action "onSelected")}}
+		{{selector-part-element-childrens partElement=childElement onAttributeToggle=(action "onAttributeToggle" childElement.part) onSelected=(action "onSelected")}}
 	{{/each}}
 {{/if}}

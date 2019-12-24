@@ -50,7 +50,7 @@
 	<ul id="elementsList" class="{{if isEditable "editable"}}">
 		{{#each elements as |element|}}
 			{{selector-part-element partElement=element onAttributeToggle=(action "onPartAttributeToggle" element.part) onSelected=(action "onPartElementSelected")}}
-			{{selector-part-element-childrens partElement=element}}
+			{{selector-part-element-childrens partElement=element onAttributeToggle=(action "onPartAttributeToggle" element.part) onSelected=(action "onPartElementSelected")}}
 		{{/each}}
 	</ul>
 

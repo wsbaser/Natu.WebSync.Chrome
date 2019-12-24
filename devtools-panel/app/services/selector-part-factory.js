@@ -54,10 +54,30 @@ export default Service.extend({
             // subelementXpaths: subelementXpaths,
             // func: func,
             // functionArgument: functionArgument
-
 	},
-	generateChildElements(childElements){
-		
+	generateChildElements(children, level){
+		level = level || 1;
+		let partElements = [];
+		let part = this.generateBlankPart(true);
+		for (var i = children.length - 1; i >= 0; i--) {
+			let element = children[i];
+			let partElement = SelectorPartElement.create({
+				level: level,
+				part: part,
+				tagName: this.getElementAttribute(element.tagName, part, "tagName", true),
+				id: this.getElementAttribute(element.id, part, "id"),
+				attributes: [],
+				classNames: this.getElementAttributes(element.classNames, part, "classNames"),
+				innerText: this.getElementAttribute(element.innerText, part, "texts"),
+				displayed: element.displayed,
+				hasChildren: element.hasChildren,
+				containsTags: element.containsTags
+			});
+			partElement.set('children', this.generateChildElements(element.children, level+1));
+			partElements.push(partElement);
+		};
+
+		return partElements;
 	},
 	generateElements(part, iframesDataList, isXpath){
 		let elements = [];
