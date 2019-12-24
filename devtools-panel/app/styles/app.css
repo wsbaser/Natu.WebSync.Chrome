@@ -333,6 +333,10 @@ ul#elementsList>.part-element{
 	display: inline-block;
 }
 
+.part-element.expanded .expand-icon{
+	-webkit-mask-position: 16px 0;
+}
+
 .part-element:hover{
 	background-color: #e9f0fb;
 }

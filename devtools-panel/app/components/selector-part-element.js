@@ -7,9 +7,11 @@ export default Component.extend({
 	classNameBindings:[
 		'partElement.isSelected:selected',
 		'partElement.displayed::not-displayed',
-		'partElement.hasChildren:parent'],
+		'partElement.hasChildren:parent',
+		'partElement.isExpanded:expanded'],
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
+	selectorValidator: Ember.inject.service(),
 	init(){
 		this._super(...arguments);
 		Ember.run.schedule("afterRender", this, function() {
@@ -32,39 +34,31 @@ export default Component.extend({
 	selectedChanged: Ember.observer('partElement.isSelected', function(){
 		this.scrollToIfSelected();
 	}),
+	getFoundBySelector(){
+		return this.get('partElement.foundByXpath')?
+			{ xpath: this.get('partElement.part.fullXpath') }:
+			{ css: this.get('partElement.part.fullCss') };
+	},
 	inspectElement(){
 		let selectorInspector = this.get('selectorInspector');
-		let isXpath = this.get('partElement.foundByXpath');
-		if(isXpath){
-			selectorInspector.inspectXpath(
-				this.get('partElement.part.fullXpath'), 
+		selectorInspector.inspect(
+				this.getFoundBySelector(),
 				this.get('partElement.iframeIndex'), 
 				this.get('partElement.elementIndex'));
-		}else{
-			selectorInspector.inspectCss(
-				this.get('partElement.part.fullCss'), 
-				this.get('partElement.iframeIndex'), 
-				this.get('partElement.elementIndex'));
-		}
 	},
 	highlightElement(){
 		let selectorHighlighter = this.get('selectorHighlighter');
 		if(this.get('partElement.part.isBlank')){
 			selectorHighlighter.highlightInspectedElement();
 		}else{
-			let isXpath = this.get('partElement.foundByXpath');
-			if(isXpath){
-				selectorHighlighter.highlightXpath(
-					this.get('partElement.part.fullXpath'), 
-					this.get('partElement.iframeIndex'),
-					this.get('partElement.elementIndex'));
-			}else{
-				selectorHighlighter.highlightCss(
-					this.get('partElement.part.fullCss'),
-					this.get('partElement.iframeIndex'),
-					this.get('partElement.elementIndex'));
-			}
+			selectorHighlighter.highlightXpath(
+				this.getFoundBySelector(), 
+				this.get('partElement.iframeIndex'),
+				this.get('partElement.elementIndex'));
 		}
+	},
+	loadChildren(){
+		//this.get('selectorValidator').loadChildren();
 	},
 	actions:{
 		onInspectElement(element){
@@ -87,6 +81,12 @@ export default Component.extend({
 				if(onAttributeToggle){
 					onAttributeToggle();
 				}
+			}
+		},
+		expand(){
+			this.toggleProperty('partElement.isExpanded');
+			if(this.get('partElement.isExpanded') && this.get('partElement.children')){
+				this.loadChildren();
 			}
 		}
 	}

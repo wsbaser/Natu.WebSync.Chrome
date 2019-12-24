@@ -56,6 +56,9 @@ export default Service.extend({
             // functionArgument: functionArgument
 
 	},
+	generateChildElements(childElements){
+		
+	},
 	generateElements(part, iframesDataList, isXpath){
 		let elements = [];
 		for (var i = 0; i < iframesDataList.length; i++) {

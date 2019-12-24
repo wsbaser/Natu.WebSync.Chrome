@@ -86,6 +86,7 @@ export default Ember.Component.extend({
 			this.setPartElements([]);
 		}
 		else{
+			console.log(result[0].timeStatus);
 			let part = this.get('part');
 			let elements = this.get('selectorPartFactory').generateElements(part, result, this.get('isXpath'));
 			this.set('isValid', true);

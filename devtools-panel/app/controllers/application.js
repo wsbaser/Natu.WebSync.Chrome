@@ -36,9 +36,9 @@ export default Ember.Controller.extend({
 				let xpathElements = partUnderCaret.get('xpathElements');
 				let cssElements = partUnderCaret.get('cssElements');
 				let elements = cssElements && cssElements.length? cssElements:xpathElements;
-				this.selectPart(partUnderCaret, elements);
+				this.selectPart(partUnderCaret, elements || A());
 				this.set('caretPosition', position);
-				console.log('caret position changed: '+position);
+				//console.log('caret position changed: '+position);
 			}
 		}
 	},
@@ -129,7 +129,7 @@ export default Ember.Controller.extend({
 			let caretPosition = part.get('endIndex');
 			inputElement.setSelectionRange(caretPosition, caretPosition);
 			this.set('caretPosition', caretPosition);
-			console.log('caret position changed 2: '+caretPosition);
+			//console.log('caret position changed 2: '+caretPosition);
 			inputElement.focus();
 			this.set('updateCaretPosition', false);
 		}
