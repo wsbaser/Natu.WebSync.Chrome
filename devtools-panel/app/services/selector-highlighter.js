@@ -16,10 +16,15 @@ export default Ember.Service.extend({
 		this._callEval('highlightInspectedElement()');
 	},
 	highlightCss(css, iframeIndex, elementIndex){
-		this._callEval('highlightSelector("' + css + '", false' + ',' + iframeIndex + ',' + elementIndex +')');
+		this._callEval('highlightSelector("' + css + '", false' + ',' + iframeIndex + ',' + elementIndex +')',this.onHighlighted);
 	},
 	highlightXpath(xpath, iframeIndex, elementIndex){
-		this._callEval('highlightSelector("' + xpath + '", true' + ',' + iframeIndex + ',' + elementIndex +')');
+		this._callEval('highlightSelector("' + xpath + '", true' + ',' + iframeIndex + ',' + elementIndex +')', this.onHighlighted);
+	},
+	onHighlighted(result, exception){
+		if(exception){
+			console.log(exception);
+		}
 	},
 	highlightAll(selectors){
 		selectors.forEach(s=>this.highlight(s));

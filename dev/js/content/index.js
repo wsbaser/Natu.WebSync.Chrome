@@ -25,7 +25,20 @@ window.getCurrentUrl = function(){
 }
 
 window.getIframes = function(){
-	return document.querySelectorAll('iframe');
+	let iframes = document.querySelectorAll('iframe');
+	let validIframes = [];
+	iframes.forEach(function(iframeNode){
+		try{
+			if(iframeNode.contentDocument){
+				validIframes.push(iframeNode);
+			}
+		}
+		catch(err){
+			// We can't access contendDocument from iFrame with different origin,
+			// and it is OK.
+		}
+	});
+	return validIframes;
 }
 
 function evaluteSelectorInAllIframes(selector, evaluateFunc){
@@ -35,16 +48,10 @@ function evaluteSelectorInAllIframes(selector, evaluateFunc){
 		elements: evaluateFunc(document, selector)
 	});
 	getIframes().forEach(function(iframeNode){
-		try{
-			result.push({
-				documentNode: iframeNode.contentDocument,
-				elements: evaluateFunc(iframeNode.contentDocument, selector)
-			});
-		}
-		catch(err){
-			// We can't access contendDocument from iFrame with different origin,
-			// and it is OK.
-		}
+		result.push({
+			documentNode: iframeNode.contentDocument,
+			elements: evaluateFunc(iframeNode.contentDocument, selector)
+		});
 	});
 	return result;
 }
@@ -279,7 +286,7 @@ window.createHighlighterElement = function(documentNode, clientRect, highlightCo
 	highlighterElement.style.height = clientRect.height+'px';
 	highlighterElement.style.position = 'absolute';
 	highlighterElement.style.backgroundColor = highlightColor;
-	highlighterElement.style.border = '2px solid firebrick';
+	highlighterElement.style.border = '3px dashed firebrick';
 	highlighterElement.style.opacity = 0.5;
 	highlighterElement.style.boxSizing = 'border-box';
 	highlighterElement.style.zIndex = '999999999999999999999999999999999999999999999999999999999999999';
@@ -347,6 +354,9 @@ window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex
 };
 
 window.removeHighlightingInIframe = function(iframeNode){
+	if(!iframeNode){
+		return;
+	}
 	let highlighterElements = Array.from(iframeNode.querySelectorAll('.websync-highlighter'));
 	highlighterElements.forEach(function(highlighterElement){
 		highlighterElement.remove();

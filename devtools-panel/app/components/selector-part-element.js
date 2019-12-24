@@ -51,7 +51,7 @@ export default Component.extend({
 		if(this.get('partElement.part.isBlank')){
 			selectorHighlighter.highlightInspectedElement();
 		}else{
-			selectorHighlighter.highlightXpath(
+			selectorHighlighter.highlight(
 				this.getFoundBySelector(), 
 				this.get('partElement.iframeIndex'),
 				this.get('partElement.elementIndex'));
