@@ -55,15 +55,17 @@ export default Service.extend({
             // func: func,
             // functionArgument: functionArgument
 	},
-	generateChildElements(children, level){
-		level = level || 1;
-		let partElements = [];
-		let part = this.generateBlankPart(true);
+	generateChildElements(partElement, children, indicesChain){
+		indicesChain = indicesChain || [];
+		let childPartElements = [];
+		let blankPart = this.generateBlankPart(true);
 		for (var i = children.length - 1; i >= 0; i--) {
 			let element = children[i];
-			let partElement = SelectorPartElement.create({
-				level: level,
-				part: part,
+			let childIndicesChain = [...indicesChain, i];
+			let childPartElement = SelectorPartElement.create({
+				parentElement: parentElement,
+				childIndicesChain: childIndicesChain,
+				part: blankPart,
 				tagName: this.getElementAttribute(element.tagName, part, "tagName", true),
 				id: this.getElementAttribute(element.id, part, "id"),
 				attributes: [],
@@ -73,11 +75,11 @@ export default Service.extend({
 				hasChildren: element.hasChildren,
 				containsTags: element.containsTags
 			});
-			partElement.set('children', this.generateChildElements(element.children, level+1));
-			partElements.push(partElement);
+			childPartElement.set('children', this.generateChildElements(partElement, element.children, childIndicesChain));
+			childPartElements.push(partElement);
 		};
 
-		return partElements;
+		return childPartElements;
 	},
 	generateElements(part, iframesDataList, isXpath){
 		let elements = [];

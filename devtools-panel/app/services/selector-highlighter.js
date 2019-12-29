@@ -1,18 +1,22 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
-	highlight(selector, iframeIndex, elementIndex){
+	highlight(selector){
 		if(!selector){
 			return;
 		}
-		if(selector.css){
-			this.highlightCss(selector.css, iframeIndex, elementIndex);
+		if(selector.inspected){
+			this.highlightInspectedElement();
+		}if(selector.css){
+			this.highlightCss(selector.css, selector.iframeIndex, selector.elementIndex, selector.childIndicesChain);
 		}
-		else{
-			this.highlightXpath(selector.xpath, iframeIndex, elementIndex);
+		else if(selector.xpath){
+			this.highlightXpath(selector.xpath, selector.iframeIndex, selector.elementIndex, selector.childIndicesChain);
+		}else{
+			throw Error('invalid selector');
 		}
 	},
-	loadChildren(selector, iframeIndex, elementIndex, onLoaded){
+	loadChildren(selector, onLoaded){
 		if(!selector){
 			return;
 		}
@@ -26,10 +30,10 @@ export default Ember.Service.extend({
 	highlightInspectedElement(){
 		this._callEval('highlightInspectedElement()');
 	},
-	highlightCss(css, iframeIndex, elementIndex){
+	highlightCss(css, iframeIndex, elementIndex, childIndicesChain){
 		this._callEval('highlightSelector("' + css + '", false' + ',' + iframeIndex + ',' + elementIndex +')', this.onHighlighted);
 	},
-	highlightXpath(xpath, iframeIndex, elementIndex){
+	highlightXpath(xpath, iframeIndex, elementIndex, childIndicesChain){
 		this._callEval('highlightSelector("' + xpath + '", true' + ',' + iframeIndex + ',' + elementIndex +')', this.onHighlighted);
 	},
 	onHighlighted(result, exception){

@@ -1,15 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
-	inspect(selector, iframeIndex, elementIndex){
+	inspect(selector){
 		if(!selector){
 			return;
 		}
 		if(selector.css){
-			this.inspectCss(selector.css, iframeIndex, elementIndex);
+			this.inspectCss(selector.css, selector.iframeIndex, selector.elementIndex);
 		}
 		else{
-			this.inspectXpath(selector.xpath, iframeIndex, elementIndex);
+			this.inspectXpath(selector.xpath, selector.iframeIndex, selector.elementIndex);
 		}
 	},
 	inspectCss(css, iframeIndex, elementIndex){

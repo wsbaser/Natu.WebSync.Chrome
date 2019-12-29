@@ -21,6 +21,9 @@ export default Component.extend({
 			this.$('.selection').css('marginLeft', '-'+(43+12*level)+'px');
     	});
 	},
+	getElementSelector(){
+		return this.get('partElement').getSelector();
+	}
 	click(){
 		this.inspectElement();
 		this.set('partElement.isSelected', true);
@@ -37,38 +40,17 @@ export default Component.extend({
 	selectedChanged: Ember.observer('partElement.isSelected', function(){
 		this.scrollToIfSelected();
 	}),
-	getFoundBySelector(){
-		return this.get('partElement.foundByXpath')?
-			{ xpath: this.get('partElement.part.fullXpath') }:
-			{ css: this.get('partElement.part.fullCss') };
-	},
 	inspectElement(){
-		let selectorInspector = this.get('selectorInspector');
-		selectorInspector.inspect(
-				this.getFoundBySelector(),
-				this.get('partElement.iframeIndex'), 
-				this.get('partElement.elementIndex'));
+		this.get('selectorInspector').inspect(this.getElementSelector());
 	},
 	highlightElement(){
-		let selectorHighlighter = this.get('selectorHighlighter');
-		if(this.get('partElement.part.isBlank')){
-			selectorHighlighter.highlightInspectedElement();
-		}else{
-			selectorHighlighter.highlight(
-				this.getFoundBySelector(), 
-				this.get('partElement.iframeIndex'),
-				this.get('partElement.elementIndex'));
-		}
+		this.get('selectorHighlighter').highlight(this.getElementSelector());
 	},
 	loadChildren(){
-		this.get('selectorHighlighter').loadChildren(
-			this.getFoundBySelector(),			
-			this.get('partElement.iframeIndex'), 
-			this.get('partElement.elementIndex'),
-			this.onChildrenLoaded.bind(this));
+		this.get('selectorHighlighter').loadChildren(this.getElementSelector(), this.onChildrenLoaded.bind(this));
 	},
 	onChildrenLoaded(result, exception){
-		let children = this.get('selectorPartFactory').generateChildElements(result);
+		let children = this.get('selectorPartFactory').generateChildElements(this.get('partElement'), result);
 		this.set('partElement.children', children);
 	},
 	actions:{
