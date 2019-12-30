@@ -25,8 +25,10 @@ export default Component.extend({
 		return this.get('partElement').getSelector();
 	},
 	click(){
+		if(window.event.cancelBubble){
+			return;
+		}
 		this.inspectElement();
-		this.set('partElement.isSelected', true);
 		let onSelected = this.get('onSelected');
 		if(onSelected){
 			onSelected(this.get('partElement'));
@@ -54,13 +56,16 @@ export default Component.extend({
 		this.set('partElement.children', children);
 	},
 	actions:{
-		onInspectElement(element){
-			this.inspectElement();
-			let onSelected = this.get('onSelected');
-			if(onSelected){
-				onSelected(element);
-			}
-		},
+		// onInspectElement(element){
+		// 	if(window.event.cancelBubble){
+		// 		return;
+		// 	}
+		// 	this.inspectElement();
+		// 	let onSelected = this.get('onSelected');
+		// 	if(onSelected){
+		// 		onSelected(element);
+		// 	}
+		// },
 		onElementMouseEnter(){
 			this.highlightElement();
 		},
@@ -80,6 +85,8 @@ export default Component.extend({
 			if(this.get('partElement.isExpanded') && !this.get('partElement.children')){
 				this.loadChildren();
 			}
+			window.event.stopPropagation();
+			return false;
 		}
 	}
 });

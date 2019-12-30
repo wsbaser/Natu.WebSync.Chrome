@@ -248,6 +248,24 @@ window.locateChild = function(element, childIndicesChain){
 	return element;
 };
 
+window.locateByIndex = function(iframeDataList, iframeIndex, elementIndex){
+	let element;
+	if(iframeIndex !=undefined && elementIndex!=undefined){
+		var iframeData = iframeDataList[iframeIndex];
+		if(!iframeData){
+			return null;
+		}
+		element = iframeData.elements[elementIndex];
+	}else{
+		var arr = [].concat.apply([], iframeDataList.map(function(iframeData){return iframeData.elements;}));
+		element = arr[0];
+	}
+	if(!element){
+		return null;
+	}
+	return element.domElement;
+}
+
 window.loadChildrenForInspectedElement = function(){
 	return loadChildrenForElement($0);
 };
@@ -275,41 +293,50 @@ window.loadChildrenForElement = function(element){
 	return result;
 };
 
-function inspectElement(iframeDataList, iframeIndex, elementIndex){
-	if(iframeIndex !=undefined && elementIndex!=undefined){
-		if(iframeDataList[iframeIndex]){
-			var iframeData = iframeDataList[iframeIndex];
-			if(iframeData){
-				let element = iframeData.elements[elementIndex];
-				element.domElement.scrollIntoViewIfNeeded();
-				inspect(element.domElement);
-			}
-		}
-		else{
-			console.log('No element for specified iframeIndex and elementIndex: ' + iframeIndex + ', ' + elementIndex);
-		}
-	}else{
-		// inspect 
-		var arr = [].concat.apply([], iframeDataList.map(function(iframeData){return iframeData.elements;}));
-		let element = arr[0];
-		if(element){
-			if(element.domElement!=$0){
-				element.domElement.scrollIntoViewIfNeeded();
-				inspect(element.domElement);
-			}
-		}
-		else{
-			console.log('No elements to inspect.');
-		}
+function inspectElement(element){
+	if(element!=$0){
+		element.scrollIntoViewIfNeeded();
+		inspect(element);
 	}
 };
 
-window.inspectXpathSelector = function(xpath, iframeIndex, elementIndex){
-	inspectElement(evaluateXpath(xpath), iframeIndex, elementIndex);
+window.inspectInspectedChild = function(childIndicesChain){
+	if(!childIndicesChain){
+		throw Error('childIndicesChain was be specified.');
+	}
+
+	element = locateChild($0, childIndicesChain);
+	if(!element){
+		console.log('Child was not located. ' + childIndicesChain);
+		return;
+	}		
+
+	inspectElement(element);
 };
 
-window.inspectCssSelector = function(css, iframeIndex, elementIndex){
-	inspectElement(evaluateCss(css), iframeIndex, elementIndex);
+window.locateElement = function(iframeDataList, iframeIndex, elementIndex, childIndicesChain){
+	let element = locateByIndex(iframeDataList, iframeIndex, elementIndex);
+	if(!element){
+		console.log("Element was not located by index. " + iframeIndex + ',' + elementIndex);
+	}
+	if(childIndicesChain){
+		element = locateChild(element, childIndicesChain);
+		if(!element){
+			console.log('Child was not located. ' + childIndicesChain);
+			return;
+		}
+	}
+	return element;
+};
+
+window.inspectXpathSelector = function(xpath, iframeIndex, elementIndex, childIndicesChain){
+	let element = locateElement(evaluateXpath(xpath), iframeIndex, elementIndex, childIndicesChain);
+	inspectElement(element);
+};
+
+window.inspectCssSelector = function(css, iframeIndex, elementIndex, childIndicesChain){
+	let element = locateElement(evaluateCss(css), iframeIndex, elementIndex, childIndicesChain);
+	inspectElement(element);
 };
 
 window.createHighlighterElement = function(documentNode, clientRect, highlightColor){
@@ -359,7 +386,7 @@ window.highlightInspectedElement = function(childIndicesChain){
 	if(childIndicesChain){
 		element = locateChild(element, childIndicesChain);
 		if(!element){
-			console.log('Element not found. ' + childIndicesChain);
+			console.log('Child was not located. ' + childIndicesChain);
 			return;
 		}		
 	}
@@ -389,7 +416,7 @@ window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex
 			if(childIndicesChain){
 				element = locateChild(element, childIndicesChain);
 				if(!element){
-					console.log('Element not found. ' + selector + ', ' + childIndicesChain);
+					console.log('Child was not located. ' + selector + ', ' + childIndicesChain);
 					return;
 				}
 			}

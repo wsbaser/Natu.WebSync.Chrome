@@ -5,18 +5,26 @@ export default Ember.Service.extend({
 		if(!selector){
 			return;
 		}
-		if(selector.css){
-			this.inspectCss(selector.css, selector.iframeIndex, selector.elementIndex);
+		if(selector.inspected){
+			this.inspectInspectedChild(selector.childIndicesChain);
 		}
-		else{
-			this.inspectXpath(selector.xpath, selector.iframeIndex, selector.elementIndex);
+		else if(selector.css){
+			this.inspectCss(selector.css, selector.iframeIndex, selector.elementIndex, selector.childIndicesChain);
+		}
+		else if(selector.xpath){
+			this.inspectXpath(selector.xpath, selector.iframeIndex, selector.elementIndex, selector.childIndicesChain);
+		}else{
+			throw Error('invalid selector');
 		}
 	},
-	inspectCss(css, iframeIndex, elementIndex){
-		this._callEval('inspectCssSelector("' + css + '",' + iframeIndex + ',' + elementIndex + ')');
+	inspectInspectedChild(childIndicesChain){
+		this._callEval('inspectInspectedChild("' + (childIndicesChain||[]).join(',') + '")');
 	},
-	inspectXpath(xpath, iframeIndex, elementIndex){
-		this._callEval('inspectXpathSelector("' + xpath + '",' + iframeIndex + ',' + elementIndex + ')');
+	inspectCss(css, iframeIndex, elementIndex, childIndicesChain){
+		this._callEval('inspectCssSelector("' + css + '",' + iframeIndex + ',' + elementIndex + ',"' + (childIndicesChain||[]).join(',') + '")');
+	},
+	inspectXpath(xpath, iframeIndex, elementIndex, childIndicesChain){
+		this._callEval('inspectXpathSelector("' + xpath + '",' + iframeIndex + ',' + elementIndex + ',"' + (childIndicesChain||[]).join(',') + '")');
 	},
 	_callEval(script){
 	   	chrome.devtools.inspectedWindow.eval(script, { useContentScriptContext: true });
