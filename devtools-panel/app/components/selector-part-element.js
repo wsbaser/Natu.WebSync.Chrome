@@ -23,7 +23,7 @@ export default Component.extend({
 	},
 	getElementSelector(){
 		return this.get('partElement').getSelector();
-	}
+	},
 	click(){
 		this.inspectElement();
 		this.set('partElement.isSelected', true);
@@ -56,7 +56,6 @@ export default Component.extend({
 	actions:{
 		onInspectElement(element){
 			this.inspectElement();
-			element.set('isSelected', true);
 			let onSelected = this.get('onSelected');
 			if(onSelected){
 				onSelected(element);

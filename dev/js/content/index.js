@@ -236,21 +236,35 @@ window.evaluateSelector = function(selector, isXpath){
 	return isXpath?evaluateXpath(selector):evaluateCss(selector);
 };
 
+window.locateChild = function(element, childIndicesChain){
+	childIndicesChain = childIndicesChain.split(',');
+	for (var i = 0; i<childIndicesChain.length;i++) {
+		let childIndex = childIndicesChain[i];
+		element=element.children[childIndex];
+		if(!element){
+			return null;
+		}
+	};
+	return element;
+};
+
+window.loadChildrenForInspectedElement = function(){
+	return loadChildrenForElement($0);
+};
+
 window.loadChildren = function(selector, isXpath, iframeIndex, elementIndex){
 	var iframeDataList = evaluateSelector(selector, isXpath);
 
 	var iframeData = iframeDataList[iframeIndex];
-	if(iframeData){
-		let element = iframeData.elements[elementIndex]
-		if(element){
-			return loadChildrenForElement(element.domElement);
-		}else{
-			console.log('No element for specified elementIndex: ' + elementIndex);
-		}
-	}
-	else{
+	if(!iframeData){
 		console.log('No element for specified iframeIndex: ' + iframeIndex);
 	}
+
+	let element = iframeData.elements[elementIndex];
+	if(!element){
+		console.log('No element for specified elementIndex: ' + elementIndex);
+	}
+	return loadChildrenForElement(element.domElement);
 };
 
 window.loadChildrenForElement = function(element){
@@ -325,26 +339,34 @@ window.higlightElement = function(documentNode, element, highlightColor){
 window.hightlightElementsInIframe = function(iframeNode, iframeElements, highlightColor){
 	if(iframeElements[0]){
 		// .scroll to first
-		iframeElements[0].domElement.scrollIntoViewIfNeeded();
+		iframeElements[0].scrollIntoViewIfNeeded();
 		// iframeElements[0].scrollIntoView({
 		//   	behavior: "smooth",
 		//     block:   "end"
 		// });
 	}
 	iframeElements.forEach((iframeElement)=>{
-		higlightElement(iframeNode, iframeElement.domElement, highlightColor);
+		higlightElement(iframeNode, iframeElement, highlightColor);
 	});
 };
 
 window.HL_GREEN = "rgb(207, 232, 252)";
 window.HL_YELLOW = "rgb(207, 232, 252)";
 
-window.highlightInspectedElement = function(){
+window.highlightInspectedElement = function(childIndicesChain){
 	removeHighlighting();
-	higlightElement(document, $0, window.HL_GREEN);
+	let element = $0;
+	if(childIndicesChain){
+		element = locateChild(element, childIndicesChain);
+		if(!element){
+			console.log('Element not found. ' + childIndicesChain);
+			return;
+		}		
+	}
+	higlightElement(document, element, window.HL_GREEN);
 };
 
-window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex){
+window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex, childIndicesChain){
 	removeHighlighting();
 
 	var iframeDataList = evaluateSelector(selector, isXpath);
@@ -359,9 +381,20 @@ window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex
 	if(iframeIndex !=undefined && elementIndex!=undefined){
 		if(iframeDataList[iframeIndex]){
 			var iframeData = iframeDataList[iframeIndex];
-			if(iframeData){
-				hightlightElementsInIframe(iframeData.documentNode, [iframeData.elements[elementIndex]], highlightColor);
+			if(!iframeData){
+				console.log('Iframe not found. ' + selector + ', ' + iframeIndex);
+				return;
 			}
+			let element = iframeData.elements[elementIndex].domElement;
+			if(childIndicesChain){
+				element = locateChild(element, childIndicesChain);
+				if(!element){
+					console.log('Element not found. ' + selector + ', ' + childIndicesChain);
+					return;
+				}
+			}
+
+			hightlightElementsInIframe(iframeData.documentNode, [element], highlightColor);
 		}
 		else{
 			console.log('No element for specified iframeIndex and elementIndex: ' + iframeIndex + ', ' + elementIndex);
@@ -369,7 +402,7 @@ window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex
 	}
 	else{
 		iframeDataList.forEach((iframeData)=>{
-			hightlightElementsInIframe(iframeData.documentNode, iframeData.elements, highlightColor);
+			hightlightElementsInIframe(iframeData.documentNode, iframeData.elements.map(e=>e.domElement), highlightColor);
 		});
 	}
 };

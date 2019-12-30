@@ -265,6 +265,14 @@ export default Ember.Controller.extend({
 		// .old highlighter is not valid anymore
 		this.setHighlighter(0,0);
 	},
+	selectElement(elements, element){
+		elements.forEach(e=>{
+			e.set('isSelected', e === element);
+			if(e.get('children.length')){
+				this.selectElement(e.get('children'), element);
+			}
+		});
+	},
 	actions:{
 		copySelectorStart(isXpath){
 			this.getSelectorRootElement(isXpath).addClass('selected');
@@ -342,11 +350,7 @@ export default Ember.Controller.extend({
 			this.selectPart(part, elements);
 		},
 		onPartElementSelected(element){
-			this.get('elements').forEach(function(e){
-	          if(e != element){
-	        	e.set('isSelected', false);
-	          }
-	        });
+			this.selectElement(this.get('elements'), element);
 		},
 		onCopyButtonEnter(){
 			let lastPart = this.get('parts.lastObject');

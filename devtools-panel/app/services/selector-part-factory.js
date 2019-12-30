@@ -59,24 +59,24 @@ export default Service.extend({
 		indicesChain = indicesChain || [];
 		let childPartElements = [];
 		let blankPart = this.generateBlankPart(true);
-		for (var i = children.length - 1; i >= 0; i--) {
+		for (var i = 0; i<children.length; i++) {
 			let element = children[i];
 			let childIndicesChain = [...indicesChain, i];
 			let childPartElement = SelectorPartElement.create({
-				parentElement: parentElement,
+				parentElement: partElement,
 				childIndicesChain: childIndicesChain,
 				part: blankPart,
-				tagName: this.getElementAttribute(element.tagName, part, "tagName", true),
-				id: this.getElementAttribute(element.id, part, "id"),
+				tagName: this.getElementAttribute(element.tagName, blankPart, "tagName", true),
+				id: this.getElementAttribute(element.id, blankPart, "id"),
 				attributes: [],
-				classNames: this.getElementAttributes(element.classNames, part, "classNames"),
-				innerText: this.getElementAttribute(element.innerText, part, "texts"),
+				classNames: this.getElementAttributes(element.classNames, blankPart, "classNames"),
+				innerText: this.getElementAttribute(element.innerText, blankPart, "texts"),
 				displayed: element.displayed,
 				hasChildren: element.hasChildren,
 				containsTags: element.containsTags
 			});
 			childPartElement.set('children', this.generateChildElements(partElement, element.children, childIndicesChain));
-			childPartElements.push(partElement);
+			childPartElements.push(childPartElement);
 		};
 
 		return childPartElements;

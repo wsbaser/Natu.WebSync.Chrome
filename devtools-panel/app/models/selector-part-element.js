@@ -4,14 +4,17 @@ export default Ember.Object.extend({
 	isUnlocked: Ember.computed('isSelected', 'part.isCssStyle', 'part.isEditable', function(){
 		return this.get('isSelected') && this.get('part.isCssStyle') && this.get('part.isEditable');
 	}),
-	isChild: Ember.computed('parent', function(){
-		return !!this.get('isChild');
+	isChild: Ember.computed('parentElement', function(){
+		return !!this.get('parentElement');
 	}),
 	rootElement: Ember.computed('parentElement', function(){
 		if(this.get('parentElement')){
 			return this.get('parentElement.rootElement');
 		}
 		return this;
+	}),
+	level : Ember.computed('childIndicesChain', function(){
+		return (this.get('childIndicesChain')||[]).length;
 	}),
 	getSelector(){
 		let selector;
@@ -21,7 +24,7 @@ export default Ember.Object.extend({
 			selector.childIndicesChain = this.get('childIndicesChain');
 		}
 		else{
-			if(this.get('isBlank')){
+			if(this.get('part.isBlank')){
 				selector = { inspected: true};
 			}else{
 				selector = this.get('foundByXpath')?

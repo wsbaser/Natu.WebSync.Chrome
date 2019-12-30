@@ -6,11 +6,10 @@ export default Ember.Service.extend({
 			return;
 		}
 		if(selector.inspected){
-			this.highlightInspectedElement();
-		}if(selector.css){
+			this.highlightInspectedElement(selector.childIndicesChain);
+		}else if(selector.css){
 			this.highlightCss(selector.css, selector.iframeIndex, selector.elementIndex, selector.childIndicesChain);
-		}
-		else if(selector.xpath){
+		}else if(selector.xpath){
 			this.highlightXpath(selector.xpath, selector.iframeIndex, selector.elementIndex, selector.childIndicesChain);
 		}else{
 			throw Error('invalid selector');
@@ -20,21 +19,27 @@ export default Ember.Service.extend({
 		if(!selector){
 			return;
 		}
-		if(selector.css){
-			this._callEval('loadChildren("' + selector.css + '", false' + ',' + iframeIndex + ',' + elementIndex +')', onLoaded);
-		}
-		else{
-			this._callEval('loadChildren("' + selector.xpath + '", true' + ',' + iframeIndex + ',' + elementIndex +')', onLoaded);
+		if(selector.inspected){
+			this._callEval('loadChildrenForInspectedElement()', onLoaded);
+		}else if(selector.css){
+			this._callEval('loadChildren("' + selector.css + '", false' + ',' + selector.iframeIndex + ',' + selector.elementIndex +')', onLoaded);
+		}else if(selector.xpath){
+			this._callEval('loadChildren("' + selector.xpath + '", true' + ',' + selector.iframeIndex + ',' + selector.elementIndex +')', onLoaded);
+		}else{
+			throw Error('invalid selector');
 		}
 	},
-	highlightInspectedElement(){
-		this._callEval('highlightInspectedElement()');
+	highlightInspectedElement(childIndicesChain){
+		childIndicesChain = childIndicesChain||[];
+		this._callEval('highlightInspectedElement("'+childIndicesChain.join(',')+'")');
 	},
 	highlightCss(css, iframeIndex, elementIndex, childIndicesChain){
-		this._callEval('highlightSelector("' + css + '", false' + ',' + iframeIndex + ',' + elementIndex +')', this.onHighlighted);
+		childIndicesChain = childIndicesChain||[];
+		this._callEval('highlightSelector("' + css + '", false' + ',' + iframeIndex + ',' + elementIndex + ',"'+ childIndicesChain.join(',') +'")', this.onHighlighted);
 	},
 	highlightXpath(xpath, iframeIndex, elementIndex, childIndicesChain){
-		this._callEval('highlightSelector("' + xpath + '", true' + ',' + iframeIndex + ',' + elementIndex +')', this.onHighlighted);
+		childIndicesChain = childIndicesChain||[];
+		this._callEval('highlightSelector("' + xpath + '", true' + ',' + iframeIndex + ',' + elementIndex + ',"'+ childIndicesChain.join(',')  +'")', this.onHighlighted);
 	},
 	onHighlighted(result, exception){
 		if(exception){

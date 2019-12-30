@@ -13,10 +13,10 @@ export default Component.extend({
 				onAttributeToggle();
 			}
 		},
-		onSelected(){
+		onSelected(element){
 			let onSelected = this.get('onSelected');
 			if(onSelected){
-				onSelected();
+				onSelected(element);
 			}
 		}
 	}
