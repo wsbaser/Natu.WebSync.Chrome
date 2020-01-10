@@ -253,9 +253,9 @@ export default Ember.Controller.extend({
 		}
 
 		// .select first if no element is selected
-		if(elements.length && elements.every(e=>!e.get('isSelected'))){
-			elements.objectAt(0).set('isSelected', true);
-		}
+		// if(elements.length && elements.every(e=>!e.get('isSelected'))){
+		// 	elements.objectAt(0).set('isSelected', true);
+		// }
 
 		this.selectPartInInput(part);
 	},
