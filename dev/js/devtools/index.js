@@ -61,4 +61,9 @@ chrome.devtools.panels.create('WebSync', 'icons/icon64.png', 'devtools-panel.htm
 chrome.devtools.panels.elements.createSidebarPane("WebSync",
 function(sidebar) {
   sidebar.setPage("devtools-panel.html");
+  sidebar.onHidden.addListener(handleHidden)
 });
+
+function handleHidden() {
+	chrome.devtools.inspectedWindow.eval('removeHighlighting()', { useContentScriptContext: true });
+}

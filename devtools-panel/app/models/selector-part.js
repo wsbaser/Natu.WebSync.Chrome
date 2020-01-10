@@ -21,5 +21,5 @@ export default Ember.Object.extend({
 	},
 	endIndex: Ember.computed('startIndex','scss', function(){
 		return this.get('startIndex') + this.get('scss').length;
-	}) 
+	})
 });

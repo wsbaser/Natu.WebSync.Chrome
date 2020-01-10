@@ -47,12 +47,18 @@ export default Ember.Component.extend({
 			this.triggerOnSelected();
 		}
 	}),
-	validatePart(){
+	validatePart(callback){
+		let f = function(result, isException){
+			this.onSelectorValidated(result, isException);
+			if(callback && !isException){
+				callback();
+			}
+		}.bind(this);
 		let selectorValidator = this.get('selectorValidator');
 		if(this.get('isXpath')){
-			selectorValidator.validateXpath(this.get('part.fullXpath'), this.onSelectorValidated.bind(this));
+			selectorValidator.validateXpath(this.get('part.fullXpath'), f);
 		}else{
-			selectorValidator.validateCss(this.get('part.fullCss'), this.onSelectorValidated.bind(this));
+			selectorValidator.validateCss(this.get('part.fullCss'), f);
 		}
 	},
 	inspectPart(){
@@ -109,16 +115,17 @@ export default Ember.Component.extend({
 				// sourceEl.setSelectionRange(fullSelector.length-partSelector.length, fullSelector.length);
 			}
 			else if(!this.get('part.isBlank')){
-				if(this.get('elements.length')){
-					// // .select first element
-					// for (var i = elements.length - 1; i >= 0; i--) {
-					// 	elements[i].set('isSelected', false);
-					// };
-					// elements[0].set('isSelected', true);
-					this.inspectPart();
-				}
-				// this.set('part.isSelected', true);
-				this.triggerOnSelected();
+				this.validatePart(()=>{
+					this.triggerOnSelected();
+					if(!this.get('elements').any(e=>e.get('isSelected'))){
+						// // .select first element
+						// for (var i = elements.length - 1; i >= 0; i--) {
+						// 	elements[i].set('isSelected', false);
+						// };
+						// elements[0].set('isSelected', true);
+						this.inspectPart();
+					}
+				});
 			}
 		},
 		onSelectorMouseEnter(){
