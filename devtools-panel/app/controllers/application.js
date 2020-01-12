@@ -120,7 +120,7 @@ export default Ember.Controller.extend({
 		let inputFont =  inputStyle.fontSize +' '+ inputStyle.fontFamily;
 
 		let left = this.getTextWidth(prevPartScss, inputFont);
-		let width = this.getTextWidth(partScss, inputFont); 
+		let width = this.getTextWidth(partScss, inputFont);
 
 		this.setHighlighter(left, width);
 
@@ -178,16 +178,16 @@ export default Ember.Controller.extend({
 	updateParts(newParts){
 		let oldParts = this.get('parts');
 
-		let partsMatch = true;
+		//let partsMatch = true;
 		for(let i=0; i<newParts.length || i<oldParts.length;i++){
 			let newPart = newParts.objectAt(i);
 			let oldPart = oldParts.objectAt(i);
 			let curPartsMatch = newPart && oldPart && newPart.selectorsEqualTo(oldPart);
-			partsMatch &= curPartsMatch;
-			if(partsMatch){
-				// .no changes encountered, continue
-				continue;
-			}
+			//partsMatch &= curPartsMatch;
+			// if(partsMatch){
+			// 	// .no changes encountered, continue
+			// 	continue;
+			// }
 			if(curPartsMatch){
 				// .current parts match, but some prevous are different - update 
 				newPart.set('isSelected', oldPart.get('isSelected'));
