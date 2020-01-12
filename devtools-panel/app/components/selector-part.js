@@ -21,6 +21,10 @@ export default Ember.Component.extend({
 			this.validatePart();
 		}
 	},
+	menuActions: [
+		{ label: 'Delete part', action: 'delete' },
+	    { label: 'Lock as root:', action: 'lock' }	    
+  	],
 	tooltipText: Ember.computed('elements.[]',function(){
 		let count = this.get('elements.length');
 		if(!count){

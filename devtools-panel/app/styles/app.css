@@ -1,3 +1,25 @@
+html{
+	font-size: 12px;
+}
+
+.__ember__context__menu__dropdown{
+	font-family: 'Segoe UI', Tahoma, sans-serif;
+	border-radius: 0;
+	border-color: rgb(218,220,224);
+	padding: 4px 0;
+	box-shadow: 5px 5px 3px -3px rgba(95,95,95,1);
+}
+
+.__ember__context__dropdown__item{
+	padding-left: 30px;
+}
+
+.__ember__context__dropdown__item:hover, .__ember__context__dropdown__item:focus {
+  text-decoration: none;
+  color: #222;
+  background-color: rgb(218,220,224);
+}
+
 .clearfix::after {
   content: "";
   display: table;
@@ -146,11 +168,11 @@ input#source:focus{
 	margin-top: 2px;
 }
 
-#target .validator .part.not-displayed>.value{
+#target .validator .part.not-displayed .value{
 	opacity: 0.5;
 }
 
-#target .validator .part>.value{
+#target .validator .part .value{
 	background: gainsboro;
 	cursor: pointer;
 	padding: 0px 2px;
@@ -163,11 +185,11 @@ input#source:focus{
 	height: 19px;
 }
 
-#target .validator .part.exist>.value{
+#target .validator .part.exist .value{
 	background: rgb(50, 205, 50,0.7);
 }
 
-#target .validator .part.exist.several>.value{
+#target .validator .part.exist.several .value{
 	background: rgba(256,256,0);
 }
 
@@ -181,16 +203,16 @@ input#source:focus{
 	cursor: default;
 }
 
-#target .validator .part.exist.hidden>.value{
+#target .validator .part.exist.hidden .value{
 	opacity: 0.5;
 }
 
-#target .validator .part>.value:hover,
-#target .validator .part.selected>.value{
+#target .validator .part .value:hover,
+#target .validator .part.selected .value{
 	border: 1px dashed firebrick;
 }
 
-#target .validator .part>.remove-icon{
+#target .validator .part .remove-icon{
 	display: inline-block;
 	cursor: pointer;
 	width: 0;
@@ -202,13 +224,13 @@ input#source:focus{
 	transition: all 100ms;
 }
 
-#target .validator .part.selected>.remove-icon{
+#target .validator .part.selected .remove-icon{
 	width: 7px;
 	height: 7px;
 	opacity: 1;
 }
 
-#target .validator .part.blank.selected>.remove-icon{
+#target .validator .part.blank.selected .remove-icon{
 	display: none;
 }
 

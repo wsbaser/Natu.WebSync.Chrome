@@ -172,5 +172,13 @@ export default Ember.Route.extend({
 	},
 	redirect(model, transition){
 		this.transitionTo('index');
+	},
+	actions:{
+		lock(){
+			alert('lock');
+		},
+		delete(){
+			alert('delete');
+		}
 	}
 });
