@@ -109,25 +109,26 @@ window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 	if(maxLength){
 		// find out if inspected element belongs to any of current selector parts
 		let partsElements = [];
-		for (var i = 0; i < maxLength; i++) {
-			partsElements.push({
+		for (var i = maxLength-1; i >= 0; i--) {
+			let elements = {
 				css: null,
 				xpath: null
-			});
+			};
+			partsElements.push(elements);
 			if(cssSelectors[i]){
-				partsElements[i].css = evaluateCss(cssSelectors[i]);
-				if(getElementIndex(partsElements[i].css, inspectedElement)!=-1){
+				elements.css = evaluateCss(cssSelectors[i]);
+				if(getElementIndex(elements.css, inspectedElement)!=-1){
 					partIndex=i;
-					partElements = partsElements[i].css;
+					partElements = elements.css;
 					isXpathElements = false;
 					break;
 				}
 			}
 			if(xpathSelectors[i]){
-				partsElements[i].xpath = evaluateXpath(xpathSelectors[i]);
-				if(getElementIndex(partsElements[i].xpath, inspectedElement)!=-1){
+				elements.xpath = evaluateXpath(xpathSelectors[i]);
+				if(getElementIndex(elements.xpath, inspectedElement)!=-1){
 					partIndex=i;
-					partElements = partsElements[i].xpath;
+					partElements = elements.xpath;
 					isXpathElements = true;
 					break;
 				}
@@ -137,7 +138,7 @@ window.locateInspectedElement = function(cssSelectors, xpathSelectors){
 		if(partIndex==-1){
 			// inspected element does not belong to any of the current selector parts
 			// we should find a location for the blank part
-			blankPartIndex = getBlankPartIndex(partsElements, inspectedElement);
+			blankPartIndex = getBlankPartIndex(partsElements.reverse(), inspectedElement);
 		}
 	}else{
 		// selector has no parts, so blank part will be the first one
