@@ -75,9 +75,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 chrome.runtime.onInstalled.addListener(function(details){
     if(details.reason == "install"){
         console.log("This is a first install!");
-    }else if(details.reason == "update"){
-        var thisVersion = chrome.runtime.getManifest().version;
-        console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
         chrome.tabs.create({url:"update.html"});
+    }else if(details.reason == "update"){
+        let thisVersion = chrome.runtime.getManifest().version;
+        let thisMajorVersion = thisVersion.split('.')[0];
+        let previousMajorVersion = details.previousVersion.split('.')[0];
+        console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
+        if(previousMajorVersion==0 && thisMajorVersion==1){
+          chrome.tabs.create({url:"update.html"});
+        }
     }
 });

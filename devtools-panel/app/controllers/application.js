@@ -363,6 +363,9 @@ export default Ember.Controller.extend({
 		},
 		onCopyButtonLeave(){
 			this.get('selectorHighlighter').removeHighlighting();
+		},
+		onAddToList(){
+			alert('');
 		}
 	}
 });
