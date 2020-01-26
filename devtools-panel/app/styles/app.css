@@ -336,6 +336,28 @@ input#source:focus{
 
 #selectorsList{
 	position: absolute;
+	bottom: 0;
+	top: 0;
+	/*min-height: 50px;*/
+	width: 100%;
+}
+
+#selectorsList .accordion-body{
+	background: #ccc;
+	position: absolute;
+	bottom: 22px;
+	top: 0;
+	width: 100%;
+	overflow: auto;
+	display: none;
+}
+
+#selectorsList.expanded .accordion-body{
+	display: block;
+}
+
+#selectorsList .accordion-header{
+	position: absolute;
 	bottom: 0;	
 	width: 100%;
 	min-height: 22px;
@@ -346,7 +368,6 @@ input#source:focus{
     background-color: rgba(255, 165, 0, 0.5);
     padding: 0 8px;
     white-space: nowrap;
-    overflow: hidden;
     font-size: 12px;
     font-family: 'Segoe UI', Tahoma, sans-serif;
     line-height: 22px;
@@ -369,13 +390,21 @@ input#source:focus{
 	margin-left: 8px;
 }
 
-#elementsList{
+#bottomPanel{
 	position: absolute;
-	bottom: 22px;
-	top: 93px;
+	bottom: 0;
+	top: 94px;
 	min-height: 50px;
 	width: 100%;
 	padding: 2px 0 0 0;
+}
+
+#elementsList{
+	position: absolute;
+	bottom: 22px;
+	top: 0;
+	/*min-height: 50px;*/
+	width: 100%;
 	overflow: auto;
 	transition: all 100ms;
 }

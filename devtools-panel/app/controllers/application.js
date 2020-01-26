@@ -52,7 +52,7 @@ export default Ember.Controller.extend({
 		return null;
 	},
 	adjustLayout(){
-		$(elementsList).css('top', resizeHandlerFrame.innerHeight+'px');
+		$(bottomPanel).css('top', resizeHandlerFrame.innerHeight+'px');
 	},
 	locateInspectedElement(){
 		this.removeBlankParts();

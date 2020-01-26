@@ -55,19 +55,26 @@
 		</ul>
 	</div>
 
-	<div id="elementsList" class="{{if isEditable "editable"}}">
-		<ul>
-		{{#each elements as |element|}}
-			{{selector-part-element partElement=element onAttributeToggle=(action "onPartAttributeToggle" element.part) onSelected=(action "onPartElementSelected")}}
-			{{selector-part-element-childrens partElement=element onAttributeToggle=(action "onPartAttributeToggle" element.part) onSelected=(action "onPartElementSelected")}}
-		{{/each}}
-		</ul>
+	<div id="bottomPanel">
+		<div id="elementsList" class="{{if isEditable "editable"}}">
+			<ul>
+			{{#each elements as |element|}}
+				{{selector-part-element partElement=element onAttributeToggle=(action "onPartAttributeToggle" element.part) onSelected=(action "onPartElementSelected")}}
+				{{selector-part-element-childrens partElement=element onAttributeToggle=(action "onPartAttributeToggle" element.part) onSelected=(action "onPartElementSelected")}}
+			{{/each}}
+			</ul>
+		</div>
+		
+		<div id="selectorsList" class="{{if isSelectorsListExpanded "expanded"}}">
+			<div class="accordion-body">
+			</div>
+			<div class="accordion-header" {{action "expandSelectorsList"}}>
+				<span class="expand-icon"></span>
+				<span class="panel-label">Selectors List</span>
+			</div>
+		</div>
 	</div>
-	
-	<div id="selectorsList" class="{{if isSelectorsListExpanded "expanded"}}" {{action "expandSelectorsList"}}>
-		<span class="expand-icon"></span>
-		<span class="panel-label">Selectors List</span>
-	</div>
+
 	{{!-- NAVIGATION --}}
 	{{!-- {{outlet}} --}}
 </div>
