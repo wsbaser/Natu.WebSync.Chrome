@@ -334,9 +334,44 @@ input#source:focus{
 	margin-right: 10px;
 }
 
+#selectorsList{
+	position: absolute;
+	bottom: 0;	
+	width: 100%;
+	min-height: 22px;
+	border-top: 1px solid rgb(221, 221, 221);
+	display: flex;
+    align-items: center;
+    /*background-color: rgb(243, 243, 243);*/
+    background-color: rgba(255, 165, 0, 0.5);
+    padding: 0 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    line-height: 22px;
+    cursor: pointer;
+}
+
+#selectorsList .expand-icon{
+	width: 7px;
+	height: 7px;
+	opacity: 0.8;
+	background-size: cover;
+	background-image: url('triangle-right.svg');
+}
+
+#selectorsList.expanded .expand-icon{
+	background-image: url('triangle-up.svg');
+}
+
+#selectorsList .panel-label{
+	margin-left: 8px;
+}
+
 #elementsList{
 	position: absolute;
-	bottom: 0;
+	bottom: 22px;
 	top: 93px;
 	min-height: 50px;
 	width: 100%;
@@ -406,10 +441,6 @@ input#source:focus{
 	display: inline-block;
 }
 
-.part-element.expanded .expand-icon{
-	-webkit-mask-position: 16px 0;
-}
-
 .part-element:hover>.selection{
 	background-color: #e9f0fb;
 }
@@ -447,6 +478,10 @@ input#source:focus{
     box-sizing: border-box;
     background-color: #727272;
     cursor: pointer;
+}
+
+.part-element.expanded .expand-icon{
+	-webkit-mask-position: 16px 0;
 }
 
 .part-element .tag{

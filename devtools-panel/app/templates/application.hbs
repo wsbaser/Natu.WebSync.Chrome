@@ -14,13 +14,13 @@
 				onclick={{action "onCopySelector"}}
 				{{action "onCopyButtonEnter" element on="mouseEnter"}}
 				{{action "onCopyButtonLeave" on="mouseLeave"}}
-				title="Copy selector"/>
+				title="Copy Selector"/>
 
 			<i class="addtolist-icon"
 				onclick={{action "onAddToList"}}
 				{{action "onCopyButtonEnter" element on="mouseEnter"}}
 				{{action "onCopyButtonLeave" on="mouseLeave"}}
-				title="Add selector to list"/>
+				title="Add to Selectors List"/>
 {{!-- 			<span class="selector-status {{if isExist "exist"}} {{if isSeveral "several"}}"/> --}}
 		</div>
 		<ul id="target">
@@ -63,7 +63,11 @@
 		{{/each}}
 		</ul>
 	</div>
-
+	
+	<div id="selectorsList" class="{{if isSelectorsListExpanded "expanded"}}" {{action "expandSelectorsList"}}>
+		<span class="expand-icon"></span>
+		<span class="panel-label">Selectors List</span>
+	</div>
 	{{!-- NAVIGATION --}}
 	{{!-- {{outlet}} --}}
 </div>

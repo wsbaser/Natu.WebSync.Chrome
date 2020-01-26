@@ -366,6 +366,9 @@ export default Ember.Controller.extend({
 		},
 		onAddToList(){
 			alert('');
+		},
+		expandSelectorsList(){
+			this.toggleProperty('isSelectorsListExpanded');
 		}
 	}
 });

@@ -51,7 +51,9 @@ module.exports = {
         { from: '../devtools-panel/dist/assets/vendor.js', to:'vendor.js' },
         { from: '../devtools-panel/dist/assets/vendor.css', to:'vendor.css' },
         { from: '../devtools-panel/dist/assets/32px.png', to:'32px.png' },
-        { from: '../devtools-panel/dist/assets/treeoutlineTriangles.svg', to:'treeoutlineTriangles.svg' }
+        { from: '../devtools-panel/dist/assets/treeoutlineTriangles.svg', to:'treeoutlineTriangles.svg' },
+        { from: '../devtools-panel/dist/assets/triangle-up.svg', to:'triangle-up.svg' },
+        { from: '../devtools-panel/dist/assets/triangle-right.svg', to:'triangle-right.svg' }
     ],{
       copyUnmodified:true
     })
