@@ -362,9 +362,9 @@ input#source:focus{
 	width: 100%;
 	min-height: 22px;
 	border-top: 1px solid rgb(221, 221, 221);
-	display: flex;
+/*	display: flex;
     align-items: center;
-    /*background-color: rgb(243, 243, 243);*/
+*/    /*background-color: rgb(243, 243, 243);*/
     background-color: rgba(255, 165, 0, 0.5);
     padding: 0 8px;
     white-space: nowrap;
@@ -375,6 +375,7 @@ input#source:focus{
 }
 
 #selectorsList .expand-icon{
+	display: inline-block;
 	width: 7px;
 	height: 7px;
 	opacity: 0.8;
