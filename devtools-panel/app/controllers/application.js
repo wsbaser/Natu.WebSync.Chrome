@@ -10,6 +10,7 @@ export default Ember.Controller.extend({
 	selectorHighlighter: Ember.inject.service(),
 	inputValue: '',
 	parts: A([]),
+	selectors: A([]),
 	init(){
 		this._super(...arguments);
 		console.log("Init ConvertController...");
@@ -365,7 +366,7 @@ export default Ember.Controller.extend({
 			this.get('selectorHighlighter').removeHighlighting();
 		},
 		onAddToList(){
-			alert('');
+			this.get('selectors').pushObject(this.get('inputValue'));
 		},
 		expandSelectorsList(){
 			this.toggleProperty('isSelectorsListExpanded');

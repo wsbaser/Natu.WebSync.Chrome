@@ -67,6 +67,11 @@
 		
 		<div id="selectorsList" class="{{if isSelectorsListExpanded "expanded"}}">
 			<div class="accordion-body">
+				<ul>
+					{{#each selectors as |selector|}}
+						<li>{{selector}}</li>
+					{{/each}}
+				</ul>
 			</div>
 			<div class="accordion-header" {{action "expandSelectorsList"}}>
 				<span class="expand-icon"></span>
