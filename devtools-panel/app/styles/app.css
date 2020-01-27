@@ -371,7 +371,7 @@ input#source:focus{
     font-size: 12px;
     font-family: 'Segoe UI', Tahoma, sans-serif;
     line-height: 22px;
-    cursor: pointer;
+    user-select: none;
 }
 
 #selectorsList .expand-icon{
