@@ -41,7 +41,7 @@ html{
 #selectorsConverter{
 	padding: 5px;
 	background: ghostwhite;
-	border-bottom: 1px solid #1880004f;
+	border-bottom: 1px solid rgb(205, 205, 205);
 	position: fixed;
 	width: 100%;
 	z-index: 10;
@@ -358,9 +358,61 @@ input#source:focus{
 	opacity: 1;
 }
 
-#selectorsList .accordion-body ul{
-	margin: 0;
-	padding: 0;
+#selectorsList .accordion-body table{
+	font-size: 12px;
+	table-layout: fixed;
+    border-spacing: 0;
+    border-collapse: separate;
+    height: 100%;
+    width: 100%;
+}
+
+
+#selectorsList .accordion-body table th{
+    border-bottom: 1px solid rgb(205, 205, 205);
+    border-left: 1px solid rgb(205, 205, 205);
+    text-align: left;
+    background-color: rgb(243, 243, 243);
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+#selectorsList .accordion-body table th,
+#selectorsList .accordion-body table td{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 18px;
+    height: 18px;
+    border-left: 1px solid #aaa;
+    padding: 1px 4px;
+}
+
+#selectorsList .accordion-body table td{
+	height: 21px;
+	vertical-align: middle;
+	border-left: 1px solid #e1e1e1;
+}
+
+#selectorsList .accordion-body table td:first-child{
+	border-left: none;
+}
+
+#selectorsList .accordion-body table td.name{
+	color: #3b86e8;
+}
+
+#selectorsList .accordion-body table td .state{
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    background-color: rgb(50, 205, 50,0.7);
+    border-radius: 50%;
+}
+
+#selectorsList .accordion-body table .bottom-filler-td {
+    height: auto !important;
+    padding: 0 !important;
 }
 
 #selectorsList.expanded .accordion-body{
