@@ -388,14 +388,16 @@ input#source:focus{
     padding: 1px 4px;
 }
 
+#selectorsList .accordion-body table th:first-child,
+#selectorsList .accordion-body table td:first-child{
+	border-left: none;
+}
+
 #selectorsList .accordion-body table td{
 	height: 21px;
 	vertical-align: middle;
 	border-left: 1px solid #e1e1e1;
-}
-
-#selectorsList .accordion-body table td:first-child{
-	border-left: none;
+	font-family: monospace;
 }
 
 #selectorsList .accordion-body table td.name{
@@ -408,6 +410,8 @@ input#source:focus{
     width: 10px;
     background-color: rgb(50, 205, 50,0.7);
     border-radius: 50%;
+    margin-bottom: 4px;
+    vertical-align: bottom;
 }
 
 #selectorsList .accordion-body table .bottom-filler-td {
