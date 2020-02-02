@@ -14,7 +14,7 @@
 		</thead>
 		<tbody>
 			{{#each selectors as |selector|}}
-				<tr class="selector {{if selector.isSelected "selected"}}" 
+				<tr class="selector {{if selector.isSelected "selected"}} {{unless selector.elementsCount "invalid"}}" 
 						onclick={{action "onSelect" selector}} 
 						{{action "onMouseEnter" selector on="mouseEnter"}} 
 						{{action "onMouseLeave" on="mouseLeave"}}>
@@ -23,8 +23,8 @@
 					<td>
 						<span class="value">{{selector.value}}</span>
 						<span class="actions">
-							<span class="action-button">Edit</span>
-							<span class="action-button">Remove</span>
+							<span class="action-button" {{action "onEdit" selector}}>Edit</span>
+							<span class="action-button" {{action "onRemove" selector}}>Remove</span>
 						</span>
 					</td>
 				</tr>

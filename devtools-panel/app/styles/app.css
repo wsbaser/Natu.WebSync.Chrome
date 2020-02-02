@@ -442,6 +442,11 @@ input#source:focus{
 	color: rgb(163,21,21);
 }
 
+#selectorsList .invalid .name,
+#selectorsList .invalid .value{
+	color: #999;
+}
+
 #selectorsList .actions{
 	margin-left: 3px;
 }
@@ -480,8 +485,9 @@ input#source:focus{
 	border-top: 1px solid rgb(221, 221, 221);
 /*	display: flex;
     align-items: center;
-*/    /*background-color: rgb(243, 243, 243);*/
-    background-color: rgba(255, 165, 0, 0.5);
+*/   
+	background-color: rgb(243, 243, 243);
+    /*background-color: rgba(255, 165, 0, 0.5);*/
     padding: 0 8px;
     white-space: nowrap;
     font-size: 12px;

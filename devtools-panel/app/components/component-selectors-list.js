@@ -27,6 +27,11 @@ export default Component.extend({
 		},
 		onMouseLeave(){
 			this.get('selectorHighlighter').removeHighlighting();
+		},
+		onEdit(componentSelector){
+		},
+		onRemove(componentSelector){
+			this.selectors.removeObject(componentSelector);
 		}
 	}
 });
