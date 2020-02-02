@@ -82,10 +82,16 @@
 					</thead>
 					<tbody>
 						{{#each selectors as |selector|}}
-							<tr>
-								<td><span class="state"></span></td>
-								<td class="name">Selector N</td>
-								<td class="value">{{selector}}</td>
+							<tr class="selector">
+								<td class="state-wrap"><i class="state"></i></td>
+								<td><span class="name">Selector N</span></td>
+								<td>
+									<span class="value">{{selector}}</span>
+									<span class="actions">
+										<span class="action-button">Edit</span>
+										<span class="action-button">Remove</span>
+									</span>
+								</td>
 							</tr>
 						{{/each}}
 						<tr style="height: auto">
@@ -117,7 +123,7 @@
     cursor: pointer;
 "><input type="checkbox" style="
     vertical-align: bottom;
-    margin-bottom: 7px;
+    margin-bottom: 4px;
     cursor: pointer;
 "> Highlight</span>
     
@@ -125,7 +131,7 @@
     margin-left: 10px;
     font-weight: bold;
     float: right;
-">1 selector</span>
+">{{selectorsCountStatus}}</span>
 			</div>
 		</div>
 	</div>
