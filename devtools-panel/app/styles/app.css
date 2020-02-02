@@ -444,6 +444,11 @@ input#source:focus{
 #selectorsList .value{
 	color: rgb(163,21,21);
 	cursor: pointer;
+	opacity: 0.8;
+}
+
+#selectorsList .value:hover{
+	opacity: 1;
 }
 
 #selectorsList .invalid .name,
@@ -453,6 +458,7 @@ input#source:focus{
 
 #selectorsList .actions{
 	margin-left: 3px;
+	float: right;
 }
 
 #selectorsList .action-button{
