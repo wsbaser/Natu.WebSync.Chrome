@@ -479,13 +479,8 @@ input#source:focus{
     font-size: 12px;
     font-family: 'Segoe UI', Tahoma, sans-serif;
     line-height: 22px;
-    cursor: pointer;
     transition: all 300ms;
     user-select: none;
-}
-
-#selectorsList.expanded .accordion-header{
-    background-color: rgba(255, 165, 0, 0.5);	
 }
 
 #selectorsList .expand-icon{

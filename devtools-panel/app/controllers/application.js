@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { A } from '@ember/array';
 import { once } from '@ember/runloop';
+import ComponentSelector from '../models/component-selector';
 
 export default Ember.Controller.extend({
 	selectorPartFactory: Ember.inject.service(),
@@ -281,6 +282,9 @@ export default Ember.Controller.extend({
 			}
 		});
 	},
+	generateComponentName(){
+		return "Selector N";
+	},
 	actions:{
 		copySelectorStart(isXpath){
 			this.getSelectorRootElement(isXpath).addClass('selected');
@@ -373,7 +377,12 @@ export default Ember.Controller.extend({
 			this.get('selectorHighlighter').removeHighlighting();
 		},
 		onAddToList(){
-			this.get('selectors').pushObject(this.get('inputValue'));
+			let componentSelector = ComponentSelector.create({
+				name: this.generateComponentName(),
+				value: this.get('inputValue'),
+				status: this.get('status')
+			});
+			this.get('selectors').pushObject(componentSelector);
 		},
 		expandSelectorsList(){
 			this.toggleProperty('isSelectorsListExpanded');
