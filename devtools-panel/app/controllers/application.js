@@ -44,13 +44,6 @@ export default Ember.Controller.extend({
 			}
 		}
 	},
-	selectorsCountStatus: Ember.computed('selectors.[]', function(){
-		let count = this.get('selectors.length');
-		if(count%10==1 && count%100!=11){
-			return count + " selector";
-		}
-		return count + " selectors";
-	}),
 	getPartForCaretPosition(position){
 		let parts = this.get('parts');
 		for (var i = 0; i<parts.length; i ++) {
@@ -383,9 +376,6 @@ export default Ember.Controller.extend({
 				status: this.get('status')
 			});
 			this.get('selectors').pushObject(componentSelector);
-		},
-		expandSelectorsList(){
-			this.toggleProperty('isSelectorsListExpanded');
 		}
 	}
 });

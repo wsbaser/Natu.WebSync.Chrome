@@ -1,0 +1,67 @@
+<div class="accordion-body">
+	<table>
+		<colgroup>
+			<col style="width: 10px;">
+			<col style="width: 70px;">
+			<col style="width: 300px;">
+		</colgroup>
+		<thead>
+			<tr>
+				<th></th>
+				<th>Name</th>
+				<th>Selector</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each selectors as |selector|}}
+				<tr class="selector">
+					<td class="state-wrap"><i class="state"></i></td>
+					<td><span class="name">{{selector.name}}</span></td>
+					<td>
+						<span class="value">{{selector.value}}</span>
+						<span class="actions">
+							<span class="action-button">Edit</span>
+							<span class="action-button">Remove</span>
+						</span>
+					</td>
+				</tr>
+			{{/each}}
+			<tr style="height: auto">
+				<td class="bottom-filler-td"></td>
+				<td class="bottom-filler-td"></td>
+				<td class="bottom-filler-td"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="accordion-header" {{action "expandSelectorsList"}}>
+	<span class="expand-icon"></span>
+	<span class="panel-label">Selectors List</span>
+		<a style="
+	    float: right;
+	    margin-left: 10px;
+	    cursor: pointer;
+	">Clear</a>
+
+		<a style="
+	    float: right;
+	    margin-left: 10px;
+	    cursor: pointer;
+	">Copy</a>
+	    
+	    <span style="
+	    float: right;
+	    margin-left: 10px;
+	    cursor: pointer;
+	"><input type="checkbox" style="
+	    vertical-align: bottom;
+	    margin-bottom: 4px;
+	    cursor: pointer;
+	"> Highlight</span>
+	    
+	    <span style="
+	    margin-left: 10px;
+	    font-weight: bold;
+	    float: right;
+	">{{selectorsCountStatus}}</span>
+</div>
