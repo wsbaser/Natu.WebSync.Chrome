@@ -278,6 +278,20 @@ export default Ember.Controller.extend({
 	generateComponentName(){
 		return "Selector N";
 	},
+	getSelector(){
+		let lastPart = this.get('parts.lastObject');
+		let scss = this.get('inputValue');
+		if(lastPart.get('fullCss') && lastPart.get('cssElements.length')){
+			return {
+				scss: scss,
+				css: lastPart.get('fullCss')
+			};
+		}
+		return {
+			scss: scss,
+			xpath: lastPart.get('fullXpath')
+		}
+	},
 	actions:{
 		copySelectorStart(isXpath){
 			this.getSelectorRootElement(isXpath).addClass('selected');
@@ -372,8 +386,8 @@ export default Ember.Controller.extend({
 		onAddToList(){
 			let componentSelector = ComponentSelector.create({
 				name: this.generateComponentName(),
-				value: this.get('inputValue'),
-				status: this.get('status')
+				selector: this.getSelector(),
+				elementsCount: this.get('status')
 			});
 			this.get('selectors').pushObject(componentSelector);
 		}

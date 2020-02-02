@@ -14,8 +14,11 @@
 		</thead>
 		<tbody>
 			{{#each selectors as |selector|}}
-				<tr class="selector">
-					<td class="state-wrap"><i class="state"></i></td>
+				<tr class="selector {{if selector.isSelected "selected"}}" 
+						onclick={{action "onSelect" selector}} 
+						{{action "onMouseEnter" selector on="mouseEnter"}} 
+						{{action "onMouseLeave" on="mouseLeave"}}>
+					<td class="state-wrap"><i class="state {{selector-status selector.elementsCount}}"></i></td>
 					<td><span class="name">{{selector.name}}</span></td>
 					<td>
 						<span class="value">{{selector.value}}</span>
