@@ -409,6 +409,7 @@ input#source:focus{
 
 #selectorsList .state-wrap{
 	text-align: center;
+	padding: 0;
 }
 
 #selectorsList .state{
@@ -442,6 +443,7 @@ input#source:focus{
 
 #selectorsList .value{
 	color: rgb(163,21,21);
+	cursor: pointer;
 }
 
 #selectorsList .invalid .name,
@@ -471,7 +473,8 @@ input#source:focus{
 
 .selector:hover .action-button,
 .selector.selected .action-button{
-	display: inline !important;
+	display: inline-block !important;
+	line-height: 13px;
 }
 
 .editing{

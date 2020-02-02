@@ -64,7 +64,7 @@
 			{{/each}}
 			</ul>
 		</div>
-		{{component-selectors-list selectors=selectors}}
+		{{component-selectors-list selectors=selectors isExpanded=selectorsListIsExpanded onEdit=(action "onEdtiComponentSelector")}}
 	</div>
 
 	{{!-- NAVIGATION --}}

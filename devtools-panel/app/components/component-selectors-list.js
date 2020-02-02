@@ -19,9 +19,9 @@ export default Component.extend({
 			this.toggleProperty('isExpanded');
 		},
 		onSelect(componentSelector){
-			this.get('selectors').forEach(function(s){
-				s.set('isSelected', s == componentSelector);
-			});
+			// this.get('selectors').forEach(function(s){
+			// 	s.set('isSelected', s == componentSelector);
+			// });
 		},
 		onMouseEnter(componentSelector){
 			this.get('selectorHighlighter').highlight(componentSelector.get('selector'));
@@ -30,6 +30,9 @@ export default Component.extend({
 			this.get('selectorHighlighter').removeHighlighting();
 		},
 		onEdit(componentSelector){
+			if(this.get("onEdit")){
+				this.get("onEdit")(componentSelector);
+			}
 		},
 		onRemove(componentSelector){
 			this.selectors.removeObject(componentSelector);

@@ -57,7 +57,11 @@ export default Ember.Controller.extend({
 	adjustLayout(){
 		$(bottomPanel).css('top', resizeHandlerFrame.innerHeight+'px');
 	},
+	collapseSelectorsList(){
+		this.set('selectorsListIsExpanded', false);
+	},
 	locateInspectedElement(){
+		this.collapseSelectorsList();
 		this.removeBlankParts();
 		this.get('elementLocator').locateInspectedElement(this.get('parts'), (result, exception)=>{
 			if(result.partIndex!=-1){
@@ -387,6 +391,11 @@ export default Ember.Controller.extend({
 				elementsCount: this.get('status')
 			});
 			this.get('selectors').pushObject(componentSelector);
+			this.setInputValue('');
+		},
+		onEdtiComponentSelector(componentSelector){
+			this.collapseSelectorsList();
+			this.setInputValue(componentSelector.get('selector.scss'));
 		}
 	}
 });

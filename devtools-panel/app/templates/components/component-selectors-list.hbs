@@ -25,9 +25,9 @@
 						</span>
 					</td>
 					<td>
-						<span class="value">{{selector.value}}</span>
+						<span class="value" {{action "onEdit" selector}} title="Click to edit selector">{{selector.value}}</span>
 						<span class="actions">
-							<span class="action-button" {{action "onEdit" selector}}>Edit</span>
+							<!--<span class="action-button" {{action "onEdit" selector}}>Edit</span>-->
 							<span class="action-button" {{action "onRemove" selector}}>Remove</span>
 						</span>
 					</td>
