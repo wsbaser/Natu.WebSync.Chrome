@@ -1,5 +1,7 @@
 html{
 	font-size: 12px;
+	font-family: "Segoe UI", Tahoma, sans-serif;
+	color: #333333;
 }
 
 .__ember__context__menu__dropdown{

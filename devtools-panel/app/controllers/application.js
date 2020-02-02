@@ -9,6 +9,7 @@ export default Ember.Controller.extend({
 	scssBuilder: Ember.inject.service(),
 	elementLocator: Ember.inject.service(),
 	selectorHighlighter: Ember.inject.service(),
+	clipboard: Ember.inject.service(),
 	inputValue: '',
 	parts: A([]),
 	selectors: A([]),
@@ -235,11 +236,7 @@ export default Ember.Controller.extend({
 		return isXpath?$('#targetXPath'):$('#targetCss');
 	},
 	copyToClipboard(text) {
-	    var $temp = $("<input>");
-	    $("body").append($temp);
-	    $temp.val(text).select();
-	    document.execCommand("copy");
-	    $temp.remove();
+		this.get('clipboard').copy(text);
 	},
 	selectPart(part, elements){
 		this.set('selectedPart', part);

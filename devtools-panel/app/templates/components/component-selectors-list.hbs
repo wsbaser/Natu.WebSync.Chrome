@@ -40,17 +40,8 @@
 <div class="accordion-header" {{action "expandSelectorsList"}}>
 	<span class="expand-icon"></span>
 	<span class="panel-label">Selectors List</span>
-		<a style="
-	    float: right;
-	    margin-left: 10px;
-	    cursor: pointer;
-	">Clear</a>
-
-		<a style="
-	    float: right;
-	    margin-left: 10px;
-	    cursor: pointer;
-	">Copy</a>
+		<a {{action "onClear" bubbles=false}} style="float: right;margin-left: 10px;cursor: pointer;">Clear</a>
+		<a {{action "onCopy" bubbles=false}}style="float: right;margin-left: 10px;cursor: pointer;">Copy</a>
 	    
 	    <span style="
 	    float: right;

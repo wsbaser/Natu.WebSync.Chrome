@@ -6,6 +6,7 @@ export default Component.extend({
 		'isExpanded:expanded'
 	],
 	selectorHighlighter: Ember.inject.service(),
+	clipboard: Ember.inject.service(),
 	selectorsCountStatus: Ember.computed('selectors.[]', function(){
 		let count = this.get('selectors.length');
 		if(count%10==1 && count%100!=11){
@@ -32,6 +33,16 @@ export default Component.extend({
 		},
 		onRemove(componentSelector){
 			this.selectors.removeObject(componentSelector);
+		},
+		onClear(){
+			this.selectors.clear();
+		},
+		onCopy(){
+			var text="";
+			this.selectors.forEach(function(item){
+				text+=item.get('value')+"|"+item.get('name')+"\r\n";
+			});
+			this.get('clipboard').copy(text);
 		}
 	}
 });
