@@ -1,7 +1,5 @@
 html{
 	font-size: 12px;
-	font-family: "Segoe UI", Tahoma, sans-serif;
-	color: #333333;
 }
 
 .__ember__context__menu__dropdown{
@@ -342,6 +340,8 @@ input#source:focus{
 	top: 0;
 	/*min-height: 50px;*/
 	width: 100%;
+	font-family: "Segoe UI", Tahoma, sans-serif;
+	color: #333333;
 }
 
 #selectorsList .accordion-body{
@@ -389,7 +389,7 @@ input#source:focus{
 
 #selectorsList table th,
 #selectorsList table td{
-    white-space: nowrap;0
+    white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     line-height: 18px;
@@ -472,6 +472,22 @@ input#source:focus{
 .selector:hover .action-button,
 .selector.selected .action-button{
 	display: inline !important;
+}
+
+.editing{
+	box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.2) 0px 2px 4px 0px, rgba(0, 0, 0, 0.1) 0px 2px 6px 0px;
+    background-color: white;
+    text-overflow: clip !important;
+    padding-left: 2px;
+    margin-left: -2px;
+    padding-right: 2px;
+    margin-right: -2px;
+    margin-bottom: -1px;
+    padding-bottom: 1px;
+    opacity: 1.0 !important;
+    color: #222 !important;
+    text-decoration: none !important;
+    outline: none !important;
 }
 
 .bottom-filler-td {

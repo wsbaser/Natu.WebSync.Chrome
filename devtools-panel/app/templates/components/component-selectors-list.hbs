@@ -19,7 +19,11 @@
 						{{action "onMouseEnter" selector on="mouseEnter"}} 
 						{{action "onMouseLeave" on="mouseLeave"}}>
 					<td class="state-wrap"><i class="state {{selector-status selector.elementsCount}}"></i></td>
-					<td><span class="name">{{selector.name}}</span></td>
+					<td>
+						<span class="name {{if selector.nameIsEdited "editing"}}" contenteditable="{{selector.nameIsEdited}}" {{action "onEditName" selector on="doubleClick"}}>
+							{{selector.name}}
+						</span>
+					</td>
 					<td>
 						<span class="value">{{selector.value}}</span>
 						<span class="actions">

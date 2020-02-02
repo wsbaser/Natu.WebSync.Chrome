@@ -43,6 +43,9 @@ export default Component.extend({
 				text+=item.get('value')+"|"+item.get('name')+"\r\n";
 			});
 			this.get('clipboard').copy(text);
+		},
+		onEditName(componentSelector){
+			componentSelector.toggleProperty("nameIsEdited");
 		}
 	}
 });
