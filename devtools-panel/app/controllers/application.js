@@ -277,7 +277,7 @@ export default Ember.Controller.extend({
 		});
 	},
 	generateComponentName(){
-		return "Selector N";
+		return "Component Name";
 	},
 	getSelector(){
 		let lastPart = this.get('parts.lastObject');

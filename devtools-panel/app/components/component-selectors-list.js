@@ -8,6 +8,11 @@ export default Component.extend({
 	componentsAreHighlighted: false,
 	selectorHighlighter: Ember.inject.service(),
 	clipboard: Ember.inject.service(),
+	onComponentsListChange: Ember.observer('selectors.[]', function(){
+		if(this.get("componentsAreHighlighted")){
+			this.get("selectorHighlighter").highlightComponents(this.get('selectors'));
+		}
+	}),
 	selectorsCountStatus: Ember.computed('selectors.[]', function(){
 		let count = this.get('selectors.length');
 		if(count%10==1 && count%100!=11){
@@ -37,6 +42,7 @@ export default Component.extend({
 		},
 		onRemove(componentSelector){
 			this.selectors.removeObject(componentSelector);
+			this.get('selectorHighlighter').removeHighlighting();
 		},
 		onClear(){
 			this.selectors.clear();
@@ -56,7 +62,7 @@ export default Component.extend({
 			if(this.get("componentsAreHighlighted")){
 				this.get("selectorHighlighter").highlightComponents(this.get('selectors'));
 			}else{
-				this.get("selectorHighlighter").removeHighlighting();
+				this.get("selectorHighlighter").removeComponentsHighlighting();
 			}
 		}
 	}

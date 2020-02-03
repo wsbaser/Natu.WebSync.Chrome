@@ -3,7 +3,9 @@ import Ember from 'ember';
 export default Ember.Service.extend({
 	highlightComponents(componentSelectors){
 		let json = JSON.stringify(componentSelectors);
-		this._callEval("highlightComponents('" + json +"')");
+		let x = "highlightComponents(`" + json +"`)";
+		console.log(x);
+		this._callEval(x);
 	},
 	highlight(selector){
 		if(!selector){
@@ -55,6 +57,9 @@ export default Ember.Service.extend({
 	},
 	removeHighlighting(){
 		this._callEval('removeHighlighting()');
+	},
+	removeComponentsHighlighting(){
+		this._callEval('removeComponentsHighlighting()');
 	},
 	_callEval(script, callback){
 	   	chrome.devtools.inspectedWindow.eval(script, { useContentScriptContext: true }, callback);

@@ -41,7 +41,7 @@
 		</tbody>
 	</table>
 </div>
-<div class="accordion-header" {{action "expandSelectorsList"}}>
+<div class="accordion-header {{if componentsAreHighlighted "highlighted"}}" {{action "expandSelectorsList"}}>
 	<span class="expand-icon"></span>
 	<span class="panel-label">Selectors List</span>
 		<a {{action "onClear" bubbles=false}} style="float: right;margin-left: 10px;cursor: pointer;">Clear</a>

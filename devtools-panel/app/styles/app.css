@@ -514,15 +514,18 @@ input#source:focus{
     align-items: center;
 */   
 	background-color: rgb(243, 243, 243);
-    /*background-color: rgba(255, 165, 0, 0.5);*/
     padding: 0 8px;
     white-space: nowrap;
     font-size: 12px;
     font-family: 'Segoe UI', Tahoma, sans-serif;
     line-height: 22px;
-    transition: all 300ms;
     user-select: none;
 }
+
+#selectorsList .accordion-header.highlighted{
+   background-color: rgba(255, 165, 0, 1);
+}
+
 
 #selectorsList .expand-icon{
 	display: inline-block;
