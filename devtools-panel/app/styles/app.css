@@ -444,7 +444,7 @@ input#source:focus{
 #selectorsList .value{
 	color: rgb(163,21,21);
 	cursor: pointer;
-	opacity: 0.8;
+	opacity: 0.7;
 }
 
 #selectorsList .value:hover{
@@ -493,6 +493,7 @@ input#source:focus{
     margin-right: -2px;
     margin-bottom: -1px;
     padding-bottom: 1px;
+    padding-top: 2px;
     opacity: 1.0 !important;
     color: #222 !important;
     text-decoration: none !important;

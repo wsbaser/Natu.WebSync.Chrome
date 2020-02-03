@@ -56,6 +56,14 @@ export default Component.extend({
 		},
 		onEditName(componentSelector){
 			componentSelector.toggleProperty("nameIsEdited");
+			var nameSpanEl = window.event.target;
+			Ember.run.scheduleOnce('afterRender', function(){
+	        	nameSpanEl.focus();
+	        	var range = document.createRange();
+	        	range.selectNodeContents(nameSpanEl);
+	        	window.getSelection().removeAllRanges();
+	        	window.getSelection().addRange(range);	        	
+			});
 		},
 		onHighlightComponents(){
 			this.toggleProperty("componentsAreHighlighted");
@@ -63,6 +71,30 @@ export default Component.extend({
 				this.get("selectorHighlighter").highlightComponents(this.get('selectors'));
 			}else{
 				this.get("selectorHighlighter").removeComponentsHighlighting();
+			}
+		},
+		onNameKeydown(componentSelector){
+			let newName = window.event.target.innerText.trim();
+			if(window.event.key=="Enter"){
+				componentSelector.set("nameIsEdited", false);
+				
+				if(newName){
+					componentSelector.set("name", newName);
+				}else{
+					window.event.target.innerText = componentSelector.get("name");
+				}
+				window.event.preventDefault();
+			}else if(newName.length==100){
+				window.event.preventDefault();
+			}
+		},
+		onNameBlur(componentSelector){
+			componentSelector.set("nameIsEdited", false);
+			let newName = window.event.target.innerText.trim();	
+			if(newName){
+				componentSelector.set("name", newName);
+			}else{
+				window.event.target.innerText = componentSelector.get("name");
 			}
 		}
 	}

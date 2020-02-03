@@ -2,7 +2,7 @@
 	<table>
 		<colgroup>
 			<col style="width: 10px;">
-			<col style="width: 70px;">
+			<col style="width: 100px;">
 			<col style="width: 300px;">
 		</colgroup>
 		<thead>
@@ -20,9 +20,12 @@
 						{{action "onMouseLeave" on="mouseLeave"}}>
 					<td class="state-wrap"><i class="state {{selector-status selector.elementsCount}}"></i></td>
 					<td>
-						<span class="name {{if selector.nameIsEdited "editing"}}" contenteditable="{{selector.nameIsEdited}}" {{action "onEditName" selector on="doubleClick"}}>
-							{{selector.name}}
-						</span>
+						<span class="name {{if selector.nameIsEdited "editing"}}" 
+								contenteditable="{{selector.nameIsEdited}}" 
+								{{action "onEditName" selector on="doubleClick"}}
+								{{action "onNameKeydown" selector on="keyDown" preventDefault=false}}
+								{{action "onNameBlur" selector on="focusOut" preventDefault=false}}>
+							{{selector.name}}</span>
 					</td>
 					<td>
 						<span class="value" {{action "onEdit" selector}} title="Click to edit selector">{{selector.value}}</span>
