@@ -340,7 +340,7 @@ window.inspectCssSelector = function(css, iframeIndex, elementIndex, childIndice
 	inspectElement(element);
 };
 
-window.createHighlighterElement = function(documentNode, clientRect, highlightColor){
+window.createHighlighterElement = function(documentNode, clientRect, highlightColor, opacity){
 	var highlighterElement = documentNode.createElement('div');
 	highlighterElement.classList.add('websync-highlighter');
 	highlighterElement.style.left = (documentNode.scrollingElement.scrollLeft + clientRect.left) + 'px';
@@ -349,18 +349,18 @@ window.createHighlighterElement = function(documentNode, clientRect, highlightCo
 	highlighterElement.style.height = clientRect.height+'px';
 	highlighterElement.style.position = 'absolute';
 	highlighterElement.style.backgroundColor = highlightColor;
-	highlighterElement.style.border = '3px dashed firebrick';
-	highlighterElement.style.opacity = 0.5;
+	// highlighterElement.style.border = '3px dashed firebrick';
+	highlighterElement.style.opacity = opacity;
 	highlighterElement.style.boxSizing = 'border-box';
 	highlighterElement.style.zIndex = '999999999999999999999999999999999999999999999999999999999999999';
 	let bodyElement = documentNode.documentElement.querySelector('body');
 	bodyElement.appendChild(highlighterElement);
 };
 
-window.higlightElement = function(documentNode, element, highlightColor){
+window.higlightElement = function(documentNode, element, highlightColor, opacity){
 	let clientRects = Array.from(element.getClientRects());
 	clientRects.forEach((clientRect)=>{
-		createHighlighterElement(documentNode, clientRect, highlightColor);
+		createHighlighterElement(documentNode, clientRect, highlightColor, opacity);
 	});
 }
 
@@ -374,12 +374,25 @@ window.hightlightElementsInIframe = function(iframeNode, iframeElements, highlig
 		// });
 	}
 	iframeElements.forEach((iframeElement)=>{
-		higlightElement(iframeNode, iframeElement, highlightColor);
+		higlightElement(iframeNode, iframeElement, highlightColor, 0.66);
 	});
 };
 
-window.HL_GREEN = "rgb(207, 232, 252)";
-window.HL_YELLOW = "rgb(207, 232, 252)";
+window.hightlightComponentsInIframe = function(iframeNode, iframeElements, componentName){
+	iframeElements.forEach((iframeElement)=>{
+		higlightComponent(iframeNode, iframeElement, componentName);
+	});
+}
+
+window.higlightComponent = function(documentNode, element, componentName){
+	let clientRects = Array.from(element.getClientRects());
+	clientRects.forEach((clientRect)=>{
+		createHighlighterElement(documentNode, clientRect, "rgba(255, 165, 0, 1)", 1);
+	});
+};
+
+window.HL_GREEN = "rgb(106, 166, 219)";
+window.HL_YELLOW = "rgb(106, 166, 219)";
 
 window.highlightInspectedElement = function(childIndicesChain){
 	removeHighlighting();
@@ -434,6 +447,21 @@ window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex
 		});
 	}
 };
+
+window.highlightComponents = function(json){
+	var components = JSON.parse(json);
+	components.forEach(component=>{
+		var iframeDataList=[];
+		if(component.selector.xpath){
+			iframeDataList = evaluateSelector(component.selector.xpath, true);
+		}else if(component.selector.css){
+			iframeDataList = evaluateSelector(component.selector.css, false);
+		}
+		iframeDataList.forEach((iframeData)=>{
+			hightlightComponentsInIframe(iframeData.documentNode, iframeData.elements.map(e=>e.domElement), component.name);
+		});
+	});
+}
 
 window.removeHighlightingInIframe = function(iframeNode){
 	if(!iframeNode){

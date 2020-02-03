@@ -47,19 +47,11 @@
 		<a {{action "onClear" bubbles=false}} style="float: right;margin-left: 10px;cursor: pointer;">Clear</a>
 		<a {{action "onCopy" bubbles=false}}style="float: right;margin-left: 10px;cursor: pointer;">Copy</a>
 	    
-	    <span style="
-	    float: right;
-	    margin-left: 10px;
-	    cursor: pointer;
-	"><input type="checkbox" style="
-	    vertical-align: bottom;
-	    margin-bottom: 4px;
-	    cursor: pointer;
-	"> Highlight</span>
+	    <span style="float:right; margin-left:10px; cursor:pointer;" {{action "onHighlightComponents" bubbles=false}}>
+	    	{{!-- {{input type="checkbox" checked=componentsAreHighlighted}} --}}
+	    	<input type="checkbox" checked={{componentsAreHighlighted}} style="vertical-align:bottom; margin-bottom:4px; cursor:pointer;">
+	    	Highlight
+	    </span>
 	    
-	    <span style="
-	    margin-left: 10px;
-	    font-weight: bold;
-	    float: right;
-	">{{selectorsCountStatus}}</span>
+	    <span style="margin-left:10px; font-weight:bold; float:right;">{{selectorsCountStatus}}</span>
 </div>

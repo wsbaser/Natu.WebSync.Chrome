@@ -55,7 +55,7 @@ export default Ember.Controller.extend({
 		return null;
 	},
 	adjustLayout(){
-		$(bottomPanel).css('top', resizeHandlerFrame.innerHeight+'px');
+		$(bottomPanel).css('top', selectorsConverter.offsetHeight+'px');
 	},
 	collapseSelectorsList(){
 		this.set('selectorsListIsExpanded', false);

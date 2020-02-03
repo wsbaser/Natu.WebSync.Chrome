@@ -1,6 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+	highlightComponents(componentSelectors){
+		let json = JSON.stringify(componentSelectors);
+		this._callEval("highlightComponents('" + json +"')");
+	},
 	highlight(selector){
 		if(!selector){
 			return;
