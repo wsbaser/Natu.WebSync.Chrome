@@ -20,7 +20,7 @@
 						{{action "onMouseEnter" selector on="mouseEnter"}} 
 						{{action "onMouseLeave" on="mouseLeave"}}>
 					<td class="state-wrap"><i class="state {{selector-status selector.elementsCount}}"></i></td>
-					<td {{action "onEditName" selector on="doubleClick"}}>
+					<td {{action "onEditName" selector on="doubleClick"}} title="Double Click to Edit Name">
 						<span class="name {{if selector.nameIsEdited "editing"}}" 
 								contenteditable="{{selector.nameIsEdited}}" 
 								{{action "onNameKeydown" selector on="keyDown" preventDefault=false}}
@@ -28,7 +28,7 @@
 							{{selector.name}}</span>
 					</td>
 					<td>
-						<span class="value" {{action "onEdit" selector}} title="Click to edit selector">{{selector.value}}</span>
+						<span class="value" {{action "onEdit" selector}} title="Click to Edit Selector">{{selector.value}}</span>
 						<span class="actions">
 							<!--<span class="action-button" {{action "onEdit" selector}}>Edit</span>-->
 							<span class="action-button" {{action "onRemove" selector}}>Remove</span>

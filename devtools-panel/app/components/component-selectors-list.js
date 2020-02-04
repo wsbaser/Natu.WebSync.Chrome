@@ -56,7 +56,9 @@ export default Component.extend({
 		},
 		onEditName(componentSelector){
 			componentSelector.toggleProperty("nameIsEdited");
-			var nameSpanEl = window.event.target;
+			var nameSpanEl = window.event.target.tagName=="TD"?
+				window.event.target.children[0]:
+				window.event.target;
 			Ember.run.scheduleOnce('afterRender', function(){
 	        	nameSpanEl.focus();
 	        	var range = document.createRange();
