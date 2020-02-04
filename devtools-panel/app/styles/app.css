@@ -342,22 +342,40 @@ input#source:focus{
 	width: 100%;
 	font-family: "Segoe UI", Tahoma, sans-serif;
 	color: #333333;
+	overflow: hidden;
+	animation: collapse-selectors-list 200ms steps(1) forwards;
+}
+
+@keyframes collapse-selectors-list {
+  0%   { z-index: 20; }
+  100% { z-index: 0; }
+}
+
+@keyframes expand-selectors-list {
+  	0% { z-index: 20; }
+  	100% { z-index: 20; }
+}
+
+#selectorsList .expandable{
+	width: 100%;
+    height: 100%;
+    transition: height 200ms;
 }
 
 #selectorsList .accordion-body{
-	position: absolute;
-	bottom: 22px;
-	top: 0;
 	width: 100%;
+	height: 100%;
+	padding-bottom: 22px;
 	background: #fff;
 	overflow: auto;
-	opacity: 0;
-	transition: all 300ms;
 }
 
-#selectorsList.expanded .accordion-body{
-	z-index: 20;
-	opacity: 1;
+#selectorsList.expanded{
+	animation: expand-selectors-list 200ms steps(1) forwards;
+}
+
+#selectorsList.expanded .expandable{
+	height: 0;
 }
 
 #selectorsList table{
