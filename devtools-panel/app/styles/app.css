@@ -347,7 +347,7 @@ input#source:focus{
 }
 
 @keyframes collapse-selectors-list {
-  0%   { z-index: 20; }
+  0%   { z-index: 20; }	/* we do not need this when element is displayed for the first time but I do not know how to get rid of it*/
   100% { z-index: 0; }
 }
 

@@ -394,8 +394,10 @@ export default Ember.Controller.extend({
 			this.setInputValue('');
 		},
 		onEdtiComponentSelector(componentSelector){
-			this.collapseSelectorsList();
 			this.setInputValue(componentSelector.get('selector.scss'));
+		},
+		onSelectorConverterFocus(){
+			this.collapseSelectorsList();
 		}
 	}
 });
