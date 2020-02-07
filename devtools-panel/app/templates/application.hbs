@@ -9,7 +9,7 @@
 			<i class="trash-icon"
 				onclick={{action "onRemoveSelector"}} 
 				title="Remove selector"/>
-			{{input id="source" value=inputValue type="text" placeholder="Type selector here..."}}
+			{{input id="source" value=inputValue type="text" placeholder="Type selector here..." key-press="onInputKeyPress" }}
 			<i class="copy-icon"
 				onclick={{action "onCopySelector"}}
 				{{action "onCopyButtonEnter" element on="mouseEnter"}}

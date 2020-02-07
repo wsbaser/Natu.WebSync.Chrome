@@ -293,6 +293,15 @@ export default Ember.Controller.extend({
 			xpath: lastPart.get('fullXpath')
 		}
 	},
+	addToList(){
+		let componentSelector = ComponentSelector.create({
+			name: this.generateComponentName(),
+			selector: this.getSelector(),
+			elementsCount: this.get('status')
+		});
+		this.get('selectors').pushObject(componentSelector);
+		this.setInputValue('');
+	},
 	actions:{
 		copySelectorStart(isXpath){
 			this.getSelectorRootElement(isXpath).addClass('selected');
@@ -385,19 +394,18 @@ export default Ember.Controller.extend({
 			this.get('selectorHighlighter').removeHighlighting();
 		},
 		onAddToList(){
-			let componentSelector = ComponentSelector.create({
-				name: this.generateComponentName(),
-				selector: this.getSelector(),
-				elementsCount: this.get('status')
-			});
-			this.get('selectors').pushObject(componentSelector);
-			this.setInputValue('');
+			addToList();
 		},
 		onEdtiComponentSelector(componentSelector){
 			this.setInputValue(componentSelector.get('selector.scss'));
 		},
 		onSelectorConverterFocus(){
 			this.collapseSelectorsList();
+		},
+		onInputKeyPress(){
+			if(event.key=="Enter"){
+				this.addToList();
+			}
 		}
 	}
 });
