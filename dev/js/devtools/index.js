@@ -57,7 +57,6 @@
 //     scriptToInject: "assets/content.js"
 // });
 
-console.log(chrome.devtools);
 chrome.devtools.panels.create('WebSync', 'icons/icon64.png', 'devtools-panel.html');
 chrome.devtools.panels.elements.createSidebarPane("WebSync",
 function(sidebar) {

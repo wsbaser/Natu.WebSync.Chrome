@@ -24,7 +24,7 @@ export default Ember.Component.extend({
 	},
 	menuActions: [
 		{ label: 'Delete part', action: 'delete' },
-	    { label: 'Lock as root:', action: 'lock' }	    
+	    // { label: 'Lock as root:', action: 'lock' }	    
   	],
 	tooltipText: Ember.computed('elements.[]', function(){
 		let totalCount = this.get('elements.length');

@@ -331,6 +331,17 @@ export default Ember.Controller.extend({
 		this.setInputValue('');
 		this.expandSelectorsList();
 	},
+	removePart(part){
+		let toRemoveIndex = this.get('parts').indexOf(part);
+		let scssList = this.get('parts').map(p=>p.scss);
+		scssList.splice(toRemoveIndex, 1);
+		let modifiedScss = scssList.join('');
+		if(toRemoveIndex==0){
+			// if next part starts with space - trim it
+			modifiedScss = modifiedScss.trimStart();
+		}
+		this.setInputValue(modifiedScss);
+	},
 	actions:{
 		copySelectorStart(isXpath){
 			this.getSelectorRootElement(isXpath).addClass('selected');
@@ -348,15 +359,7 @@ export default Ember.Controller.extend({
 			// if(part.get('isSelected')){
 			// 	this.set('elements', A([]));
 			// }
-			let toRemoveIndex = this.get('parts').indexOf(part);
-			let scssList = this.get('parts').map(p=>p.scss);
-			scssList.splice(toRemoveIndex, 1);
-			let modifiedScss = scssList.join('');
-			if(toRemoveIndex==0){
-				// if next part starts with space - trim it
-				modifiedScss = modifiedScss.trimStart();
-			}
-			this.setInputValue(modifiedScss);
+			this.removePart(part);
 		},
 		onRemoveSelector(){
 			this.setInputValue('');

@@ -1,4 +1,4 @@
-{{#right-click menuActions=menuActions tagName="span"}}
+{{#right-click menuActions=menuActions model=part tagName="span"}}
 	<span class="value" onclick={{action "onInspectSelector"}} {{action "onSelectorMouseEnter" on="mouseEnter"}} {{action "onSelectorMouseLeave" on="mouseLeave"}}
 		title={{tooltipText}}>
 		{{~#if isXpath~}}
