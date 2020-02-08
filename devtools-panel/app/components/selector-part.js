@@ -14,6 +14,7 @@ export default Ember.Component.extend({
 	selectorValidator: Ember.inject.service(),
 	selectorHighlighter: Ember.inject.service(),
 	selectorInspector: Ember.inject.service(),
+	pluralizer: Ember.inject.service(),
 	isXPath: false,
 	init(){
 		this._super(...arguments);
@@ -25,15 +26,19 @@ export default Ember.Component.extend({
 		{ label: 'Delete part', action: 'delete' },
 	    { label: 'Lock as root:', action: 'lock' }	    
   	],
-	tooltipText: Ember.computed('elements.[]',function(){
-		let count = this.get('elements.length');
-		if(!count){
-			return '0 elements on the page';
-		}else if(count==1){
-			return '1 element on the page';
-		}else{
-			return count + ' elements on the page';
+	tooltipText: Ember.computed('elements.[]', function(){
+		let totalCount = this.get('elements.length');
+		if(!totalCount){
+			return "0 elements";
 		}
+		let displayedCount = this.get('elements').filter(e=>e.displayed).length;
+		if(totalCount==displayedCount){
+			return this.get("pluralizer").pluralize(totalCount,'element');
+		}
+		return this.get("pluralizer").pluralize(totalCount,'element') + 
+			" total, "+
+			this.get("pluralizer").pluralize(displayedCount,'element') + 
+			" displayed";
 	}),
 	isSeveral: Ember.computed('elements.[]', function(){
 		return this.get('elements.length')>1;

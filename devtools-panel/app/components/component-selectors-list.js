@@ -6,6 +6,7 @@ export default Component.extend({
 		'isExpanded:expanded'
 	],
 	selectorHighlighter: Ember.inject.service(),
+	pluralizer: Ember.inject.service(),
 	clipboard: Ember.inject.service(),
 	onComponentsListChange: Ember.observer('selectors.[]', function(){
 		if(this.get("componentsAreHighlighted")){
@@ -13,11 +14,7 @@ export default Component.extend({
 		}
 	}),
 	selectorsCountStatus: Ember.computed('selectors.[]', function(){
-		let count = this.get('selectors.length');
-		if(count%10==1 && count%100!=11){
-			return count + " selector";
-		}
-		return count + " selectors";
+		return this.get('pluralizer').pluralize(this.get('selectors.length'), "selector");
 	}),
 	highlightComponentsCheched(){
  		return $(highlightComponents).prop("checked");

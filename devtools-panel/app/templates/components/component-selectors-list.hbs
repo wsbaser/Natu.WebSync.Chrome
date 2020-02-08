@@ -19,7 +19,9 @@
 						onclick={{action "onSelect" selector}} 
 						{{action "onMouseEnter" selector on="mouseEnter"}} 
 						{{action "onMouseLeave" on="mouseLeave"}}>
-					<td class="state-wrap"><i class="state {{selector-status selector.elementsCount}}"></i></td>
+					<td class="state-wrap">
+						<i class="state {{selector-status selector.elementsCount}}" title="{{selector.stateText}}"></i>
+					</td>
 					<td {{action "onEditName" selector on="doubleClick"}} title="Double Click to Edit Name">
 						<span class="name {{if selector.nameIsEdited "editing"}}" 
 								contenteditable="{{selector.nameIsEdited}}" 

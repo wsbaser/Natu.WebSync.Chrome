@@ -10,6 +10,7 @@ export default Ember.Controller.extend({
 	elementLocator: Ember.inject.service(),
 	selectorHighlighter: Ember.inject.service(),
 	clipboard: Ember.inject.service(),
+	pluralizer: Ember.inject.service(),
 	inputValue: '',
 	parts: A([]),
 	selectors: A([]),
@@ -308,7 +309,8 @@ export default Ember.Controller.extend({
 			let componentSelector = ComponentSelector.create({
 				name: this.generateComponentName(),
 				selector: this.getSelector(),
-				elementsCount: this.get('status')
+				elementsCount: this.get('status'),
+				stateText: this.get('pluralizer').pluralize(this.get('status'), "element")
 			});
 			this.get('selectors').pushObject(componentSelector);
 			this.setInputValue('');
@@ -323,6 +325,11 @@ export default Ember.Controller.extend({
 			this.setInputValue('');
 			this.expandSelectorsList();
 		}	
+	},
+	cancelSelectorUpdate(){
+		this.set('selectorToUpdate', null);
+		this.setInputValue('');
+		this.expandSelectorsList();
 	},
 	actions:{
 		copySelectorStart(isXpath){
@@ -437,8 +444,7 @@ export default Ember.Controller.extend({
 			}
 		},
 		onCancelSelectorUpdate(){
-			this.set('selectorToUpdate', null);
-			this.setInputValue('');
+			this.cancelSelectorUpdate();
 		},
 		onUpdateSelector(){
 			this.updateSelector();
