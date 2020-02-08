@@ -57,6 +57,7 @@
 //     scriptToInject: "assets/content.js"
 // });
 
+console.log(chrome.devtools);
 chrome.devtools.panels.create('WebSync', 'icons/icon64.png', 'devtools-panel.html');
 chrome.devtools.panels.elements.createSidebarPane("WebSync",
 function(sidebar) {
@@ -66,4 +67,5 @@ function(sidebar) {
 
 function handleHidden() {
 	chrome.devtools.inspectedWindow.eval('removeHighlighting()', { useContentScriptContext: true });
+	chrome.devtools.inspectedWindow.eval('removeComponentsHighlighting()', { useContentScriptContext: true });
 }
