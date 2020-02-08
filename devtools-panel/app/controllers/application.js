@@ -60,6 +60,9 @@ export default Ember.Controller.extend({
 	collapseSelectorsList(){
 		this.set('selectorsListIsExpanded', false);
 	},
+	expandSelectorsList(){
+		this.set('selectorsListIsExpanded', true);	
+	},
 	locateInspectedElement(){
 		this.collapseSelectorsList();
 		this.removeBlankParts();
@@ -75,6 +78,13 @@ export default Ember.Controller.extend({
 		let selectedPart = this.get('selectedPart');
 		let scss = this.get('scss');
 		return selectedPart && selectedPart.get('isEditable') && (!scss || scss.isCssStyle);
+	}),
+	isEditMode: Ember.computed('selectorToUpdate', function(){
+		if(this.get('selectorToUpdate')){
+			this.setInputValue(this.get('selectorToUpdate.selector.scss'));
+			return true;
+		}
+		return false;
 	}),
 	status: Ember.computed(
 		'parts.lastObject.xpathElements.[]',
@@ -294,13 +304,25 @@ export default Ember.Controller.extend({
 		}
 	},
 	addToList(){
-		let componentSelector = ComponentSelector.create({
-			name: this.generateComponentName(),
-			selector: this.getSelector(),
-			elementsCount: this.get('status')
-		});
-		this.get('selectors').pushObject(componentSelector);
-		this.setInputValue('');
+		if(this.get('inputValue')){
+			let componentSelector = ComponentSelector.create({
+				name: this.generateComponentName(),
+				selector: this.getSelector(),
+				elementsCount: this.get('status')
+			});
+			this.get('selectors').pushObject(componentSelector);
+			this.setInputValue('');
+		}
+	},
+	updateSelector(){
+		if(this.get('inputValue')){
+			let componentSelector = this.get('selectorToUpdate');
+			componentSelector.set('selector', this.getSelector());
+			componentSelector.set('elementsCount', this.get('status'));
+			this.set('selectorToUpdate', null);
+			this.setInputValue('');
+			this.expandSelectorsList();
+		}	
 	},
 	actions:{
 		copySelectorStart(isXpath){
@@ -333,8 +355,10 @@ export default Ember.Controller.extend({
 			this.setInputValue('');
 		},
 		onCopySelector(){
-			this.copyToClipboard(this.get('inputValue'));
-			this.selectInput();
+			if(this.get('inputValue')){
+				this.copyToClipboard(this.get('inputValue'));
+				this.selectInput();
+			}
 		},
 		onPartAttributeToggle(part){
 			// .rebuild selector
@@ -394,18 +418,30 @@ export default Ember.Controller.extend({
 			this.get('selectorHighlighter').removeHighlighting();
 		},
 		onAddToList(){
-			addToList();
+			this.addToList();
 		},
 		onEdtiComponentSelector(componentSelector){
-			this.setInputValue(componentSelector.get('selector.scss'));
+			this.set('selectorToUpdate', componentSelector);
+			this.collapseSelectorsList();
 		},
 		onSelectorConverterFocus(){
 			this.collapseSelectorsList();
 		},
 		onInputKeyPress(){
 			if(event.key=="Enter"){
-				this.addToList();
+				if(this.get('isEditMode')){
+					this.updateSelector();
+				}else{
+					this.addToList();
+				}
 			}
+		},
+		onCancelSelectorUpdate(){
+			this.set('selectorToUpdate', null);
+			this.setInputValue('');
+		},
+		onUpdateSelector(){
+			this.updateSelector();
 		}
 	}
 });
