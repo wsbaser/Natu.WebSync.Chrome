@@ -5,7 +5,6 @@ export default Component.extend({
 	classNameBindings:[
 		'isExpanded:expanded'
 	],
-	componentsAreHighlighted: false,
 	selectorHighlighter: Ember.inject.service(),
 	clipboard: Ember.inject.service(),
 	onComponentsListChange: Ember.observer('selectors.[]', function(){
@@ -20,6 +19,9 @@ export default Component.extend({
 		}
 		return count + " selectors";
 	}),
+	highlightComponentsCheched(){
+ 		return $(highlightComponents).prop("checked");
+	},
 	actions:{
 		expandSelectorsList(){
 			this.toggleProperty('isExpanded');
@@ -68,7 +70,7 @@ export default Component.extend({
 			});
 		},
 		onHighlightComponents(){
-			this.toggleProperty("componentsAreHighlighted");
+			this.set("componentsAreHighlighted", this.highlightComponentsCheched());
 			if(this.get("componentsAreHighlighted")){
 				this.get("selectorHighlighter").highlightComponents(this.get('selectors'));
 			}else{
