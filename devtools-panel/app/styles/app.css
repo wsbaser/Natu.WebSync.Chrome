@@ -164,6 +164,7 @@ input#source:focus{
     border-right: none;
     padding: 4px;
     font-size: 12px;
+    font-weight: bold;
     /*color: rgb(43,145,175);*/
     /*background-color: rgb(243,243,243);*/
     font-family: "Segoe UI", Tahoma, sans-serif;
@@ -490,10 +491,10 @@ input#source:focus{
 	font-family: monospace;
 }
 */
-#selectorsList .name{
+/*#selectorsList .name{
 	color: rgb(43,145,175);
 }
-
+*/
 #selectorsList .value{
 	color: rgb(163,21,21);
 	cursor: pointer;
