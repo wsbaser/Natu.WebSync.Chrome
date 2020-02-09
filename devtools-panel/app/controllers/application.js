@@ -82,7 +82,8 @@ export default Ember.Controller.extend({
 	}),
 	isEditMode: Ember.computed('selectorToUpdate', function(){
 		if(this.get('selectorToUpdate')){
-			this.setInputValue(this.get('selectorToUpdate.selector.scss'));
+			this.setInputValue(this.get('selectorToUpdate.selector.scss'));			
+			this.selectPartInInput(this.get('parts.lastObject'));
 			return true;
 		}
 		return false;
