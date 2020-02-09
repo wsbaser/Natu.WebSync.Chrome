@@ -14,6 +14,10 @@ export default Ember.Controller.extend({
 	inputValue: '',
 	parts: A([]),
 	selectors: A([]),
+	elements: A([]),
+	elementsSlice: Ember.computed('elements', function(){
+		return this.get('elements');	//.slice(0, 50);
+	}),
 	init(){
 		this._super(...arguments);
 		console.log("Init ConvertController...");

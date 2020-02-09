@@ -88,6 +88,7 @@ export default Service.extend({
 			for (var j = 0; j < iframeData.elements.length; j++) {
 				let element = iframeData.elements[j];
 				elements.push(SelectorPartElement.create({
+					index: j+1,
 					part: part,
 					foundByXpath: isXpath,
 					tagName: this.getElementAttribute(element.tagName, part, "tagName", true),

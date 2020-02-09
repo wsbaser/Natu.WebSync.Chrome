@@ -730,7 +730,7 @@ input#source:focus{
 
 .part-element.selected>.element-index:before{
 	content: '\26B9';
-	margin-right: 2px;
+	margin-right: 4px;
 }
 
 .part-element .expand-icon{
@@ -794,10 +794,10 @@ input#source:focus{
 }
 
 #elementsList.editable .part-element .value.selected{
-	font-weight: bold;
 	color: red;
 }
 
+#elementsList.editable .part-element.selected .value.selected,
 #elementsList.editable .part-element.selected .value:hover{
 	cursor: pointer;
 	font-weight: bold;
