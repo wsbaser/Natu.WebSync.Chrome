@@ -64,11 +64,12 @@ function serializeElements(elements){
 			tagName: e.tagName,
 			id: e.id,
 			name: e.name,
+			type: e.type,
 			classNames: Array.from(e.classList),
 			innerText: getFirstLevelText(e),
 			displayed: getIsDisplayed(e),
 			containsTags: e.innerHTML.indexOf('<') != -1,
-			hasChildren: !!e.children.length
+			hasChildren: !!e.children.length,
 		};
 	});
 }
