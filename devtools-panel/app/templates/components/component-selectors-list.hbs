@@ -30,7 +30,7 @@
 							{{selector.name}}</span>
 					</td>
 					<td>
-						<span class="value" {{action "onEdit" selector}} title="Click to Edit Selector">{{selector.value}}</span>
+						<span class="value {{if selector.wasUpdated "update-highlight"}}" {{action "onEdit" selector}} title="Click to Edit Selector">{{selector.value}}</span>
 						<span class="actions">
 							<!--<span class="action-button" {{action "onEdit" selector}}>Edit</span>-->
 							<span class="action-button" {{action "onRemove" selector}}>Remove</span>
@@ -52,9 +52,9 @@
 		<a {{action "onClear" bubbles=false}} style="float: right;margin-left: 10px;cursor: pointer;">Clear</a>
 		<a {{action "onCopy" bubbles=false}}style="float: right;margin-left: 10px;cursor: pointer;">Copy</a>
 	    
-	    <label style="float:right; margin-left:10px; margin-bottom:0; font-weight: normal; cursor:pointer;" {{action "onHighlightComponents" bubbles=false preventDefault=false}}>
+	    <label style="float:right; margin-left:10px; margin-bottom:0; font-weight: normal; cursor:pointer; display: flex; align-items: center;" {{action "onHighlightComponents" bubbles=false preventDefault=false}}>
 	    	{{!-- {{input type="checkbox" checked=componentsAreHighlighted}} --}}
-	    	<input type="checkbox" id="highlightComponents" style="margin:0; cursor:pointer;">
+	    	<input type="checkbox" id="highlightComponents" style="margin:0 2px 0 0; cursor:pointer;">
 	    	Highlight
 	    </label>
 	    

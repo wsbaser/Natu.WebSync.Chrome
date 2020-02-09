@@ -24,9 +24,9 @@ export default Component.extend({
 			this.toggleProperty('isExpanded');
 		},
 		onSelect(componentSelector){
-			// this.get('selectors').forEach(function(s){
-			// 	s.set('isSelected', s == componentSelector);
-			// });
+			this.get('selectors').forEach(function(s){
+				s.set('isSelected', s == componentSelector);
+			});
 		},
 		onMouseEnter(componentSelector){
 			this.get('selectorHighlighter').highlight(componentSelector.get('selector'));

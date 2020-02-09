@@ -320,11 +320,15 @@ export default Ember.Controller.extend({
 		if(this.get('inputValue')){
 			let componentSelector = this.get('selectorToUpdate');
 			componentSelector.set('selector', this.getSelector());
+			componentSelector.set('wasUpdated', true);
+			window.setTimeout(function(){
+				componentSelector.set('wasUpdated', false);
+			}, 2000);						
 			componentSelector.set('elementsCount', this.get('status'));
 			this.set('selectorToUpdate', null);
 			this.setInputValue('');
 			this.expandSelectorsList();
-		}	
+		}
 	},
 	cancelSelectorUpdate(){
 		this.set('selectorToUpdate', null);

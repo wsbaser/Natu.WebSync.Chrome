@@ -426,12 +426,9 @@ input#source:focus{
 	cursor: default;
 }
 
-#selectorsList table tr.selector:hover{
-	background-color: #e9f0fb;
-}
-
+#selectorsList table tr.selector:hover,
 #selectorsList table tr.selector.selected{
-	background: rgb(207, 232, 252);	
+	background-color: #e9f0fb;
 }
 
 #selectorsList table th{
@@ -491,23 +488,40 @@ input#source:focus{
 	font-family: monospace;
 }
 */
-/*#selectorsList .name{
-	color: rgb(43,145,175);
+#selectorsList .name{
+	/*color: rgb(43,145,175);*/
 }
-*/
+
 #selectorsList .value{
 	color: rgb(163,21,21);
 	cursor: pointer;
-	opacity: 0.7;
+	opacity: 0.8;
 }
 
 #selectorsList .value:hover{
 	opacity: 1;
 }
 
-#selectorsList .invalid .name,
 #selectorsList .invalid .value{
-	color: #999;
+	color: #777;
+}
+
+@keyframes selector-update-highlight-animation {
+    from {
+        background-color: rgb(158, 54, 153);
+        color: white;
+    }
+    80% {
+        background-color: rgb(245, 219, 244);
+        color: inherit;
+    }
+    to {
+        background-color: inherit;
+    }
+}
+
+#selectorsList .value.update-highlight{
+    animation: selector-update-highlight-animation 1.4s 1 cubic-bezier(0, 0, 0.2, 1);
 }
 
 #selectorsList .actions{
