@@ -68,7 +68,7 @@ export default Service.extend({
     validatePartsCssStyle(parts){
         let hasInvalidParts = false;
         for (var i = 0; i<parts.length;  i++) {
-            hasInvalidParts &= this.isValidCss(parts[i].fullCss);
+            hasInvalidParts ^= !this.isValidCss(parts[i].fullCss);
             if(hasInvalidParts){
                 parts[i].css='';
                 parts[i].fullCss='';
@@ -78,7 +78,7 @@ export default Service.extend({
     validatePartsXpathStyle(parts){
         let hasInvalidParts = false;
         for (var i = 0; i<parts.length;  i++) {
-            hasInvalidParts &= this.isValidXpath(parts[i].fullXpath);
+            hasInvalidParts ^= !this.isValidXpath(parts[i].fullXpath);
             if(hasInvalidParts){
                 parts[i].xpath='';
                 parts[i].fullXpath='';
@@ -262,7 +262,7 @@ export default Service.extend({
     },
     RemoveDescendantAxis(elementXpath)
     {
-        return this.cutLeadingString(elementXpath,"descendant::");
+        return this.cutLeadingString(elementXpath, "descendant::");
     },
     // private
     RemoveChildAxis(elementXpath)
@@ -484,6 +484,9 @@ export default Service.extend({
             conditions.length == 0 &&
             subelementXpaths.length == 0 &&
             attributes.every(a => this.IsCssMatchStyle(a.matchStyle));
+        if(!isTrueCss && this.isValidCss(partScss)){
+            isTrueCss=true;
+        }
 
         let normalizedCombinator = combinator.trim();
         let partXpath = this.aggregateToXpath(normalizedCombinator, tag, id, classNames, attributes, texts, conditions, subelementXpaths, func, functionArgument);
@@ -515,6 +518,9 @@ export default Service.extend({
                ((stringValue.startsWith("'") && stringValue.endsWith("'")) ||
                 (stringValue.startsWith("\"") && stringValue.endsWith("\"")));
     },
+    isSymbol(stringValue){
+        return new RegExp("^[A-Za-z0-9_-]+$").test(stringValue);
+    },
     // private
     IsNumber(condition) {
         return Number.isInteger(condition);
@@ -533,7 +539,7 @@ export default Service.extend({
         let attributeMatchStyle = ['=','~'];
         for(let i=0; i<attributeMatchStyle.length; i++) {
             let arr = condition.split(attributeMatchStyle[i]);
-            if ((arr.length == 2) && (this.IsText(arr[1])))
+            if ((arr.length == 2) && (this.IsText(arr[1]) || this.isSymbol(arr[1])))
                 return {name: arr[0], value: arr[1], matchStyle: attributeMatchStyle[i]};
         }
         return null;

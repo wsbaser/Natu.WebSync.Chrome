@@ -18,13 +18,13 @@ export default Ember.Service.extend({
 		}
 	},
 	inspectInspectedChild(childIndicesChain){
-		this._callEval('inspectInspectedChild("' + (childIndicesChain||[]).join(',') + '")');
+		this._callEval('inspectInspectedChild(`' + (childIndicesChain||[]).join(',') + '`)');
 	},
 	inspectCss(css, iframeIndex, elementIndex, childIndicesChain){
-		this._callEval('inspectCssSelector("' + css + '",' + iframeIndex + ',' + elementIndex + ',"' + (childIndicesChain||[]).join(',') + '")');
+		this._callEval('inspectCssSelector(`' + css + '`,' + iframeIndex + ',' + elementIndex + ',`' + (childIndicesChain||[]).join(',') + '`)');
 	},
 	inspectXpath(xpath, iframeIndex, elementIndex, childIndicesChain){
-		this._callEval('inspectXpathSelector("' + xpath + '",' + iframeIndex + ',' + elementIndex + ',"' + (childIndicesChain||[]).join(',') + '")');
+		this._callEval('inspectXpathSelector(`' + xpath + '`,' + iframeIndex + ',' + elementIndex + ',`' + (childIndicesChain||[]).join(',') + '`)');
 	},
 	_callEval(script){
 	   	chrome.devtools.inspectedWindow.eval(script, { useContentScriptContext: true });

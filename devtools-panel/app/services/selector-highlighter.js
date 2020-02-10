@@ -28,24 +28,24 @@ export default Ember.Service.extend({
 		if(selector.inspected){
 			this._callEval('loadChildrenForInspectedElement()', onLoaded);
 		}else if(selector.css){
-			this._callEval('loadChildren("' + selector.css + '", false' + ',' + selector.iframeIndex + ',' + selector.elementIndex +')', onLoaded);
+			this._callEval('loadChildren(`' + selector.css + '`, false' + ',' + selector.iframeIndex + ',' + selector.elementIndex +')', onLoaded);
 		}else if(selector.xpath){
-			this._callEval('loadChildren("' + selector.xpath + '", true' + ',' + selector.iframeIndex + ',' + selector.elementIndex +')', onLoaded);
+			this._callEval('loadChildren(`' + selector.xpath + '`, true' + ',' + selector.iframeIndex + ',' + selector.elementIndex +')', onLoaded);
 		}else{
 			throw Error('invalid selector');
 		}
 	},
 	highlightInspectedElement(childIndicesChain){
 		childIndicesChain = childIndicesChain||[];
-		this._callEval('highlightInspectedElement("'+childIndicesChain.join(',')+'")');
+		this._callEval('highlightInspectedElement(`'+childIndicesChain.join(',')+'`)');
 	},
 	highlightCss(css, iframeIndex, elementIndex, childIndicesChain){
 		childIndicesChain = childIndicesChain||[];
-		this._callEval('highlightSelector("' + css + '", false' + ',' + iframeIndex + ',' + elementIndex + ',"'+ childIndicesChain.join(',') +'")', this.onHighlighted);
+		this._callEval('highlightSelector(`' + css + '`, false' + ',' + iframeIndex + ',' + elementIndex + ',`'+ childIndicesChain.join(',') +'`)', this.onHighlighted);
 	},
 	highlightXpath(xpath, iframeIndex, elementIndex, childIndicesChain){
 		childIndicesChain = childIndicesChain||[];
-		this._callEval('highlightSelector("' + xpath + '", true' + ',' + iframeIndex + ',' + elementIndex + ',"'+ childIndicesChain.join(',')  +'")', this.onHighlighted);
+		this._callEval('highlightSelector(`' + xpath + '`, true' + ',' + iframeIndex + ',' + elementIndex + ',`'+ childIndicesChain.join(',')  +'`)', this.onHighlighted);
 	},
 	onHighlighted(result, exception){
 		if(exception){
