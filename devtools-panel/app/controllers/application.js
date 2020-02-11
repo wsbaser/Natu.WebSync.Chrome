@@ -331,6 +331,7 @@ export default Ember.Controller.extend({
 				componentSelector.set('wasUpdated', false);
 			}, 2000);						
 			componentSelector.set('elementsCount', this.get('status'));
+			componentSelector.set('stateText', this.get('pluralizer').pluralize(this.get('status'), "element"));
 			this.set('selectorToUpdate', null);
 			this.setInputValue('');
 			this.expandSelectorsList();
