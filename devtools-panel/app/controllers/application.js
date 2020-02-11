@@ -315,7 +315,8 @@ export default Ember.Controller.extend({
 				name: this.generateComponentName(),
 				selector: this.getSelector(),
 				elementsCount: this.get('status'),
-				stateText: this.get('pluralizer').pluralize(this.get('status'), "element")
+				stateText: this.get('pluralizer').pluralize(this.get('status'), "element"),
+				isSelected: !this.get('selectors.length')
 			});
 			this.get('selectors').pushObject(componentSelector);
 			this.setInputValue('');
@@ -446,13 +447,20 @@ export default Ember.Controller.extend({
 		onSelectorConverterFocus(){
 			this.collapseSelectorsList();
 		},
-		onInputKeyPress(){
-			if(event.key=="Enter"){
-				if(this.get('isEditMode')){
-					this.updateSelector();
-				}else{
-					this.addToList();
-				}
+		onInputKeyDown(){
+			switch(event.code){
+				case "Enter":
+					if(this.get('isEditMode')){
+						this.updateSelector();
+					}else{
+						this.addToList();
+					}
+				break;
+				case "Escape":
+					if(this.get('isEditMode')){
+						this.cancelSelectorUpdate();
+					}
+				break;
 			}
 		},
 		onCancelSelectorUpdate(){

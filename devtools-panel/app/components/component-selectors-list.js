@@ -19,6 +19,127 @@ export default Component.extend({
 	highlightComponentsCheched(){
  		return $(highlightComponents).prop("checked");
 	},
+	didInsertElement(){
+        this._super(...arguments);
+        $(document).on('keydown', this.keyDownHandler.bind(this));
+    },
+    willDestroyElement(){
+        this._super(...arguments);
+        $(document).off('keypress', 'document', this.keyDownHandler.bind(this));
+    },
+    keyDownHandler(e){
+    	if(this.get("isExpanded")){
+    		switch(event.code){
+    			case "ArrowUp":
+    				this.selectPrevious();
+    				break;
+    			case "ArrowDown":
+    				this.selectNext();
+    				break;
+    			case "Delete":
+    				this.removeSelected();
+    				break;
+    			case "KeyE":
+    				if(event.shiftKey){
+    					this.editSelected();
+    				}
+    				break;
+    			case "KeyR":
+    				if(event.shiftKey){
+    					this.beginRenameSelected();
+    				}
+    				break;
+    		}
+    		console.log(event.target);
+    		event.preventDefault();
+    	}
+    },
+    beginRenameSelected(){
+    	let selected = this.getSelected();
+    	if(selected){
+			this.beginRename(selected);
+    	}
+    },
+    editSelected(){
+    	let selected = this.getSelected();
+    	if(selected){
+			this.edit(selected);
+    	}
+    },
+    removeSelected(){
+    	let selectors = this.get('selectors');
+    	for(let i=0;i<selectors.length;i++){
+    		if(selectors.objectAt(i).get('isSelected')){
+				let toSelect = selectors.objectAt(i+1)?
+					selectors.objectAt(i+1):
+					selectors.objectAt(i-1);
+				this.remove(selectors.objectAt(i));
+				if(toSelect){
+					toSelect.set('isSelected', true);
+				}
+				break;
+    		}
+    	}
+    },
+    getSelected(){
+    	let selectors = this.get('selectors');
+    	for(let i=0;i<selectors.length;i++){
+    		if(selectors.objectAt(i).get('isSelected')){
+    			return selectors.objectAt(i);
+    		}
+    	}
+    },
+    selectPrevious(){
+    	let selectors =this.get('selectors');
+    	for(let i=1;i<selectors.length;i++){
+    		if(selectors.objectAt(i).get('isSelected')){
+				selectors.objectAt(i).set('isSelected', false);
+				selectors.objectAt(i-1).set('isSelected', true);
+				break;
+    		}
+    	}
+    },
+    selectNext(){
+    	let selectors =this.get('selectors'); 
+    	for(let i=0;i<selectors.length-1;i++){
+    		if(selectors.objectAt(i).get('isSelected')){
+				selectors.objectAt(i).set('isSelected', false);
+				selectors.objectAt(i+1).set('isSelected', true);
+				break;
+    		}
+    	}
+    },
+    beginRename(componentSelector){
+		componentSelector.toggleProperty("nameIsEdited");		
+		// var nameSpanEl = window.event.target.tagName=="TD"?
+		// 	window.event.target.children[0]:
+		// 	window.event.target;
+		Ember.run.scheduleOnce('afterRender', function(){
+			var nameSpanEl = document.querySelector('.name.editing');
+        	nameSpanEl.focus();
+        	var range = document.createRange();
+        	range.selectNodeContents(nameSpanEl);
+        	window.getSelection().removeAllRanges();
+        	window.getSelection().addRange(range);	        	
+		});
+    },
+    submitRename(componentSelector, newName){
+		componentSelector.set("nameIsEdited", false);
+		if(newName){
+			componentSelector.set("name", newName);
+		}else{
+			window.event.target.innerText = componentSelector.get("name");
+		}	
+    },
+    edit(componentSelector){
+		if(this.get("onEdit")){
+			this.get("onEdit")(componentSelector);
+		}
+    },
+    remove(componentSelector){
+    	this.selectors.removeObject(componentSelector);
+		this.get('selectorHighlighter').removeHighlighting();
+    },
 	actions:{
 		expandSelectorsList(){
 			this.toggleProperty('isExpanded');
@@ -35,13 +156,10 @@ export default Component.extend({
 			this.get('selectorHighlighter').removeHighlighting();
 		},
 		onEdit(componentSelector){
-			if(this.get("onEdit")){
-				this.get("onEdit")(componentSelector);
-			}
+			this.edit(componentSelector);
 		},
 		onRemove(componentSelector){
-			this.selectors.removeObject(componentSelector);
-			this.get('selectorHighlighter').removeHighlighting();
+			this.remove(componentSelector);
 		},
 		onClear(){
 			this.selectors.clear();
@@ -53,18 +171,8 @@ export default Component.extend({
 			});
 			this.get('clipboard').copy(text);
 		},
-		onEditName(componentSelector){
-			componentSelector.toggleProperty("nameIsEdited");
-			var nameSpanEl = window.event.target.tagName=="TD"?
-				window.event.target.children[0]:
-				window.event.target;
-			Ember.run.scheduleOnce('afterRender', function(){
-	        	nameSpanEl.focus();
-	        	var range = document.createRange();
-	        	range.selectNodeContents(nameSpanEl);
-	        	window.getSelection().removeAllRanges();
-	        	window.getSelection().addRange(range);	        	
-			});
+		onRename(componentSelector){
+			this.beginRename(componentSelector);
 		},
 		onHighlightComponents(){
 			this.set("componentsAreHighlighted", this.highlightComponentsCheched());
@@ -76,27 +184,19 @@ export default Component.extend({
 		},
 		onNameKeydown(componentSelector){
 			let newName = window.event.target.innerText.trim();
-			if(window.event.key=="Enter"){
-				componentSelector.set("nameIsEdited", false);
-				
-				if(newName){
-					componentSelector.set("name", newName);
-				}else{
-					window.event.target.innerText = componentSelector.get("name");
-				}
+			if(event.code=="Enter"){
+				this.submitRename(componentSelector, newName);
 				window.event.preventDefault();
-			}else if(newName.length==100){
+			}else if(event.code=="Escape"){
+				this.submitRename(componentSelector);
+			}
+			else if(newName.length==100){
 				window.event.preventDefault();
 			}
 		},
 		onNameBlur(componentSelector){
-			componentSelector.set("nameIsEdited", false);
-			let newName = window.event.target.innerText.trim();	
-			if(newName){
-				componentSelector.set("name", newName);
-			}else{
-				window.event.target.innerText = componentSelector.get("name");
-			}
+			let newName = window.event.target.innerText.trim();
+			this.submitRename(componentSelector, newName);
 		}
 	}
 });

@@ -22,10 +22,10 @@
 					<td class="state-wrap">
 						<i class="state {{selector-status selector.elementsCount}}" title="{{selector.stateText}}"></i>
 					</td>
-					<td {{action "onEditName" selector on="doubleClick"}} title="Double Click to Edit Name">
+					<td {{action "onRename" selector on="doubleClick"}} title="Double Click to Edit Name">
 						<span class="name {{if selector.nameIsEdited "editing"}}" 
 								contenteditable="{{selector.nameIsEdited}}" 
-								{{action "onNameKeydown" selector on="keyDown" preventDefault=false}}
+								{{action "onNameKeydown" selector on="keyDown" bubbles=false preventDefault=false allowedKeys="shift"}}
 								{{action "onNameBlur" selector on="focusOut" preventDefault=false}}>
 							{{selector.name}}</span>
 					</td>

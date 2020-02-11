@@ -20,7 +20,7 @@
 			{{/if}}
 			<div class="input-wrap">
 				<div id="partHighlighter"></div>
-				{{input id="source" value=inputValue type="text" placeholder="Type selector here..." key-press="onInputKeyPress" }}
+				{{input id="source" value=inputValue type="text" placeholder="Type selector here..." key-down="onInputKeyDown" }}
 			</div>
 			<i class="copy-icon"
 				onclick={{action "onCopySelector"}}

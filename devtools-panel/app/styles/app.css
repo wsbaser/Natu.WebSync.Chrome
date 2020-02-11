@@ -494,6 +494,7 @@ input#source:focus{
 */
 #selectorsList .name{
 	/*color: rgb(43,145,175);*/
+	user-select: none;
 	font-weight: 500;
 }
 
