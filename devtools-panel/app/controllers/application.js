@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { A } from '@ember/array';
 import { once } from '@ember/runloop';
 import ComponentSelector from '../models/component-selector';
+import Notification from '../models/notification';
 
 export default Ember.Controller.extend({
 	selectorPartFactory: Ember.inject.service(),
@@ -320,6 +321,7 @@ export default Ember.Controller.extend({
 			});
 			this.get('selectors').pushObject(componentSelector);
 			this.setInputValue('');
+			this.showNotification("Selector was added to the list.");
 		}
 	},
 	updateSelector(){
@@ -352,6 +354,18 @@ export default Ember.Controller.extend({
 			modifiedScss = modifiedScss.trimStart();
 		}
 		this.setInputValue(modifiedScss);
+	},
+	showNotification(message){
+		if(this.get("notification")){
+			// .what should we do in this case?
+		}else{
+			this.set('notification', Notification.create({
+				message: message
+			}));
+			setTimeout(function(){
+				this.set('notification', null);
+			}.bind(this), 2100);
+		}
 	},
 	actions:{
 		copySelectorStart(isXpath){
