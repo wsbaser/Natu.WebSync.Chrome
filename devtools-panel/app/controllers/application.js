@@ -364,7 +364,7 @@ export default Ember.Controller.extend({
 			}));
 			setTimeout(function(){
 				this.set('notification', null);
-			}.bind(this), 2100);
+			}.bind(this), 2000);
 		}
 	},
 	actions:{

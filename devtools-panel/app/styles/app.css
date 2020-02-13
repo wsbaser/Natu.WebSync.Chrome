@@ -818,11 +818,12 @@ input#source:focus{
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6) !important;
 /*    opacity: 0.8 !important;*/
     cursor: default !important;
-    animation: blur-notification 1500ms 500ms;
+    animation: blur-notification 2000ms forwards;
 }
 
 @keyframes blur-notification {
   0%   { opacity: 1; }	/* we do not need this when element is displayed for the first time but I do not know how to get rid of it*/
+  50%   { opacity: 1; }
   100% { opacity: 0; }
 }
 
