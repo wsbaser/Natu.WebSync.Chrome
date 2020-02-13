@@ -834,7 +834,7 @@ input#source:focus{
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
 /*    opacity: 0.8 !important;*/
     cursor: default !important;
-    animation: blur-notification 2000ms forwards;
+    animation: blur-notification 2500ms forwards;
 }
 
 @keyframes blur-notification {
