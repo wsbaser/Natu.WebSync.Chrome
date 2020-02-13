@@ -1,50 +1,58 @@
 <div class="expandable"></div>
 <div class="accordion-body">
-	<table>
-		<colgroup>
-			<col style="width: 10px;">
-			<col style="width: 100px;">
-			<col style="width: 300px;">
-		</colgroup>
-		<thead>
-			<tr>
-				<th></th>
-				<th>Name</th>
-				<th>Selector</th>
-			</tr>
-		</thead>
-		<tbody>
-			{{#each selectors as |selector|}}
-				<tr class="selector {{if selector.isSelected "selected"}} {{unless selector.elementsCount "invalid"}}" 
-						onclick={{action "onSelect" selector}} 
-						{{action "onMouseEnter" selector on="mouseEnter"}} 
-						{{action "onMouseLeave" on="mouseLeave"}}>
-					<td class="state-wrap">
-						<i class="state {{selector-status selector.elementsCount}}" title="{{selector.stateText}}"></i>
-					</td>
-					<td {{action "onRename" selector on="doubleClick"}} title="Double Click to Edit Name">
-						<span class="name {{if selector.nameIsEdited "editing"}}" 
-								contenteditable="{{selector.nameIsEdited}}" 
-								{{action "onNameKeydown" selector on="keyDown" bubbles=false preventDefault=false allowedKeys="shift"}}
-								{{action "onNameBlur" selector on="focusOut" preventDefault=false}}>
-							{{selector.name}}</span>
-					</td>
-					<td>
-						<span class="value {{if selector.wasUpdated "update-highlight"}}" {{action "onEdit" selector}} title="Click to Edit Selector">{{selector.value}}</span>
-						<span class="actions">
-							<!--<span class="action-button" {{action "onEdit" selector}}>Edit</span>-->
-							<span class="action-button" {{action "onRemove" selector}}>Remove</span>
-						</span>
-					</td>
+	{{#if selectors.length}}
+		<table>
+			<colgroup>
+				<col style="width: 10px;">
+				<col style="width: 100px;">
+				<col style="width: 300px;">
+			</colgroup>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Selector</th>
 				</tr>
-			{{/each}}
-			<tr style="height: auto">
-				<td class="bottom-filler-td"></td>
-				<td class="bottom-filler-td"></td>
-				<td class="bottom-filler-td"></td>
-			</tr>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				{{#each selectors as |selector|}}
+					<tr class="selector {{if selector.isSelected "selected"}} {{unless selector.elementsCount "invalid"}}" 
+							onclick={{action "onSelect" selector}} 
+							{{action "onMouseEnter" selector on="mouseEnter"}}
+							{{action "onMouseLeave" on="mouseLeave"}}>
+						<td class="state-wrap">
+							<i class="state {{selector-status selector.elementsCount}}" title="{{selector.stateText}}"></i>
+						</td>
+						<td {{action "onRename" selector on="doubleClick"}} title="Double Click to Edit Name">
+							<span class="name {{if selector.nameIsEdited "editing"}}" 
+									contenteditable="{{selector.nameIsEdited}}" 
+									{{action "onNameKeydown" selector on="keyDown" bubbles=false preventDefault=false allowedKeys="shift"}}
+									{{action "onNameBlur" selector on="focusOut" preventDefault=false}}>
+								{{selector.name}}</span>
+						</td>
+						<td>
+							<span class="value {{if selector.wasUpdated "update-highlight"}}" {{action "onEdit" selector}} title="Click to Edit Selector">{{selector.value}}</span>
+							<span class="actions">
+								<!--<span class="action-button" {{action "onEdit" selector}}>Edit</span>-->
+								<span class="action-button" {{action "onRemove" selector}}>Remove</span>
+							</span>
+						</td>
+					</tr>
+				{{/each}}
+				<tr style="height: auto">
+					<td class="bottom-filler-td"></td>
+					<td class="bottom-filler-td"></td>
+					<td class="bottom-filler-td"></td>
+				</tr>
+			</tbody>
+		</table>
+	{{else}}
+		<div class="flex-center empty-list-wrap">
+			<div>
+				Selectors list is empty. Generate selector and click <i class="addtolist-icon"/> button.
+			</div>
+		</div>
+	{{/if}}
 </div>
 <div class="accordion-header {{if componentsAreHighlighted "highlighted"}}" {{action "expandSelectorsList"}}>
 	<span class="expand-icon"></span>
