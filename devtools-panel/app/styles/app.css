@@ -564,14 +564,14 @@ input#source:focus{
     opacity: 0.8;
 }
 
+#selectorsList .selected .action-button{
+	display: inline-block !important;
+	line-height: 13px;
+}
+
 #selectorsList .action-button:hover{
     background-color: #e0e0e0;
     opacity: 1;
-}
-
-.selector:hover .action-button{
-	display: inline-block !important;
-	line-height: 13px;
 }
 
 .editing{
