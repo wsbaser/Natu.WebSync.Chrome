@@ -424,7 +424,7 @@ input#source:focus{
 }
 
 #selectorsList.expanded{
-	animation: expand-selectors-list 200ms steps(1) forwards;
+	animation: expand-selectors-list 300ms steps(1) forwards;
 }
 
 #selectorsList.expanded .expandable{
@@ -823,7 +823,7 @@ input#source:focus{
 .notification{
 	position: absolute;
 	right: 4px;
-    bottom: 26px;
+	bottom: 26px;
 	width: 200px;
 	z-index: 30;
     font-size: 11px !important;
@@ -838,8 +838,15 @@ input#source:focus{
 }
 
 @keyframes blur-notification {
-  0%   { opacity: 1; }	/* we do not need this when element is displayed for the first time but I do not know how to get rid of it*/
-  50%   { opacity: 1; }
+  0% { 
+  	opacity: 0; 
+  }	/* we do not need this when element is displayed for the first time but I do not know how to get rid of it*/
+  10% {
+  	opacity: 1; 
+  }
+  50%   { 
+  	opacity: 1; 
+  }
   100% { opacity: 0; }
 }
 
