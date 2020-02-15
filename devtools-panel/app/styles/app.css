@@ -47,11 +47,16 @@ html{
 #selectorsConverter{
 	padding: 5px;
 	/*background: ghostwhite;*/
-	background: rgba(0,0,0,0.02);
+	background-color: rgba(0,0,0,0.02);
 	border-bottom: 1px solid rgb(205, 205, 205);
 	position: fixed;
 	width: 100%;
 	z-index: 10;
+	transition: background-color 200ms;
+}
+
+#selectorsConverter.edit-mode{
+	background-color: rgba(207, 232, 252,0.3);
 }
 
 .loading{
