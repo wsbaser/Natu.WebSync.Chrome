@@ -534,13 +534,16 @@ export default Service.extend({
                 return false;
         }
     },
+    stripWrappingQuotes(text){
+        return text.replace(/^('|")|('|")$/g, "");
+    },
     // private
     ParseAttribute(condition) {
         let attributeMatchStyle = ['=','~'];
         for(let i=0; i<attributeMatchStyle.length; i++) {
             let arr = condition.split(attributeMatchStyle[i]);
             if ((arr.length == 2) && (this.IsText(arr[1]) || this.isSymbol(arr[1])))
-                return {name: arr[0], value: arr[1], matchStyle: attributeMatchStyle[i]};
+                return {name: arr[0], value: this.stripWrappingQuotes(arr[1]), matchStyle: attributeMatchStyle[i]};
         }
         return null;
     },
