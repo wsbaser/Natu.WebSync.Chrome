@@ -649,10 +649,10 @@ export default Service.extend({
         tag = !tag ? "*" : tag;
         let xpath = this.XpathAxis(axis) + tag;
         if (id) {
-            xpath += this.XpathAttributeCondition("id", "'"+id+"'");
+            xpath += this.XpathAttributeCondition("id", id);
         }
         for (let i=0; i<classNames.length; i++) {
-            xpath += this.XpathAttributeCondition("class", "'"+classNames[i]+"'", "~");
+            xpath += this.XpathAttributeCondition("class", classNames[i], "~");
         }
         for (let i=0; i<attributes.length; i++) {
             xpath += this.XpathAttributeCondition(attributes[i].name, attributes[i].value, attributes[i].matchStyle);
@@ -709,6 +709,7 @@ export default Service.extend({
     // private
     XpathAttributeCondition(name, value, style = '=')
     {
+        value = "'" + value + "'";
         switch (style)
         {
             case '=':
