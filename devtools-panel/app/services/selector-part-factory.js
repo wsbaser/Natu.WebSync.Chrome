@@ -11,6 +11,7 @@ export default Service.extend({
 					id: '',
 					tagName: '',
 					classNames: A([]),
+					attributes: Ember.Object.create({}),
 					texts: A([]),
 					scss: '',
 					xpath: '',

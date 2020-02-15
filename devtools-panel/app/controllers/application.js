@@ -400,13 +400,7 @@ export default Ember.Controller.extend({
 			let parts = this.get('parts');
 			let scssBuilder = this.get('scssBuilder');
 			
-			let partScss = scssBuilder.buildScssPart({
-						combinator: part.combinator,
-						id: part.id,
-						tagName: part.tagName,
-						classNames: part.classNames,
-						texts: part.texts
-					});
+			let partScss = scssBuilder.buildScssPart(part);
 
 			let scssParts = parts.map(p=>p==part?partScss:p.get('scss'));
 

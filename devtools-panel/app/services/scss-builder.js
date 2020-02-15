@@ -9,6 +9,11 @@ export default Service.extend({
 		if(part.id){
 			scss+='#'+part.id;
 		}
+		for (let [name, value] of Object.entries(part.attributes)) {
+			if(value){
+				scss+="["+name+"='"+value+"']";
+			}
+		}
 		part.classNames.forEach(className=>{
 			scss+='.'+className;
 		});
