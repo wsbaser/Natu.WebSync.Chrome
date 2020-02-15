@@ -22,20 +22,33 @@ export default Service.extend({
 				});
 	},
 	generateParts(scssParts){
-		return A(scssParts.map(scssPart=>{			
+		return A(scssParts.map(scssPart=>{
+				var supportedAttributes = ["name", "type"];
+				let hasUnsupportedAttributes = 
+					scssPart.attributes && 
+					scssPart.attributes.some(a=>supportedAttributes.indexOf(a.name)==-1);
+
 				var notEditable = 
 					scssPart.isXpath ||
-					scssPart.attributes && scssPart.attributes.length ||
+					hasUnsupportedAttributes ||
 					scssPart.conditions && scssPart.conditions.length ||
 					scssPart.subelementXpaths && scssPart.subelementXpaths.length ||
 					scssPart.func ||
 					scssPart.functionArgument && scssPart.functionArgument.length;
+
+				var attributes = Ember.Object.create({});
+				scssPart.attributes.forEach((a)=>{
+					if(supportedAttributes.indexOf(a.name)!=-1){
+						attributes.set(a.name, a.value);
+					}
+				});
 
 				return SelectorPart.create({
 						combinator: scssPart.combinator,
 						id: scssPart.id,
 						tagName: scssPart.tagName,
 						classNames: A(scssPart.classNames),
+						attributes: attributes,
 						texts: A(scssPart.texts),
 						scss: scssPart.scss,
 						xpath: scssPart.xpath,
@@ -68,7 +81,7 @@ export default Service.extend({
 				part: blankPart,
 				tagName: this.getElementAttribute(element.tagName, blankPart, "tagName", true),
 				id: this.getElementAttribute(element.id, blankPart, "id"),
-				attributes: [],
+				attributes: this.getSupportedElementAttributes(element, blankPart),
 				classNames: this.getElementAttributes(element.classNames, blankPart, "classNames"),
 				innerText: this.getElementAttribute(element.innerText, blankPart, "texts"),
 				displayed: element.displayed,
@@ -86,14 +99,14 @@ export default Service.extend({
 		for (var i = 0; i < iframesDataList.length; i++) {
 			let iframeData = iframesDataList[i];
 			for (var j = 0; j < iframeData.elements.length; j++) {
-				let element = iframeData.elements[j];
+				let element = iframeData.elements[j];			
 				elements.push(SelectorPartElement.create({
 					index: j+1,
 					part: part,
 					foundByXpath: isXpath,
 					tagName: this.getElementAttribute(element.tagName, part, "tagName", true),
 					id: this.getElementAttribute(element.id, part, "id"),
-					attributes: [],
+					attributes: this.getSupportedElementAttributes(element, part),
 					classNames: this.getElementAttributes(element.classNames, part, "classNames"),
 					innerText: this.getElementAttribute(element.innerText, part, "texts"),
 					displayed: element.displayed,
@@ -107,13 +120,24 @@ export default Service.extend({
 		}
 		return elements;
 	},
+	getSupportedElementAttributes(element, part){
+		let attributes = [];
+		if(element.name){
+			attributes.push(this.getElementAttribute(element.name, part, "attributes.name", false, "name"));
+		}
+		if(element.type){
+			attributes.push(this.getElementAttribute(element.type, part, "attributes.type", false, "type"));
+		}
+		return attributes;
+	},
 	getElementAttributes(elementClasses, part, propertyName){
 		return elementClasses.map(elementClass=>this.getElementAttribute(elementClass, part, propertyName));
 	},
-	getElementAttribute(value, part, partPropertyName, ignoreCase){
+	getElementAttribute(value, part, partPropertyName, ignoreCase, name){
 		if(value){
 			if(!part.get('isEditable')){
 				return ElementAttribute.create({
+					name: name,
 					value: value,
 					part: part,
 					partPropertyName: partPropertyName,
@@ -133,6 +157,7 @@ export default Service.extend({
 			}
 			let isSelected = valuesToSelect.indexOf(value)!=-1;
 			return ElementAttribute.create({
+				name: name,
 				value: value,
 				part: part,
 				partPropertyName: partPropertyName,

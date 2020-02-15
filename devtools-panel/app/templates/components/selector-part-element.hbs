@@ -29,7 +29,7 @@
 			"</span>
 		{{~/if~}}
 		{{~#each partElement.attributes as |attr|~}}
-			<span class="attribute"><span class="name"> {{attribute.name}}</span>="
+			<span class="attribute"><span class="name"> {{attr.name}}</span>="
 				{{~element-attribute attribute=attr unlocked=partElement.isUnlocked onToggle=(action "onAttributeToggle") ~}}
 			"</span>
 		{{~/each~}}
