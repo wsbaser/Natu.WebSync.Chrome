@@ -23,7 +23,7 @@
     "assets/throbber.gif"
   ],
   "devtools_page": "./devtools.html",
-  "permissions": [ "tabs", "<all_urls>" ],
+  "permissions": [ ],
   "externally_connectable": {
     "ids": [ "*" ],
     "matches": [ "http://10.51.27.92/*"]

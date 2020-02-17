@@ -75,7 +75,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 chrome.runtime.onInstalled.addListener(function(details){
     if(details.reason == "install"){
         console.log("This is a first install!");
-        chrome.tabs.create({url:"update.html"});
+        //chrome.tabs.create({url:"update.html"});
     }else if(details.reason == "update"){
         let thisVersion = chrome.runtime.getManifest().version;
         let thisMajorVersion = thisVersion.split('.')[0];
