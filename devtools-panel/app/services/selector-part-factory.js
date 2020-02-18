@@ -38,12 +38,14 @@ export default Service.extend({
 					scssPart.functionArgument && scssPart.functionArgument.length;
 
 				var attributes = Ember.Object.create({});
-				scssPart.attributes.forEach((a)=>{
-					if(supportedAttributes.indexOf(a.name)!=-1){
-						attributes.set(a.name, a.value);
-					}
-				});
-
+				if(scssPart.attributes){
+					scssPart.attributes.forEach((a)=>{
+						if(supportedAttributes.indexOf(a.name)!=-1){
+							attributes.set(a.name, a.value);
+						}
+					});
+				}
+				
 				return SelectorPart.create({
 						combinator: scssPart.combinator,
 						id: scssPart.id,
