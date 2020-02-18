@@ -30,7 +30,7 @@ export default Service.extend({
 					scssPart.attributes.some(a=>supportedAttributes.indexOf(a.name)==-1);
 
 				var notEditable = 
-					scssPart.isXpath ||
+					scssPart.isXpath || !scssPart.xpath || // add selectorType field instead of isXpath
 					hasUnsupportedAttributes ||
 					scssPart.conditions && scssPart.conditions.length ||
 					scssPart.subelementXpaths && scssPart.subelementXpaths.length ||
@@ -45,7 +45,7 @@ export default Service.extend({
 						}
 					});
 				}
-				
+
 				return SelectorPart.create({
 						combinator: scssPart.combinator,
 						id: scssPart.id,
