@@ -52,15 +52,24 @@ export default Service.extend({
         for (var i = 0; i < cssParts.length; i++) {
             let css = cssParts[i];
             fullCss+=css;
-            parts.push({
-                isXpath: false,
-                index: i,
-                scss: css,
-                css: css,
-                fullCss: fullCss,
-                isCssStyle: true,
-                startIndex: startIndex
-            });
+
+            try{
+                let part = this.parseScssPart(css);
+                part.fullCss = fullCss;
+                parts.push(part);
+            }
+            catch(e){
+                // .not a valid scss
+                parts.push({
+                    isXpath: false,
+                    index: i,
+                    scss: css,
+                    css: css,
+                    fullCss: fullCss,
+                    isCssStyle: true,
+                    startIndex: startIndex
+                });
+            }
             startIndex += css.length;
         }
         return parts;

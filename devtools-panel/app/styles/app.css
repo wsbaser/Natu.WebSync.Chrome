@@ -670,7 +670,7 @@ input#source:focus{
 }
 
 #elementsList{
-	background: #f3f3f3;
+	background: rgba(0,0,0,0.02);
 	z-index: 10;
 }
 
@@ -750,11 +750,6 @@ input#source:focus{
     color: rgb(48, 57, 66);
 }
 
-.part-element.selected>.element-index:before{
-	content: '\26B9';
-	margin-right: 4px;
-}
-
 .part-element .expand-icon{
 	display: none;
     user-select: none;
@@ -823,6 +818,11 @@ input#source:focus{
 #elementsList.editable .part-element.selected .value:hover{
 	cursor: pointer;
 	font-weight: bold;
+}
+
+#elementsList.editable .part-element.selected>.element-index:before{
+	content: '\26B9';
+	margin-right: 4px;
 }
 
 .notification{

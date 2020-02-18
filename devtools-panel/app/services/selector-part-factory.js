@@ -30,7 +30,7 @@ export default Service.extend({
 					scssPart.attributes.some(a=>supportedAttributes.indexOf(a.name)==-1);
 
 				var notEditable = 
-					scssPart.isXpath || !scssPart.xpath || // add selectorType field instead of isXpath
+					scssPart.isXpath || !scssPart.xpath || // scssPart.xpath==undefinded means this is a pure css selector part wich could not be converted to xpath
 					hasUnsupportedAttributes ||
 					scssPart.conditions && scssPart.conditions.length ||
 					scssPart.subelementXpaths && scssPart.subelementXpaths.length ||
