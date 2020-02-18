@@ -823,6 +823,7 @@ input#source:focus{
 #elementsList.editable .part-element.selected>.element-index:before{
 	content: '\26B9';
 	margin-right: 4px;
+	font-size: 13px;
 }
 
 .notification{
