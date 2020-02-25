@@ -11,10 +11,10 @@ export default Ember.Service.extend({
 			xpath: selector.xpath ? this.validateXpath(selector.xpath) : { isValid:false }
 		});
 	},
-	validateCss(css,onValidated){
+	validateCss(css, onValidated){
 		return this._callEval('evaluateCss(`' + css + '`)', onValidated);
 	},
-	validateXpath(xpath,onValidated){
+	validateXpath(xpath, onValidated){
 		return this._callEval('evaluateXpath(`' + xpath + '`)', onValidated);
 	},
 	_callEval(script, onValidated){

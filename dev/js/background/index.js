@@ -1,5 +1,12 @@
 var connections = {};
 
+function injectContentScript(tabId, callback){
+  chrome.tabs.executeScript(tabId, {
+    file: 'assets/content.js',
+    runAt: 'document_start'
+  }, callback);
+}
+
 chrome.runtime.onConnect.addListener(function (port) {
 	console.log('Devtools Page connected.');
     var extensionListener = function (message, sender, sendResponse) {
@@ -9,6 +16,7 @@ chrome.runtime.onConnect.addListener(function (port) {
         // DevTools page, so we need to send it explicitly.
         if (message.name == "init") {
           connections[message.tabId] = port;
+          injectContentScript(message.tabId);
           return;
         }
 
@@ -36,9 +44,9 @@ chrome.runtime.onConnect.addListener(function (port) {
 // Receive message from content script and relay to the devTools page for the
 // current tab
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	console.log('Received message from Content Page.');
     // Messages from content scripts should have sender.tab set
     if (sender.tab) {
+      console.log('Received message from Content Page.');
       var tabId = sender.tab.id;
       if (tabId in connections) {
         connections[tabId].postMessage(request);
@@ -47,7 +55,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         console.log("Tab not found in connection list.");
       }
     } else {
-      console.log("sender.tab not defined.");
+      console.log('Received message from Devtools Page.');
+      switch(request.type){
+        case "injectContentScript":
+          injectContentScript(request.tabId, sendResponse);
+          break;
+      }
     }
     return true;
 });

@@ -9,7 +9,7 @@ export default Ember.Route.extend({
 	// 	this.render('content', { outlet: 'content' });
 	// },
 	model(){
-		this.get('backgroundConnection').connect();
+		// this.get('backgroundConnection').connect();
 		// var vsclient = this.get('vsclient');
 		// return vsclient.connect()
 		// 	.then(()=>vsclient.requestSessionWeb())
