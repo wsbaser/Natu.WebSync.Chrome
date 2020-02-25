@@ -7,12 +7,12 @@
 // function send(name, data) {
 // 	port.postMessage({
 // 		name: name,
-// 		data: data
+// 		data: data,
+// 		tabId: chrome.devtools.inspectedWindow.tabId
 // 	});
 // }
 
-// port.onMessage.addListener(function (message) {
-// 	log('Received message', message);
+// port.onMessage.addListener(function (message) {	
 // 	switch (message.name) {
 // 		case 'diff':
 // 			resources.get(message.data.uri, function (res) {
@@ -37,6 +37,9 @@
 // 		case 'reset':
 // 			resources.reset();
 // 			break;
+// 		default:
+// 			console.log('Devtools received invalid message', message);
+// 			break;
 // 	}
 // });
 
@@ -56,6 +59,7 @@
 //     tabId: chrome.devtools.inspectedWindow.tabId,
 //     scriptToInject: "assets/content.js"
 // });
+
 
 chrome.devtools.panels.create('WebSync', 'icons/icon64.png', 'devtools-panel.html');
 chrome.devtools.panels.elements.createSidebarPane("WebSync",

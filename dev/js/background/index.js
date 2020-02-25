@@ -1,30 +1,10 @@
-// console.log('Background script executed');
-// // Background page -- background.js
-// chrome.runtime.onConnect.addListener(function(devToolsConnection) {
-//     console.log('DevTools page connected');
-//     // assign the listener function to a variable so we can remove it later
-//     var devToolsListener = function(message, sender, sendResponse) {
-//         // Inject a content script into the identified tab
-//         console.log("Received message from DevTools page.");
-//         console.log(message);
-//         chrome.tabs.executeScript(message.tabId,
-//             { file: message.scriptToInject });
-//     }
-//     // add the listener
-//     devToolsConnection.onMessage.addListener(devToolsListener);
-
-//     devToolsConnection.onDisconnect.addListener(function() {
-//          devToolsConnection.onMessage.removeListener(devToolsListener);
-//     });
-// });
-
-
 var connections = {};
 
 chrome.runtime.onConnect.addListener(function (port) {
 	console.log('Devtools Page connected.');
     var extensionListener = function (message, sender, sendResponse) {
-		console.log('Received message from Devtools Page for tab ' + message.tabId + '.');
+		    console.log('Received message from Devtools Page for tab ' + message.tabId + '.');
+        
         // The original connection event doesn't include the tab ID of the
         // DevTools page, so we need to send it explicitly.
         if (message.name == "init") {
@@ -32,7 +12,8 @@ chrome.runtime.onConnect.addListener(function (port) {
           return;
         }
 
-	// other message handling
+        // Relay message to content script
+        chrome.tabs.sendMessage(message.tabId, message, null, sendResponse);
     }
 
     // Listen to messages sent from the DevTools page

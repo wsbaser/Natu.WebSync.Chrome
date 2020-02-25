@@ -1,5 +1,53 @@
 console.log('WebSync content script injected');
 
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
+    console.log("Message received from background page", message);
+    let result;
+    switch(message.name){
+    	case "removeComponentsHighlighting":
+    		removeComponentsHighlighting();
+    		break;
+    	case "removeHighlighting":
+    		removeHighlighting();
+    		break;
+    	case "highlightComponents":
+    		highlightComponents(message);
+    		break;
+    	case "highlightSelector":
+    		highlightSelector(message);
+    		break;
+    	case "highlightInspectedElement":
+    		highlightInspectedElement(message);
+    		break;
+    	case "inspectCssSelector":
+    		inspectCssSelector(message);
+    		break;
+    	case "inspectXpathSelector":
+    		inspectXpathSelector(message);
+    		break;
+    	case "inspectInspectedChild":
+    		inspectInspectedChild(message);
+    		break;
+    	case "evaluateCss":
+    		result = evaluateCss(message);
+    		break;
+    	case "evaluateXpath":
+    		result = evaluateXpath(message);
+    		break;
+    	case "loadChildrenForInspectedElement":
+    		result = loadChildrenForInspectedElement(message);
+    		break;
+    	case "loadChildren":
+    		result = loadChildren(message);
+    		break;
+    	default:
+    		console.error("Unknown message type");
+    }
+    if(result){
+		sendResponse(result);
+    }
+});
+
 // document.addEventListener("DOMContentLoaded", function(){
 // 	chrome.runtime.sendMessage({
 // 		type: "urlchanged",
