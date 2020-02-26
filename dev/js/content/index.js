@@ -11,39 +11,39 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
     		removeHighlighting();
     		break;
     	case "highlightComponents":
-    		highlightComponents(message);
+    		highlightComponents(message.data);
     		break;
     	case "highlightSelector":
-    		highlightSelector(message);
+    		highlightSelector(message.data);
     		break;
     	case "highlightInspectedElement":
-    		highlightInspectedElement(message);
+    		highlightInspectedElement(message.data);
     		break;
     	case "inspectCssSelector":
-    		inspectCssSelector(message);
+    		inspectCssSelector(message.data);
     		break;
     	case "inspectXpathSelector":
-    		inspectXpathSelector(message);
+    		inspectXpathSelector(message.data);
     		break;
     	case "inspectInspectedChild":
-    		inspectInspectedChild(message);
+    		inspectInspectedChild(message.data);
     		break;
     	case "evaluateCss":
-    		result = evaluateCss(message);
+    		result = evaluateCss(message.data);
     		break;
     	case "evaluateXpath":
-    		result = evaluateXpath(message);
+    		result = evaluateXpath(message.data);
     		break;
     	case "loadChildrenForInspectedElement":
-    		result = loadChildrenForInspectedElement(message);
+    		result = loadChildrenForInspectedElement(message.data);
     		break;
     	case "loadChildren":
-    		result = loadChildren(message);
+    		result = loadChildren(message.data);
     		break;
     	default:
     		console.error("Unknown message type");
     }
-    if(result){
+    if(sendResponse){
 		sendResponse(result);
     }
 });
@@ -441,6 +441,7 @@ window.higlightComponent = function(documentNode, element, componentName){
 };
 
 window.HL_GREEN = "rgb(106, 166, 219)";
+//rgb(244, 128, 36);
 window.HL_YELLOW = "rgb(106, 166, 219)";
 
 window.highlightInspectedElement = function(childIndicesChain){
@@ -456,6 +457,7 @@ window.highlightInspectedElement = function(childIndicesChain){
 	higlightElement(document, element, window.HL_GREEN, 0.66, 'websync-highlighter');
 };
 
+//window.highlightSelector = function({selectorType, selector, iframeIndex, elementIndex, childIndicesChain}){
 window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex, childIndicesChain){
 	removeHighlighting();
 

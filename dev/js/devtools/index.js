@@ -61,7 +61,7 @@
 // });
 
 chrome.runtime.sendMessage({
-		type: "injectContentScript",
+		name: "injectContentScript",
 		tabId: chrome.devtools.inspectedWindow.tabId
 	}, onScriptsInjected);
 

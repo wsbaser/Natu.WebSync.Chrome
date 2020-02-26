@@ -50,15 +50,26 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       var tabId = sender.tab.id;
       if (tabId in connections) {
         connections[tabId].postMessage(request);
-        console.log('Sent message to Devtools Page for tab ' + tabId+'.');
+        console.log('Sent message to Devtools Page for tab ' + tabId + '.');
       } else {
         console.log("Tab not found in connection list.");
       }
     } else {
       console.log('Received message from Devtools Page.');
-      switch(request.type){
+      switch(request.name){
         case "injectContentScript":
           injectContentScript(request.tabId, sendResponse);
+          break;
+        default:
+          console.log("request tab id", request.tabId);
+          chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+            console.log("request tab id", tabs[0].id);
+            chrome.tabs.sendMessage(tabs[0].id, request, sendResponse);  
+          });
+          // if(request.tabId){
+          //   // Relay message to content script
+          //   chrome.tabs.sendMessage(request.tabId, request, sendResponse);
+          // }
           break;
       }
     }
