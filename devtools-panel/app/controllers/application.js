@@ -93,6 +93,9 @@ export default Ember.Controller.extend({
 		}
 		return false;
 	}),
+	rootScss: Ember.computed('rootParts', function(){
+		return this.get('rootParts.lastObject.fullScss');
+	}),
 	status: Ember.computed(
 		'parts.lastObject.xpathElements.[]',
 		'parts.lastObject.cssElements.[]', function(){
@@ -477,6 +480,9 @@ export default Ember.Controller.extend({
 		},
 		onUpdateSelector(){
 			this.updateSelector();
+		},
+		onRemoveRoot(){
+			this.set('rootParts', null);
 		}
 	}
 });

@@ -65,6 +65,7 @@ export default Service.extend({
                     index: i,
                     scss: css,
                     css: css,
+                    fullScss: fullCss,
                     fullCss: fullCss,
                     isCssStyle: true,
                     startIndex: startIndex
@@ -113,6 +114,7 @@ export default Service.extend({
                 scss: xpath,
                 xpath: xpath,
                 fullXpath: fullXpath,
+                fullScss: fullXpath,
                 isCssStyle: false,
                 startIndex: startIndex
             });
@@ -224,6 +226,7 @@ export default Service.extend({
     parseScss(scss, isInner) {
         let scssParts = this.splitScssToParts(scss, ' ', '>', '+');
         let parts=[];
+        let fullScss='';
         let fullCss='';
         let fullXpath=''
         let encounteredInvalidCss = false;
@@ -257,6 +260,8 @@ export default Service.extend({
             }else{
                 encounteredInvalidCss=true;
             }
+            fullScss+=scssParts[i];
+            part.fullScss=fullScss;
 
             part.startIndex = startIndex;
             startIndex+=scssParts[i].length;

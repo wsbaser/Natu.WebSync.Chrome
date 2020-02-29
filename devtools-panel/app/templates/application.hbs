@@ -18,6 +18,12 @@
 			{{#if isEditMode}}
 				<span id="inputPrefix">{{selectorToUpdate.name}}</span>
 			{{/if}}
+			{{#if rootScss}}
+				<span id="inputPrefix" title="{{rootScss}}">
+					<i class="remove-root" onclick={{action "onRemoveRoot"}}></i>
+					<span class="root-label">root:</span>
+				</span>
+			{{/if}}
 			<div class="input-wrap">
 				<div id="partHighlighter"></div>
 				{{input id="source" value=inputValue type="text" placeholder="Type selector here..." key-down="onInputKeyDown" }}
