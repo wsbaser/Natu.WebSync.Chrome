@@ -13,6 +13,7 @@ export default Ember.Controller.extend({
 	clipboard: Ember.inject.service(),
 	pluralizer: Ember.inject.service(),
 	inputValue: '',
+	rootParts: A([]),
 	parts: A([]),
 	selectors: A([]),
 	elements: A([]),
@@ -93,12 +94,15 @@ export default Ember.Controller.extend({
 		}
 		return false;
 	}),
-	rootScss: Ember.computed('rootParts', function(){
+	rootScss: Ember.computed('rootParts.[]', function(){
 		return this.get('rootParts.lastObject.fullScss');
 	}),
+	lastPart: Ember.computed('parts.[]', function(){
+		return this.get('parts').rejectBy('isBlank').get('lastObject');
+	}),
 	status: Ember.computed(
-		'parts.lastObject.xpathElements.[]',
-		'parts.lastObject.cssElements.[]', function(){
+		'lastPart.xpathElements.[]',
+		'lastPart.cssElements.[]', function(){
 		let xpathStatus = this.get('parts.lastObject.xpathElements.length')||0;
 		let cssStatus = this.get('parts.lastObject.cssElements.length')||0;
 		return Math.max(xpathStatus, cssStatus);
@@ -196,7 +200,27 @@ export default Ember.Controller.extend({
 			};
 		this.set('scss', scss);
 
-		this.updateParts(this.get('selectorPartFactory').generateParts(scss.parts));
+
+		let newParts = this.get('selectorPartFactory').generateParts(scss.parts);
+
+		if(this.get('rootParts.length') && newParts.length){
+			var space = newParts.get('firstObject.isCssStyle') && newParts.get('firstObject.combinator') ?'':' ';
+			let rootPart = this.get('rootParts.lastObject');
+			newParts.forEach(function(p){
+				let rootScss = rootPart.get('fullScss');
+				let rootCss = rootPart.get('fullCss');
+				let rootXpath = rootPart.get('fullXpath');
+				p.set('fullScss', rootScss+space+p.get('fullScss'));
+				if(rootCss){
+					p.set('fullCss', rootCss+space+p.get('fullCss'));
+				}
+				if(rootXpath){
+					p.set('fullXpath', rootXpath + p.get('fullXpath'));
+				}
+			});
+		}
+
+		this.updateParts(newParts);
 
 		if(!selector){
 			this.focusInput();
@@ -300,18 +324,7 @@ export default Ember.Controller.extend({
 		return "Component Name";
 	},
 	getSelector(){
-		let lastPart = this.get('parts.lastObject');
-		let scss = this.get('inputValue');
-		if(lastPart.get('fullCss') && lastPart.get('cssElements.length')){
-			return {
-				scss: scss,
-				css: lastPart.get('fullCss')
-			};
-		}
-		return {
-			scss: scss,
-			xpath: lastPart.get('fullXpath')
-		}
+		return this.get('lastPart').getSelector();
 	},
 	addToList(){
 		if(this.get('inputValue')){
@@ -357,6 +370,24 @@ export default Ember.Controller.extend({
 			modifiedScss = modifiedScss.trimStart();
 		}
 		this.setInputValue(modifiedScss);
+	},
+	makeRoot(part){
+		let newRootParts=A([]);
+		let current;
+		do{
+			current = this.get('parts').shiftObject();
+			newRootParts.pushObject(current);
+		} while(current != part);
+		this.get('rootParts').pushObjects(newRootParts);
+
+		let scssWithoutRoot = this.get('parts').map(p=>p.scss).join('').trimStart();
+		this.setInputValue(scssWithoutRoot);
+		this.get('selectorHighlighter').removeHighlighting();
+	},
+	removeRoot(){
+		this.get('parts').unshiftObjects(this.get('rootParts'));
+		this.get('rootParts').clear();
+		this.setInputValue(this.get('lastPart.fullScss'));
 	},
 	showNotification(message){
 		if(this.get("notification")){
@@ -482,7 +513,13 @@ export default Ember.Controller.extend({
 			this.updateSelector();
 		},
 		onRemoveRoot(){
-			this.set('rootParts', null);
+			this.removeRoot();
+		},
+		onRootMouseEnter(){
+			this.get('selectorHighlighter').highlight(this.get('rootParts.lastObject').getSelector());
+		},
+		onRootMouseLeave(){
+			this.get('selectorHighlighter').removeHighlighting();
 		}
 	}
 });

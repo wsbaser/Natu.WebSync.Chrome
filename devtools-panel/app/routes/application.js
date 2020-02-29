@@ -174,10 +174,10 @@ export default Ember.Route.extend({
 		this.transitionTo('index');
 	},
 	actions:{
-		lock(model){
-			alert('lock');
+		makeRoot(model){
+			this.controller.makeRoot(model);
 		},
-		delete(model){
+		deletePart(model){
 			this.controller.removePart(model);
 		}
 	}

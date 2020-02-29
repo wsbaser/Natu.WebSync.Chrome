@@ -19,7 +19,7 @@
 				<span id="inputPrefix">{{selectorToUpdate.name}}</span>
 			{{/if}}
 			{{#if rootScss}}
-				<span id="inputPrefix" title="{{rootScss}}">
+				<span id="inputPrefix" title="{{rootScss}}" {{action "onRootMouseEnter" on="mouseEnter"}} {{action "onRootMouseLeave" on="mouseLeave"}}>
 					<i class="remove-root" onclick={{action "onRemoveRoot"}}></i>
 					<span class="root-label">root:</span>
 				</span>

@@ -21,5 +21,17 @@ export default Ember.Object.extend({
 	},
 	endIndex: Ember.computed('startIndex','scss', function(){
 		return this.get('startIndex') + this.get('scss').length;
-	})
+	}),
+	getSelector(){
+		if(this.get('fullCss') && this.get('cssElements.length')){
+			return {
+				scss: this.get('fullScss'),
+				css: this.get('fullCss')
+			};
+		}
+		return {
+			scss: this.get('fullScss'),
+			xpath: this.get('fullXpath')
+		}
+	}
 });
