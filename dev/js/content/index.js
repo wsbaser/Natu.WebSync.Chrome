@@ -413,6 +413,12 @@ window.higlightElement = function(documentNode, element, highlightColor, opacity
 	});
 }
 
+window.higlightElement2 = function(documentNode, element, highlightOptions){
+	for(let name in highlightOptions){
+		element.style.setProperty(name, highlightOptions[name], 'important');
+	}
+}
+
 window.hightlightElementsInIframe = function(iframeNode, iframeElements, highlightColor){
 	if(iframeElements[0]){
 		// .scroll to first
@@ -424,6 +430,12 @@ window.hightlightElementsInIframe = function(iframeNode, iframeElements, highlig
 	}
 	iframeElements.forEach((iframeElement)=>{
 		higlightElement(iframeNode, iframeElement, highlightColor, 0.66, 'websync-highlighter');
+	});
+};
+
+window.hightlightElementsInIframe2 = function(iframeNode, iframeElements, highlightOptions){
+	iframeElements.forEach((iframeElement)=>{
+		higlightElement2(iframeNode, iframeElement, highlightOptions);
 	});
 };
 
@@ -457,7 +469,6 @@ window.highlightInspectedElement = function(childIndicesChain){
 	higlightElement(document, element, window.HL_GREEN, 0.66, 'websync-highlighter');
 };
 
-//window.highlightSelector = function({selectorType, selector, iframeIndex, elementIndex, childIndicesChain}){
 window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex, childIndicesChain){
 	removeHighlighting();
 
@@ -498,6 +509,28 @@ window.highlightSelector = function(selector, isXpath, iframeIndex, elementIndex
 		});
 	}
 };
+
+window.highlightRootSelector = function(selector, isXpath){
+	removeHighlighting();
+	let iframeDataList = evaluateSelector(selector, isXpath);
+	let highlightOptions = {
+		outline: '1px dashed black'
+	};
+	iframeDataList.forEach((iframeData)=>{
+		hightlightElementsInIframe2(iframeData.documentNode, iframeData.elements.map(e=>e.domElement), highlightOptions);
+	});
+}
+
+window.removeRootHighlighting = function(selector, isXpath){
+	removeHighlighting();
+	let iframeDataList = evaluateSelector(selector, isXpath);
+	let highlightOptions = {
+		outline: ''
+	};
+	iframeDataList.forEach((iframeData)=>{
+		hightlightElementsInIframe2(iframeData.documentNode, iframeData.elements.map(e=>e.domElement), highlightOptions);
+	});
+}
 
 window.highlightComponents = function(json){
 	removeComponentsHighlighting();

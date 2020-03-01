@@ -21,6 +21,24 @@ export default Ember.Service.extend({
 			throw Error('invalid selector');
 		}
 	},
+	highlightRootSelector(selector){
+		if(selector.css){
+			this._callEval('highlightRootSelector(`' + selector.css + '`, false)');
+		}else if(selector.xpath){
+			this._callEval('highlightRootSelector(`' + selector.xpath + '`, true)');
+		}else{
+			throw Error('invalid selector');
+		}
+	},
+	removeRootHighlighting(selector){
+		if(selector.css){
+			this._callEval('removeRootHighlighting(`' + selector.css + '`, false)');
+		}else if(selector.xpath){
+			this._callEval('removeRootHighlighting(`' + selector.xpath + '`, true)');
+		}else{
+			throw Error('invalid selector');
+		}
+	},
 	loadChildren(selector, onLoaded){
 		if(!selector){
 			return;

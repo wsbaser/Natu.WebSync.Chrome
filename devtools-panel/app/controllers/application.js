@@ -103,8 +103,9 @@ export default Ember.Controller.extend({
 	status: Ember.computed(
 		'lastPart.xpathElements.[]',
 		'lastPart.cssElements.[]', function(){
-		let xpathStatus = this.get('parts.lastObject.xpathElements.length')||0;
-		let cssStatus = this.get('parts.lastObject.cssElements.length')||0;
+		let lastPart = this.get('lastPart');
+		let xpathStatus = lastPart.get('xpathElements.length')||0;
+		let cssStatus = lastPart.get('cssElements.length')||0;
 		return Math.max(xpathStatus, cssStatus);
 	}),
 	// isExist: Ember.computed('status', function(){
@@ -372,6 +373,9 @@ export default Ember.Controller.extend({
 		this.setInputValue(modifiedScss);
 	},
 	makeRoot(part){
+		if(this.get('rootParts.length')){
+			this.get('selectorHighlighter').removeRootHighlighting(this.get('rootParts.lastObject').getSelector());
+		}
 		let newRootParts=A([]);
 		let current;
 		do{
@@ -382,9 +386,10 @@ export default Ember.Controller.extend({
 
 		let scssWithoutRoot = this.get('parts').map(p=>p.scss).join('').trimStart();
 		this.setInputValue(scssWithoutRoot);
-		this.get('selectorHighlighter').removeHighlighting();
+		this.get('selectorHighlighter').highlightRootSelector(this.get('rootParts.lastObject').getSelector());
 	},
 	removeRoot(){
+		this.get('selectorHighlighter').removeRootHighlighting(this.get('rootParts.lastObject').getSelector());
 		this.get('parts').unshiftObjects(this.get('rootParts'));
 		this.get('rootParts').clear();
 		this.setInputValue(this.get('lastPart.fullScss'));
