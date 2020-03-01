@@ -57,8 +57,8 @@
 <div class="accordion-header {{if componentsAreHighlighted "highlighted"}}" {{action "expandSelectorsList"}}>
 	<span class="expand-icon"></span>
 	<span class="panel-label">Selectors List</span>
-		<a {{action "onClear" bubbles=false}} style="float: right;margin-left: 10px;cursor: pointer;">Clear</a>
-		<a {{action "onCopy" bubbles=false}}style="float: right;margin-left: 10px;cursor: pointer;">Copy</a>
+		<a {{action "onClear" bubbles=false}} title="Clear Selectors List" style="float: right;margin-left: 10px;cursor: pointer;">Clear</a>
+		<a {{action "onCopy" bubbles=false}} title="Copy Selectors" style="float: right;margin-left: 10px;cursor: pointer;">Copy</a>
 	    
 	    <label style="float:right; margin-left:10px; margin-bottom:0; font-weight: normal; cursor:pointer; display: flex; align-items: center;" {{action "onHighlightComponents" bubbles=false preventDefault=false}}>
 	    	{{!-- {{input type="checkbox" checked=componentsAreHighlighted}} --}}

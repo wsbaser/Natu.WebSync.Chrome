@@ -390,10 +390,12 @@ export default Ember.Controller.extend({
 		this.get('selectorHighlighter').highlightRootSelector(this.get('rootParts.lastObject').getSelector());
 	},
 	removeRoot(){
-		this.get('selectorHighlighter').removeRootHighlighting(this.get('rootParts.lastObject').getSelector());
-		this.get('parts').unshiftObjects(this.get('rootParts'));
-		this.get('rootParts').clear();
-		this.setInputValue(this.get('lastPart.fullScss'));
+		if(this.get('rootParts.length')){
+			this.get('selectorHighlighter').removeRootHighlighting(this.get('rootParts.lastObject').getSelector());
+			this.get('parts').unshiftObjects(this.get('rootParts'));
+			this.get('rootParts').clear();
+			this.setInputValue(this.get('lastPart.fullScss'));
+		}
 	},
 	showNotification(message){
 		if(this.get("notification")){
@@ -490,6 +492,7 @@ export default Ember.Controller.extend({
 			this.addToList();
 		},
 		onEdtiComponentSelector(componentSelector){
+			this.removeRoot();
 			this.set('selectorToUpdate', componentSelector);
 			this.collapseSelectorsList();
 		},
