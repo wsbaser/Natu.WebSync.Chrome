@@ -56,6 +56,8 @@ export default Service.extend({
             try{
                 let part = this.parseScssPart(css);
                 part.fullCss = fullCss;
+                part.fullScss = fullCss;
+                part.startIndex = startIndex;
                 parts.push(part);
             }
             catch(e){
