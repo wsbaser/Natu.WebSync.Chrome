@@ -19,10 +19,6 @@
       "js": ["assets/content.js"]
     }
   ],
-  "web_accessible_resources": [
-    "assets/32px.png",
-    "assets/throbber.gif"
-  ],
   "devtools_page": "./devtools.html",
   "permissions": [],
   "externally_connectable": {
