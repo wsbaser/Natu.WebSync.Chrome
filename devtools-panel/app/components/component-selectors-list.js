@@ -6,6 +6,7 @@ export default Component.extend({
 		'isExpanded:expanded'
 	],
 	selectorHighlighter: Ember.inject.service(),
+	selectorInspector: Ember.inject.service(),
 	pluralizer: Ember.inject.service(),
 	clipboard: Ember.inject.service(),
 	onComponentsListChange: Ember.observer('selectors.[]', function(){
@@ -95,6 +96,7 @@ export default Component.extend({
     		if(selectors.objectAt(i).get('isSelected')){
 				selectors.objectAt(i).set('isSelected', false);
 				selectors.objectAt(i-1).set('isSelected', true);
+				this.highlightComponentSelector(selectors.objectAt(i-1));
 				break;
     		}
     	}
@@ -105,6 +107,7 @@ export default Component.extend({
     		if(selectors.objectAt(i).get('isSelected')){
 				selectors.objectAt(i).set('isSelected', false);
 				selectors.objectAt(i+1).set('isSelected', true);
+				this.highlightComponentSelector(selectors.objectAt(i+1));
 				break;
     		}
     	}
@@ -140,6 +143,9 @@ export default Component.extend({
     	this.selectors.removeObject(componentSelector);
 		this.get('selectorHighlighter').removeHighlighting();
     },
+    highlightComponentSelector(componentSelector){
+    	this.get('selectorHighlighter').highlight(componentSelector.get('selector'));
+    },
 	actions:{
 		expandSelectorsList(){
 			this.toggleProperty('isExpanded');
@@ -148,9 +154,10 @@ export default Component.extend({
 			this.get('selectors').forEach(function(s){
 				s.set('isSelected', s == componentSelector);
 			});
+			this.highlightComponentSelector(componentSelector);
 		},
 		onMouseEnter(componentSelector){
-			this.get('selectorHighlighter').highlight(componentSelector.get('selector'));
+			this.highlightComponentSelector(componentSelector);
 		},
 		onMouseLeave(){
 			this.get('selectorHighlighter').removeHighlighting();

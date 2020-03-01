@@ -12,12 +12,19 @@
     "page": "background.html",
     "persistent": false
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "run_at": "document_idle",
+      "js": ["assets/content.js"]
+    }
+  ],
   "web_accessible_resources": [
     "assets/32px.png",
     "assets/throbber.gif"
   ],
   "devtools_page": "./devtools.html",
-  "permissions": [ "<all_urls>" ],
+  "permissions": [],
   "externally_connectable": {
     "ids": [ "*" ],
     "matches": [ "http://10.51.27.92/*"]

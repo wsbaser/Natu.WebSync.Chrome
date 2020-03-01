@@ -60,19 +60,19 @@
 //     scriptToInject: "assets/content.js"
 // });
 
-chrome.runtime.sendMessage({
-		name: "injectContentScript",
-		tabId: chrome.devtools.inspectedWindow.tabId
-	}, onScriptsInjected);
+// chrome.runtime.sendMessage({
+// 		name: "injectContentScript",
+// 		tabId: chrome.devtools.inspectedWindow.tabId
+// 	}, onScriptsInjected);
 
-function onScriptsInjected(){
+// function onScriptsInjected(){
 	chrome.devtools.panels.create('WebSync', 'icons/icon64.png', 'devtools-panel.html');
 	chrome.devtools.panels.elements.createSidebarPane("WebSync",
 		function(sidebar) {
 		  sidebar.setPage("devtools-panel.html");
 		  sidebar.onHidden.addListener(handleHidden)
 		});
-}
+// };
 
 function handleHidden() {
 	chrome.devtools.inspectedWindow.eval('removeHighlighting()', { useContentScriptContext: true });

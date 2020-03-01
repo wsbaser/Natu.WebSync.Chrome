@@ -66,6 +66,7 @@ export default Ember.Controller.extend({
 	},
 	collapseSelectorsList(){
 		this.set('selectorsListIsExpanded', false);
+		this.get('selectorHighlighter').removeHighlighting();
 	},
 	expandSelectorsList(){
 		this.set('selectorsListIsExpanded', true);	
