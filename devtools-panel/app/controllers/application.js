@@ -83,8 +83,10 @@ export default Ember.Controller.extend({
 				return;
 			}
 			if(result.partIndex!=-1){
+				console.log('elementLocated - select existing part');
 				this.selectLocatedPart(result.partIndex, result.partElements, result.isXpathElements);
 			}else{
+				console.log('elementLocated - create blank part', result.blankPartElements);
 				this.createBlankPart(result.blankPartIndex, result.blankPartElements);
 			}
 		});
