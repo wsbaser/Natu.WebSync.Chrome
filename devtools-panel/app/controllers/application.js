@@ -72,9 +72,10 @@ export default Ember.Controller.extend({
 		this.set('selectorsListIsExpanded', true);	
 	},
 	locateInspectedElement(){
+		console.log('Inspected element changed.');
 		this.collapseSelectorsList();
-		this.removeBlankParts();
 		this.get('elementLocator').locateInspectedElement(this.get('parts'), (result, exception)=>{
+			this.removeBlankParts();
 			if(exception){
 				console.log('Unable to locate inspected element.', exception);
 				return;
@@ -217,15 +218,15 @@ export default Ember.Controller.extend({
 		if(this.get('rootParts.length') && newParts.length){
 			var space = newParts.get('firstObject.isCssStyle') && newParts.get('firstObject.combinator') ?'':' ';
 			let rootPart = this.get('rootParts.lastObject');
+			let rootScss = rootPart.get('fullScss');
+			let rootCss = rootPart.get('fullCss');
+			let rootXpath = rootPart.get('fullXpath');
 			newParts.forEach(function(p){
-				let rootScss = rootPart.get('fullScss');
-				let rootCss = rootPart.get('fullCss');
-				let rootXpath = rootPart.get('fullXpath');
 				p.set('fullScss', rootScss+space+p.get('fullScss'));
-				if(rootCss){
+				if(rootCss && p.get('fullCss')){
 					p.set('fullCss', rootCss+space+p.get('fullCss'));
 				}
-				if(rootXpath){
+				if(rootXpath && p.get('fullXpath')){
 					p.set('fullXpath', rootXpath + p.get('fullXpath'));
 				}
 			});
