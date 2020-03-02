@@ -147,6 +147,9 @@ function getFirstLevelText(e){
 }
 
 window.locateInspectedElement = function(cssSelectors, xpathSelectors){
+	if(!$0){
+		return null;
+	}
 	let partIndex=-1;
 	let partElements;
 	let isXpathElements;

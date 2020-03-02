@@ -75,6 +75,13 @@ export default Ember.Controller.extend({
 		this.collapseSelectorsList();
 		this.removeBlankParts();
 		this.get('elementLocator').locateInspectedElement(this.get('parts'), (result, exception)=>{
+			if(exception){
+				console.log('Unable to locate inspected element.', exception);
+				return;
+			}
+			if(!result){
+				return;
+			}
 			if(result.partIndex!=-1){
 				this.selectLocatedPart(result.partIndex, result.partElements, result.isXpathElements);
 			}else{
